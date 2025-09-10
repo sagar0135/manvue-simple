@@ -122,3 +122,6 @@ export default {
     productCategories,
     productUtils
 };
+
+// expose globally for non-module script.js
+window.products = allProducts;

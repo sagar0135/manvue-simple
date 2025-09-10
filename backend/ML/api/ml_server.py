@@ -24,6 +24,15 @@ from datetime import datetime
 
 # Add parent directories to path for imports
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
+
+# Import the new ML model module
+try:
+    from backend.ml_model import get_image_embedding, get_text_embedding, compute_similarity, is_model_loaded
+    CLIP_AVAILABLE = True
+except ImportError as e:
+    logging.warning(f"CLIP model not available: {e}")
+    CLIP_AVAILABLE = False
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -266,6 +275,26 @@ def rgb_to_color_name(rgb):
     else:
         return 'Gray'
 
+# New Pydantic models for embedding endpoints
+class EmbeddingRequest(BaseModel):
+    image_path: str = Field(..., description="Path to the image file")
+    
+class TextEmbeddingRequest(BaseModel):
+    text: str = Field(..., description="Text to generate embedding for")
+
+class SimilarityRequest(BaseModel):
+    image_path: str = Field(..., description="Path to the image file")
+    text: str = Field(..., description="Text to compare with image")
+
+class EmbeddingResponse(BaseModel):
+    embedding: List[float] = Field(..., description="Generated embedding")
+    model_used: str = Field("CLIP", description="Model used for embedding")
+
+class SimilarityResponse(BaseModel):
+    similarity: float = Field(..., description="Cosine similarity score")
+    image_path: str = Field(..., description="Path to the image file")
+    text: str = Field(..., description="Text compared")
+
 @app.get("/health", response_model=HealthResponse, 
          summary="Health Check", 
          description="Check API server health and model status")
@@ -396,6 +425,79 @@ async def perform_retraining(training_data: List[Dict[str, Any]],
         logger.info(f"Retraining job {job_id} completed successfully")
     except Exception as e:
         logger.error(f"Retraining job {job_id} failed: {e}")
+
+# New embedding endpoints
+@app.post("/embedding/image", response_model=EmbeddingResponse,
+          summary="Generate Image Embedding", 
+          description="Generate CLIP embedding for an image")
+async def generate_image_embedding(request: EmbeddingRequest):
+    """Generate CLIP embedding for an image"""
+    if not CLIP_AVAILABLE:
+        raise HTTPException(status_code=503, detail="CLIP model not available")
+    
+    try:
+        embedding = get_image_embedding(request.image_path)
+        return EmbeddingResponse(
+            embedding=embedding,
+            model_used="CLIP"
+        )
+    except Exception as e:
+        logger.error(f"Error generating image embedding: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to generate embedding: {str(e)}")
+
+@app.post("/embedding/text", response_model=EmbeddingResponse,
+          summary="Generate Text Embedding", 
+          description="Generate CLIP embedding for text")
+async def generate_text_embedding(request: TextEmbeddingRequest):
+    """Generate CLIP embedding for text"""
+    if not CLIP_AVAILABLE:
+        raise HTTPException(status_code=503, detail="CLIP model not available")
+    
+    try:
+        embedding = get_text_embedding(request.text)
+        return EmbeddingResponse(
+            embedding=embedding,
+            model_used="CLIP"
+        )
+    except Exception as e:
+        logger.error(f"Error generating text embedding: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to generate embedding: {str(e)}")
+
+@app.post("/similarity", response_model=SimilarityResponse,
+          summary="Compute Image-Text Similarity", 
+          description="Compute cosine similarity between image and text embeddings")
+async def compute_image_text_similarity(request: SimilarityRequest):
+    """Compute similarity between image and text using CLIP"""
+    if not CLIP_AVAILABLE:
+        raise HTTPException(status_code=503, detail="CLIP model not available")
+    
+    try:
+        # Generate embeddings
+        image_embedding = get_image_embedding(request.image_path)
+        text_embedding = get_text_embedding(request.text)
+        
+        # Compute similarity
+        similarity = compute_similarity(image_embedding, text_embedding)
+        
+        return SimilarityResponse(
+            similarity=similarity,
+            image_path=request.image_path,
+            text=request.text
+        )
+    except Exception as e:
+        logger.error(f"Error computing similarity: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to compute similarity: {str(e)}")
+
+@app.get("/embedding/status", 
+         summary="Check Embedding Model Status", 
+         description="Check if CLIP model is loaded and available")
+async def check_embedding_status():
+    """Check if CLIP model is available"""
+    return {
+        "clip_available": CLIP_AVAILABLE,
+        "model_loaded": is_model_loaded() if CLIP_AVAILABLE else False,
+        "device": "cuda" if torch.cuda.is_available() else "cpu" if CLIP_AVAILABLE else "unknown"
+    }
 
 # Startup event
 @app.on_event("startup")

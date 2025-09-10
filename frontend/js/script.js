@@ -14,6 +14,9 @@ function scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+// Global products array - will be populated from API
+let products = [];
+
 // Enhanced Men's Fashion Data with Advanced Filtering
 const products = [
     {
@@ -343,7 +346,171 @@ function startVoiceSearch() {
 
 // Product Functions
 function loadProducts() {
-    displayProducts(products);
+    try {
+        const response = await fetch("http://localhost:5000/products");
+        if (!response.ok) {
+            throw new Error('Failed to fetch products');
+        }
+        const apiProducts = await response.json();
+        
+        // Update global products array
+        products = apiProducts;
+        
+        // Display the products
+        displayProducts(products);
+        
+        // Initialize other features that depend on products
+        initializeProductFeatures();
+        
+    } catch (error) {
+        console.error('Error loading products:', error);
+        showMessage('Failed to load products. Please try again later.');
+        
+        // Fallback to empty array
+        products = [];
+        displayProducts([]);
+    }
+}
+
+// Initialize features that depend on products being loaded
+function initializeProductFeatures() {
+    // Update any UI elements that depend on products
+    updateResultsCount(products.length);
+    
+    // Initialize product-related features
+    if (typeof addMatchingButtonToProducts === 'function') {
+        addMatchingButtonToProducts();
+    }
+}
+
+// Updated searchProducts function to work with API-loaded products
+function searchProducts(searchTerm = null) {
+    const searchInput = document.getElementById('search-input');
+    const actualSearchTerm = searchTerm || searchInput.value.toLowerCase();
+    
+    if (!actualSearchTerm) {
+        applyAllFilters();
+        return;
+    }
+    
+    // Set the search input value if searchTerm was provided
+    if (searchTerm) {
+        searchInput.value = searchTerm;
+    }
+    
+    // Filter products from the API-loaded array
+    let filteredProducts = products.filter(product => 
+        product.name.toLowerCase().includes(actualSearchTerm) ||
+        product.description.toLowerCase().includes(actualSearchTerm) ||
+        product.category.toLowerCase().includes(actualSearchTerm) ||
+        product.brand.toLowerCase().includes(actualSearchTerm) ||
+        (product.tags && product.tags.some(tag => tag.toLowerCase().includes(actualSearchTerm)))
+    );
+    
+    // Apply other filters to search results
+    if (currentFilters.category !== 'all') {
+        filteredProducts = filteredProducts.filter(product => 
+            product.category === currentFilters.category
+        );
+    }
+    
+    if (currentFilters.brand !== 'all') {
+        filteredProducts = filteredProducts.filter(product => 
+            product.brand === currentFilters.brand
+        );
+    }
+    
+    if (currentFilters.priceRange.min > 0 || currentFilters.priceRange.max < 1000) {
+        filteredProducts = filteredProducts.filter(product => 
+            product.price >= currentFilters.priceRange.min && 
+            product.price <= currentFilters.priceRange.max
+        );
+    }
+    
+    // Sort and display results
+    filteredProducts = sortProductsArray(filteredProducts, currentFilters.sortBy);
+    displayProducts(filteredProducts);
+    
+    // Scroll to products section
+    const productsSection = document.getElementById('products');
+    if (productsSection) {
+        productsSection.scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    // Close search if it was from dropdown
+    if (searchTerm) {
+        toggleSearch();
+    }
+}
+
+// Updated filterProducts function
+function filterProducts(category) {
+    currentFilters.category = category;
+    applyAllFilters();
+}
+
+// Updated applyAllFilters function
+function applyAllFilters() {
+    let filteredProducts = [...products]; // Start with all products from API
+    
+    // Apply category filter
+    if (currentFilters.category !== 'all') {
+        filteredProducts = filteredProducts.filter(product => 
+            product.category === currentFilters.category
+        );
+    }
+    
+    // Apply brand filter
+    if (currentFilters.brand !== 'all') {
+        filteredProducts = filteredProducts.filter(product => 
+            product.brand === currentFilters.brand
+        );
+    }
+    
+    // Apply price filter
+    if (currentFilters.priceRange.min > 0 || currentFilters.priceRange.max < 1000) {
+        filteredProducts = filteredProducts.filter(product => 
+            product.price >= currentFilters.priceRange.min && 
+            product.price <= currentFilters.priceRange.max
+        );
+    }
+    
+    // Apply stock filter
+    if (currentFilters.inStock) {
+        filteredProducts = filteredProducts.filter(product => 
+            product.stock > 0
+        );
+    }
+    
+    // Sort products
+    filteredProducts = sortProductsArray(filteredProducts, currentFilters.sortBy);
+    
+    // Display results
+    displayProducts(filteredProducts);
+    updateResultsCount(filteredProducts.length);
+}
+
+// Updated showDeals function
+function showDeals() {
+    // Filter products to show only discounted items
+    const discountedProducts = products.filter(product => 
+        product.originalPrice && product.originalPrice > product.price
+    );
+    displayProducts(discountedProducts);
+    const productsSection = document.getElementById('products');
+    if (productsSection) {
+        productsSection.scrollIntoView({ behavior: 'smooth' });
+    }
+}
+
+// Updated showAllProducts function
+function showAllProducts() {
+    currentPage = 1;
+    displayProducts(products); // Show all API-loaded products
+    const productsSection = document.getElementById('products');
+    if (productsSection) {
+        productsSection.scrollIntoView({ behavior: 'smooth' });
+    }
 }
 
 function filterProducts(category) {
@@ -698,47 +865,43 @@ document.addEventListener('DOMContentLoaded', function() {
 // Advanced Filtering Functions
 
 function applyAllFilters() {
-    let filteredProducts = products;
+    let filteredProducts = [...products]; // Start with all products from API
     
-    // Category filter
+    // Apply category filter
     if (currentFilters.category !== 'all') {
         filteredProducts = filteredProducts.filter(product => 
             product.category === currentFilters.category
         );
     }
     
-    // Type filter
-    if (currentFilters.type) {
-        filteredProducts = filteredProducts.filter(product => 
-            product.type === currentFilters.type
-        );
-    }
-    
-    // Brand filter
-    if (currentFilters.brand) {
+    // Apply brand filter
+    if (currentFilters.brand !== 'all') {
         filteredProducts = filteredProducts.filter(product => 
             product.brand === currentFilters.brand
         );
     }
     
-    // Price range filter
-    filteredProducts = filteredProducts.filter(product => 
-        product.price >= currentFilters.priceMin && 
-        product.price <= currentFilters.priceMax
-    );
+    // Apply price filter
+    if (currentFilters.priceRange.min > 0 || currentFilters.priceRange.max < 1000) {
+        filteredProducts = filteredProducts.filter(product => 
+            product.price >= currentFilters.priceRange.min && 
+            product.price <= currentFilters.priceRange.max
+        );
+    }
     
-    // Stock filter
-    if (currentFilters.inStockOnly) {
-        filteredProducts = filteredProducts.filter(product => product.inStock);
+    // Apply stock filter
+    if (currentFilters.inStock) {
+        filteredProducts = filteredProducts.filter(product => 
+            product.stock > 0
+        );
     }
     
     // Sort products
     filteredProducts = sortProductsArray(filteredProducts, currentFilters.sortBy);
     
-    // Reset pagination
-    currentPage = 1;
-    
+    // Display results
     displayProducts(filteredProducts);
+    updateResultsCount(filteredProducts.length);
 }
 
 function sortProductsArray(productsArray, sortBy) {
@@ -1304,17 +1467,23 @@ function removeFromWishlist(index) {
 // Deal functions
 function showDeals() {
     // Filter products to show only discounted items
-    const discountedProducts = products.filter(product => product.originalPrice > product.price);
+    const discountedProducts = products.filter(product => 
+        product.originalPrice && product.originalPrice > product.price
+    );
     displayProducts(discountedProducts);
     const productsSection = document.getElementById('products');
-    productsSection.scrollIntoView({ behavior: 'smooth' });
+    if (productsSection) {
+        productsSection.scrollIntoView({ behavior: 'smooth' });
+    }
 }
 
 function showAllProducts() {
     currentPage = 1;
-    loadProducts();
+    displayProducts(products); // Show all API-loaded products
     const productsSection = document.getElementById('products');
-    productsSection.scrollIntoView({ behavior: 'smooth' });
+    if (productsSection) {
+        productsSection.scrollIntoView({ behavior: 'smooth' });
+    }
 }
 
 // Enhanced search with specific terms
@@ -1332,12 +1501,13 @@ function searchProducts(searchTerm = null) {
         searchInput.value = searchTerm;
     }
     
+    // Filter products from the API-loaded array
     let filteredProducts = products.filter(product => 
         product.name.toLowerCase().includes(actualSearchTerm) ||
         product.description.toLowerCase().includes(actualSearchTerm) ||
         product.category.toLowerCase().includes(actualSearchTerm) ||
         product.brand.toLowerCase().includes(actualSearchTerm) ||
-        product.tags.some(tag => tag.toLowerCase().includes(actualSearchTerm))
+        (product.tags && product.tags.some(tag => tag.toLowerCase().includes(actualSearchTerm)))
     );
     
     // Apply other filters to search results
@@ -1347,35 +1517,28 @@ function searchProducts(searchTerm = null) {
         );
     }
     
-    if (currentFilters.type) {
-        filteredProducts = filteredProducts.filter(product => 
-            product.type === currentFilters.type
-        );
-    }
-    
-    if (currentFilters.brand) {
+    if (currentFilters.brand !== 'all') {
         filteredProducts = filteredProducts.filter(product => 
             product.brand === currentFilters.brand
         );
     }
     
-    filteredProducts = filteredProducts.filter(product => 
-        product.price >= currentFilters.priceMin && 
-        product.price <= currentFilters.priceMax
-    );
-    
-    if (currentFilters.inStockOnly) {
-        filteredProducts = filteredProducts.filter(product => product.inStock);
+    if (currentFilters.priceRange.min > 0 || currentFilters.priceRange.max < 1000) {
+        filteredProducts = filteredProducts.filter(product => 
+            product.price >= currentFilters.priceRange.min && 
+            product.price <= currentFilters.priceRange.max
+        );
     }
     
+    // Sort and display results
     filteredProducts = sortProductsArray(filteredProducts, currentFilters.sortBy);
-    
-    currentPage = 1;
     displayProducts(filteredProducts);
     
     // Scroll to products section
     const productsSection = document.getElementById('products');
-    productsSection.scrollIntoView({ behavior: 'smooth' });
+    if (productsSection) {
+        productsSection.scrollIntoView({ behavior: 'smooth' });
+    }
     
     // Close search if it was from dropdown
     if (searchTerm) {
