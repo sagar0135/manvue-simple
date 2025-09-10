@@ -1,189 +1,341 @@
-# 🚀 ManVue API Folder
+# ManVue Organized API
 
-This folder contains all API-related files and commands for easy access and management.
+A well-structured, production-ready API for the ManVue e-commerce platform with MongoDB integration, image storage, and ML-powered features.
 
-## 📁 Contents
+## 🏗️ Architecture
 
-- **`launch_api.py`** - Main API launcher with interactive menu
-- **`test_api.py`** - Comprehensive API testing suite
-- **`enhanced_main.py`** - Enhanced API with ML features
-- **`simple_main.py`** - Simple API without ML dependencies
-- **`API_COMMANDS.md`** - Complete API commands reference
-- **`start_api.bat`** - Windows batch file to start API
-- **`start_api.sh`** - Unix/Linux/Mac shell script to start API
+```
+api/
+├── main.py                 # Main FastAPI application
+├── requirements.txt        # Python dependencies
+├── core/                   # Core configuration and utilities
+│   ├── __init__.py
+│   └── config.py          # Settings and configuration
+├── routes/                 # API endpoint definitions
+│   ├── __init__.py
+│   ├── images.py          # Image upload/management endpoints
+│   ├── products.py        # Product CRUD endpoints
+│   ├── auth.py            # Authentication endpoints
+│   └── ml.py              # Machine learning endpoints
+├── models/                 # Pydantic models for request/response
+│   ├── __init__.py
+│   ├── image_models.py    # Image-related models
+│   ├── product_models.py  # Product-related models
+│   ├── auth_models.py     # Authentication models
+│   └── ml_models.py       # ML-related models
+└── services/               # Business logic and service classes
+    ├── __init__.py
+    ├── image_service.py   # Image management logic
+    ├── product_service.py # Product management logic
+    ├── auth_service.py    # Authentication logic
+    └── ml_service.py      # ML processing logic
+```
 
 ## 🚀 Quick Start
 
-### Option 1: Interactive Launcher (Recommended)
+### 1. Install Dependencies
+
 ```bash
-python launch_api.py
+cd api
+pip install -r requirements.txt
 ```
 
-### Option 2: Direct Execution
-```bash
-# Windows
-start_api.bat
+### 2. Configure Environment
 
-# Unix/Linux/Mac
-./start_api.sh
+Create a `.env` file in the project root:
+
+```env
+MONGO_URI=mongodb://localhost:27017
+DB_NAME=manvue_db
+SECRET_KEY=your-secret-key-here
+DEBUG=true
+LOG_LEVEL=INFO
 ```
 
-### Option 3: Manual Start
-```bash
-# Enhanced API (with ML)
-python enhanced_main.py
+### 3. Start the API Server
 
-# Simple API (basic)
-python simple_main.py
+From the project root directory:
+
+```bash
+python start_enhanced_backend.py
 ```
 
-## 🧪 Testing
+Or directly from the api directory:
 
-### Test All Endpoints
 ```bash
-python test_api.py
+cd api
+python main.py
 ```
 
-### Test Individual Endpoints
-See `API_COMMANDS.md` for detailed curl commands.
+### 4. Access the API
 
-## 📋 Available Services
+- **API Server**: http://localhost:5001
+- **Interactive Documentation**: http://localhost:5001/docs
+- **ReDoc Documentation**: http://localhost:5001/redoc
 
-### 1. Enhanced API (Port 5000)
-- ✅ AI-powered text search
-- ✅ AI-powered image search
-- ✅ Product management (CRUD)
-- ✅ User authentication
-- ✅ Admin panel
-- ✅ ML integration
+## 📋 API Endpoints
 
-### 2. Simple API (Port 5000)
-- ✅ Basic product operations
-- ✅ User authentication
-- ✅ No ML dependencies
-- ✅ Lightweight and fast
+### Images
+- `POST /api/images/upload` - Upload image file
+- `POST /api/images/upload-base64` - Upload base64 image (Colab)
+- `GET /api/images/{file_id}` - Get image file
+- `GET /api/images/{file_id}/metadata` - Get image metadata
+- `GET /api/images` - List images
+- `DELETE /api/images/{file_id}` - Delete image
 
-### 3. ML API Server (Port 5001)
-- ✅ Fashion recognition
-- ✅ Image analysis
-- ✅ TensorFlow models
-- ✅ Fashion-MNIST dataset
+### Products
+- `GET /api/products` - List all products
+- `GET /api/products/{product_id}` - Get specific product
+- `POST /api/products` - Create new product
+- `PUT /api/products/{product_id}` - Update product
+- `DELETE /api/products/{product_id}` - Delete product
+- `GET /api/products/search/text` - Search products
+- `GET /api/products/category/{category}` - Get products by category
+- `GET /api/products/featured/trending` - Get featured products
+
+### Authentication
+- `POST /api/auth/register` - Register new user
+- `POST /api/auth/login` - User login
+- `GET /api/auth/me` - Get current user
+- `POST /api/auth/logout` - User logout
+- `POST /api/auth/refresh` - Refresh token
+
+### Machine Learning
+- `POST /api/ml/predict` - Analyze image with ML
+- `POST /api/ml/similarity` - Compute image-text similarity
+- `GET /api/ml/status` - ML service status
+- `POST /api/ml/analyze-colors` - Extract image colors
+- `POST /api/ml/categorize` - Categorize fashion item
+- `GET /api/ml/categories` - Get available categories
+
+## 🧩 Component Details
+
+### Routes
+Each route module handles specific API endpoints:
+- **Clean separation of concerns**
+- **Consistent error handling**
+- **Input validation with Pydantic**
+- **Comprehensive documentation**
+
+### Models
+Pydantic models for type safety and validation:
+- **Request/response models**
+- **Data validation**
+- **Automatic API documentation**
+- **Type hints throughout**
+
+### Services
+Business logic separated from API layer:
+- **Database operations**
+- **Complex business rules**
+- **External service integration**
+- **Reusable across endpoints**
+
+### Core Configuration
+Centralized configuration management:
+- **Environment-based settings**
+- **Type-safe configuration**
+- **Easy deployment configuration**
+- **Development/production modes**
 
 ## 🔧 Configuration
 
 ### Environment Variables
-Create `../backend/.env`:
-```ini
-MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/
-DB_NAME=manvue
-JWT_SECRET=your-secret-key
-JWT_ALGORITHM=HS256
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `MONGO_URI` | MongoDB connection string | `mongodb://localhost:27017` |
+| `DB_NAME` | Database name | `manvue_db` |
+| `SECRET_KEY` | JWT secret key | `your-secret-key-change-in-production` |
+| `DEBUG` | Debug mode | `false` |
+| `LOG_LEVEL` | Logging level | `INFO` |
+| `HOST` | Server host | `0.0.0.0` |
+| `PORT` | Server port | `5001` |
+
+### Settings Classes
+
+The API supports multiple environment configurations:
+
+```python
+# Development
+class DevelopmentSettings(Settings):
+    debug: bool = True
+    log_level: str = "DEBUG"
+
+# Production  
+class ProductionSettings(Settings):
+    debug: bool = False
+    allowed_origins: list = ["https://yourdomain.com"]
+
+# Testing
+class TestingSettings(Settings):
+    db_name: str = "manvue_test_db"
 ```
 
-### Dependencies
-Install required packages:
+## 🧪 Testing
+
+Run tests with pytest:
+
 ```bash
-pip install -r ../backend/requirements.txt
+cd api
+pytest
 ```
 
-## 📊 API Endpoints
+Test specific modules:
 
-### Core Endpoints
-- `GET /` - Health check
-- `GET /products` - Get all products
-- `POST /products` - Add product
-- `GET /products/{id}` - Get product by ID
-- `PUT /products/{id}` - Update product
-- `DELETE /products/{id}` - Delete product
+```bash
+pytest tests/test_images.py
+pytest tests/test_products.py
+pytest tests/test_auth.py
+```
 
-### AI Search
-- `POST /products/search` - AI text search
-- `POST /products/image-search` - AI image search
-- `GET /ml/health` - ML service status
+## 📊 Monitoring and Logging
 
-### Authentication
-- `POST /register` - User registration
-- `POST /login` - User login
+### Health Check
 
-### Admin
-- `GET /admin/products` - Admin product management
+The API includes comprehensive health monitoring:
 
-## 🌐 Access Points
+```bash
+curl http://localhost:5001/health
+```
 
-- **API**: http://localhost:5000
-- **API Docs**: http://localhost:5000/docs
-- **Alternative Docs**: http://localhost:5000/redoc
-- **Frontend**: http://localhost:8000
-- **ML API**: http://localhost:5001 (if running)
+Response includes:
+- Overall system status
+- Database connectivity
+- ML service availability
+- Service uptime
+- Memory usage
 
-## 🛠️ Troubleshooting
+### Logging
+
+Structured logging with configurable levels:
+
+```python
+# Configure in core/config.py
+LOG_LEVEL=DEBUG  # DEBUG, INFO, WARNING, ERROR
+```
+
+## 🚀 Deployment
+
+### Docker
+
+Create a `Dockerfile`:
+
+```dockerfile
+FROM python:3.9-slim
+
+WORKDIR /app
+
+COPY api/requirements.txt .
+RUN pip install -r requirements.txt
+
+COPY api/ .
+COPY backend/ ./backend/
+
+CMD ["python", "main.py"]
+```
+
+### Production Considerations
+
+1. **Environment Variables**: Use proper secrets management
+2. **CORS**: Configure specific allowed origins
+3. **Database**: Use MongoDB Atlas or clustered setup
+4. **Monitoring**: Add application monitoring (e.g., Sentry)
+5. **Load Balancing**: Use nginx or cloud load balancer
+6. **SSL/TLS**: Terminate SSL at load balancer level
+
+## 🔗 Integration
+
+### Frontend Integration
+
+Update frontend API calls:
+
+```javascript
+// Update base URL
+const API_BASE_URL = "http://localhost:5001";
+
+// Use new endpoints
+fetch(`${API_BASE_URL}/api/products`)
+fetch(`${API_BASE_URL}/api/images/upload`, {
+    method: 'POST',
+    body: formData
+})
+```
+
+### Google Colab Integration
+
+Use the provided Colab integration script:
+
+```python
+from backend.colab_integration import ManVueImageUploader
+
+uploader = ManVueImageUploader("http://localhost:5001")
+result = uploader.upload_image_file("image.jpg", category="shoes")
+```
+
+## 🛠️ Development
+
+### Adding New Endpoints
+
+1. **Create route**: Add to appropriate route module
+2. **Define models**: Create Pydantic models
+3. **Implement service**: Add business logic to service class
+4. **Test**: Write tests for new functionality
+
+### Code Style
+
+Follow these conventions:
+- **PEP 8** for Python code style
+- **Type hints** for all functions
+- **Docstrings** for all classes and functions
+- **Async/await** for I/O operations
+
+### Database Schema
+
+The API works with these MongoDB collections:
+- `products` - Product information
+- `users` - User accounts
+- `fs.files` / `fs.chunks` - GridFS image storage
+
+## 🔍 Troubleshooting
 
 ### Common Issues
 
-1. **Port 5000 already in use**
-   ```bash
-   # Kill process using port 5000
-   netstat -ano | findstr :5000
-   taskkill /PID <PID> /F
-   ```
+1. **Import Errors**: Ensure all dependencies are installed
+2. **Database Connection**: Check MongoDB is running
+3. **CORS Issues**: Configure allowed origins properly
+4. **File Upload**: Check file size limits and types
 
-2. **Dependencies missing**
-   ```bash
-   pip install -r ../backend/requirements.txt
-   ```
+### Debug Mode
 
-3. **ML API not responding**
-   - Check if ML server is running on port 5001
-   - Verify TensorFlow installation
-   - Check ML model files in `../backend/ML/models/`
+Enable debug mode for detailed error information:
 
-4. **CORS errors**
-   - API includes CORS middleware
-   - Check browser console for specific errors
-   - Verify frontend is served from correct port
-
-### Logs and Debugging
-
-- **API Logs**: Check console output when running API
-- **Frontend Logs**: Check browser developer console
-- **ML Logs**: Check ML server console output
-
-## 📝 Usage Examples
-
-### Start Enhanced API
-```bash
-python launch_api.py
-# Select option 1
+```env
+DEBUG=true
+LOG_LEVEL=DEBUG
 ```
 
-### Test All Endpoints
-```bash
-python test_api.py
-```
+## 📚 API Documentation
 
-### Quick API Test
-```bash
-curl http://localhost:5000/
-```
+When the server is running, visit:
+- **Swagger UI**: http://localhost:5001/docs
+- **ReDoc**: http://localhost:5001/redoc
 
-### Add Product via API
-```bash
-curl -X POST http://localhost:5000/products \
-  -H "Content-Type: application/json" \
-  -d '{"title": "Test Product", "price": 19.99, "category": "tops"}'
-```
+These provide interactive API documentation with:
+- Endpoint descriptions
+- Request/response schemas
+- Try-it-out functionality
+- Code examples
 
-## 🔗 Related Files
+## 🎯 Next Steps
 
-- **Frontend**: `../frontend/` - Web interface
-- **Backend Core**: `../backend/` - Core backend files
-- **ML Models**: `../backend/ML/` - Machine learning components
-- **Main Launcher**: `../start_manvue.py` - Complete platform launcher
+1. **Authentication**: Implement JWT tokens properly
+2. **Caching**: Add Redis for performance
+3. **Rate Limiting**: Implement API rate limiting
+4. **Webhooks**: Add webhook support for events
+5. **Analytics**: Add API usage analytics
+6. **Version**: Implement API versioning
 
-## 📞 Support
+---
 
-For issues or questions:
-1. Check the troubleshooting section above
-2. Review `API_COMMANDS.md` for detailed examples
-3. Check the main project README.md
-4. Verify all dependencies are installed correctly
+For more information, see the [MongoDB Integration Guide](../MONGODB_INTEGRATION_GUIDE.md) or check the interactive API documentation when the server is running.

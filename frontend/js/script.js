@@ -17,6 +17,27 @@ function scrollToTop() {
 // Global products array - will be populated from API or fallback data
 let products = [];
 
+// Helper function to get product image URL (MongoDB-compatible)
+function getProductImageUrl(product) {
+    // Check for direct image property (backward compatibility)
+    if (product.image) {
+        return product.image;
+    }
+    
+    // Check for image_urls array from MongoDB
+    if (product.image_urls && product.image_urls.length > 0) {
+        return product.image_urls[0];
+    }
+    
+    // Check for image_ids array and generate GridFS URLs
+    if (product.image_ids && product.image_ids.length > 0) {
+        return `${API_BASE_URL}/api/images/${product.image_ids[0]}`;
+    }
+    
+    // Fallback to placeholder image
+    return "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop";
+}
+
 // Enhanced Men's Fashion Data with Advanced Filtering (Fallback)
 const fallbackProducts = [
     {
@@ -273,15 +294,40 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 // Section Navigation
 function showSection(sectionName) {
-    // Hide all sections
+    console.log('📍 showSection called with:', sectionName);
+    
+    // Handle home section specially
+    if (sectionName === 'home') {
+        // Show the main content and ensure products are visible
+        console.log('🏠 Showing home section - displaying products');
+        displayProducts(products);
+        
+        // Hide admin section if visible
+        const adminSection = document.getElementById('admin');
+        if (adminSection) {
+            adminSection.style.display = 'none';
+        }
+        
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        
+        // Close mobile menu if open
+        closeMobileMenu();
+        return;
+    }
+    
+    // Hide all sections with .section class
     const sections = document.querySelectorAll('.section');
-    sections.forEach(section => section.classList.remove('active'));
+    sections.forEach(section => section.style.display = 'none');
     
     // Show selected section
     const targetSection = document.getElementById(sectionName);
     if (targetSection) {
-        targetSection.classList.add('active');
+        targetSection.style.display = 'block';
         currentSection = sectionName;
+        console.log('✅ Section shown:', sectionName);
+    } else {
+        console.warn('⚠️ Section not found:', sectionName);
     }
     
     // Close mobile menu if open
@@ -364,7 +410,7 @@ function startVoiceSearch() {
 }
 
 // Enhanced ML Search Functions
-const API_BASE_URL = "http://localhost:5000";
+const API_BASE_URL = "http://localhost:5001"; // Updated to use enhanced backend with MongoDB
 
 // AI-powered text search
 async function performMLTextSearch(query, category = 'all') {
@@ -468,6 +514,11 @@ function performLocalSearch(query, category = 'all') {
     });
 }
 
+// Navigate to product page
+function goToProduct(productId) {
+    window.location.href = `product.html?id=${productId}`;
+}
+
 // Admin Functions
 let editingProductId = null;
 
@@ -512,11 +563,11 @@ function displayAdminProducts(productsList) {
         productDiv.className = 'admin-product-card';
         productDiv.innerHTML = `
             <div class="product-image">
-                <img src="${product.image_url}" alt="${product.title}">
+                <img src="${getProductImageUrl(product)}" alt="${product.title}">
             </div>
             <div class="product-info">
                 <h4>${product.title}</h4>
-                <p class="price">$${product.price}</p>
+                <p class="price">£${product.price}</p>
                 <p class="category">${product.category} - ${product.type || 'N/A'}</p>
                 <p class="brand">${product.brand || 'No brand'}</p>
                 <div class="product-actions">
@@ -544,7 +595,7 @@ async function editProduct(productId) {
         document.getElementById('product-price').value = product.price;
         document.getElementById('product-category').value = product.category;
         document.getElementById('product-type').value = product.type || '';
-        document.getElementById('product-image').value = product.image_url;
+        document.getElementById('product-image').value = getProductImageUrl(product);
         document.getElementById('product-description').value = product.description || '';
         document.getElementById('product-brand').value = product.brand || '';
         document.getElementById('product-rating').value = product.rating || 0;
@@ -643,6 +694,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Product Functions
 async function loadProducts() {
+    console.log('🔄 Loading products...');
     try {
         const response = await fetch(`${API_BASE_URL}/products`);
         if (!response.ok) {
@@ -656,14 +708,17 @@ async function loadProducts() {
         // Display the products
         displayProducts(products);
         
-        console.log('Products loaded from API:', products.length);
+        console.log('✅ Products loaded from API:', products.length);
         
     } catch (error) {
-        console.warn('Failed to load products from API, using fallback data:', error);
+        console.warn('⚠️ Failed to load products from API, using fallback data:', error);
         // Use fallback products
         products = fallbackProducts;
+        console.log('📦 Fallback products available:', products.length);
+        
+        // Make sure to display the fallback products
         displayProducts(products);
-        console.log('Using fallback products:', products.length);
+        console.log('✅ Using fallback products displayed:', products.length);
     }
     
     // Initialize other features that depend on products
@@ -825,8 +880,16 @@ function filterProducts(category) {
 }
 
 function displayProducts(productsToShow) {
+    console.log('🎨 displayProducts called with', productsToShow.length, 'products');
     const productGrid = document.getElementById('product-grid');
+    
+    if (!productGrid) {
+        console.error('❌ Product grid element not found! Check HTML structure.');
+        return;
+    }
+    
     productGrid.innerHTML = '';
+    console.log('🧹 Product grid cleared, displaying products...');
     
     // Update results count
     updateResultsCount(productsToShow.length);
@@ -856,10 +919,10 @@ function displayProducts(productsToShow) {
         const stars = generateStars(product.rating);
         
         productCard.innerHTML = `
-            <div class="product-image">
-                <img src="${product.image}" alt="${product.name}" />
+            <div class="product-image" onclick="goToProduct(${product.id})" style="cursor: pointer;">
+                <img src="${getProductImageUrl(product)}" alt="${product.name}" />
             </div>
-            <div class="product-info">
+            <div class="product-info" onclick="goToProduct(${product.id})" style="cursor: pointer;">
                 <div class="product-brand">${product.brand}</div>
                 <h3 class="product-title">${product.name}</h3>
                 <div class="product-rating">
@@ -876,11 +939,11 @@ function displayProducts(productsToShow) {
                     ${product.inStock ? '✓ In Stock' : '✗ Out of Stock'}
                 </div>
                 <div class="product-actions">
-                    <button class="add-to-cart" onclick="addToCart(${product.id})" 
+                    <button class="add-to-cart" onclick="event.stopPropagation(); addToCart(${product.id})" 
                             ${!product.inStock ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''}>
                         ${product.inStock ? 'Add to Cart' : 'Out of Stock'}
                     </button>
-                    <button class="quick-view" onclick="quickView(${product.id})">
+                    <button class="quick-view" onclick="event.stopPropagation(); quickView(${product.id})">
                         Quick View
                     </button>
                 </div>
@@ -927,7 +990,7 @@ function updateLoadMoreButton() {
 function quickView(productId) {
     const product = products.find(p => p.id === productId);
     if (product) {
-        alert(`${product.name}\n\nPrice: $${product.price}\n\n${product.description}\n\nCategory: ${product.category}`);
+        alert(`${product.name}\n\nPrice: £${product.price}\n\n${product.description}\n\nCategory: ${product.category}`);
     }
 }
 
@@ -980,7 +1043,7 @@ function updateCartItems() {
                 <span style="font-size: 2rem; margin-right: 10px;">${item.image}</span>
                 <div style="flex: 1;">
                     <h4>${item.name}</h4>
-                    <p>$${item.price}</p>
+                    <p>£${item.price}</p>
                 </div>
                 <button onclick="removeFromCart(${index})" style="background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">Remove</button>
             </div>
@@ -1004,7 +1067,7 @@ function checkout() {
     }
     
     const total = cart.reduce((sum, item) => sum + item.price, 0);
-    alert(`Checkout successful!\n\nTotal: $${total.toFixed(2)}\n\nThank you for shopping with MANVUE!`);
+    alert(`Checkout successful!\n\nTotal: £${total.toFixed(2)}\n\nThank you for shopping with MANVUE!`);
     
     cart = [];
     updateCartDisplay();
@@ -1086,7 +1149,7 @@ function getBotResponse(message) {
     } else if (lowerMessage.includes('color') || lowerMessage.includes('style')) {
         return "Great question! What colors do you usually prefer? I can suggest items that match your style preferences.";
     } else if (lowerMessage.includes('price') || lowerMessage.includes('cost')) {
-        return "We have items for every budget! Our prices range from $24.99 to $299.99. What's your budget range?";
+        return "We have items for every budget! Our prices range from £24.99 to £299.99. What's your budget range?";
     } else {
         return "That's interesting! I'm here to help with any fashion questions. Feel free to ask about our products, styling tips, or anything else!";
     }
@@ -1350,9 +1413,9 @@ function loadMoreProducts() {
                     <span class="review-count">(${product.reviews})</span>
                 </div>
                 <div class="product-price">
-                    <span class="current-price">$${product.price}</span>
+                    <span class="current-price">£${product.price}</span>
                     ${product.originalPrice > product.price ? 
-                        `<span class="original-price">$${product.originalPrice}</span>
+                        `<span class="original-price">£${product.originalPrice}</span>
                          <span class="discount-badge">${discount}% OFF</span>` : ''}
                 </div>
                 <div class="stock-status ${product.inStock ? 'in-stock' : 'out-of-stock'}">
@@ -1699,13 +1762,7 @@ function logout() {
 }
 
 // New section management
-function showSection(sectionName) {
-    // For now, just scroll to products and apply filters
-    if (sectionName === 'trending' || sectionName === 'new-arrivals') {
-        const productsSection = document.getElementById('products');
-        productsSection.scrollIntoView({ behavior: 'smooth' });
-    }
-}
+// Note: showSection function is defined earlier in the file
 
 // Wishlist functionality
 let wishlist = [];
@@ -2598,7 +2655,7 @@ function showStyleRecommendations() {
             ${recommendedProducts.map(product => `
                 <div class="product-card" onclick="quickView(${product.id})">
                     <div class="product-image">
-                        <img src="${product.image}" alt="${product.name}">
+                        <img src="${getProductImageUrl(product)}" alt="${product.name}">
                     </div>
                     <div class="product-info">
                         <div class="product-brand">${product.brand}</div>
@@ -2701,7 +2758,7 @@ function updateOutfitRecommendations() {
             <div class="suggestion-products">
                 ${suggestion.products.map(product => `
                     <div class="suggestion-product" onclick="quickView(${product.id})">
-                        <img src="${product.image}" alt="${product.name}">
+                        <img src="${getProductImageUrl(product)}" alt="${product.name}">
                         <h6>${product.name}</h6>
                         <p>£${product.price}</p>
                     </div>
@@ -2787,6 +2844,7 @@ function sendChatMessage() {
         addChatMessage(response, 'bot');
     }, 1000);
 }
+
 
 function addChatMessage(message, sender) {
     const chatMessages = document.getElementById('chat-messages');
@@ -3055,7 +3113,7 @@ async function analyzeImage() {
 
 // Enhanced ML-powered image analysis
 async function analyzeImageWithML(imageData) {
-    const ML_API_URL = 'http://localhost:5000';
+    const ML_API_URL = 'http://localhost:5001'; // Updated to use enhanced backend with MongoDB
     
     try {
         // Check if ML API is available
@@ -3257,7 +3315,7 @@ function displayAnalysisResults(results) {
     // Display similar products
     similarProductsGrid.innerHTML = results.similarProducts.map(product => `
         <div class="similar-product-item" onclick="quickView(${product.id})">
-            <img src="${product.image}" alt="${product.name}">
+            <img src="${getProductImageUrl(product)}" alt="${product.name}">
             <h6>${product.name}</h6>
             <p>£${product.price}</p>
             <div style="font-size: 0.8em; color: #27ae60; font-weight: 600;">${product.matchScore}% match</div>
@@ -3358,7 +3416,7 @@ function displayVisualSearchResults(results) {
     // Display search results
     visualSearchResults.innerHTML = results.map(product => `
         <div class="visual-result-item" onclick="quickView(${product.id})">
-            <img src="${product.image}" alt="${product.name}">
+            <img src="${getProductImageUrl(product)}" alt="${product.name}">
             <div class="visual-result-info">
                 <div class="visual-result-match">
                     <span style="font-size: 0.8em; color: #666;">Detected as: ${product.detectedAs}</span>
@@ -4675,7 +4733,7 @@ function showTryOnCategory(category) {
         
         grid.innerHTML = filteredProducts.map(product => `
             <div class="tryon-product-item" onclick="addTo3DOutfit(${product.id}, '${product.type}')">
-                <img src="${product.image}" alt="${product.name}">
+                <img src="${getProductImageUrl(product)}" alt="${product.name}">
                 <div class="tryon-product-info">
                     <div class="tryon-product-name">${product.name}</div>
                     <div class="tryon-product-price">£${product.price}</div>
@@ -6646,7 +6704,7 @@ function showProductMatches(productId) {
                 <div class="base-product">
                     <h4>Base Item</h4>
                     <div class="product-card mini">
-                        <img src="${product.image}" alt="${product.name}">
+                        <img src="${getProductImageUrl(product)}" alt="${product.name}">
                         <h5>${product.name}</h5>
                         <p class="price">£${product.price}</p>
                     </div>

@@ -38,33 +38,49 @@ products_db = [
         "id": 1,
         "title": "Classic White T-Shirt",
         "price": 24.99,
+        "originalPrice": 32.99,
         "image_url": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop",
         "category": "tops",
         "type": "tshirts",
-        "description": "Comfortable cotton t-shirt perfect for everyday wear",
+        "description": "Comfortable cotton t-shirt perfect for everyday wear. Made from 100% organic cotton with a relaxed fit. This classic piece features a crew neckline and short sleeves, making it ideal for layering or wearing on its own.",
         "tags": ["casual", "cotton", "basic", "everyday"],
         "colors": ["White", "Black", "Navy", "Grey"],
         "sizes": ["S", "M", "L", "XL", "XXL"],
         "brand": "MANVUE Basics",
         "rating": 4.5,
         "reviews": 127,
-        "inStock": True
+        "inStock": True,
+        "features": [
+            "100% Organic Cotton",
+            "Machine Washable",
+            "Pre-shrunk Fabric",
+            "Comfortable Fit",
+            "Durable Construction"
+        ]
     },
     {
         "id": 2,
         "title": "Premium Denim Jeans",
         "price": 64.99,
+        "originalPrice": 74.99,
         "image_url": "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&h=400&fit=crop",
         "category": "bottoms",
         "type": "jeans",
-        "description": "Premium denim jeans with a perfect fit",
+        "description": "Premium denim jeans with a perfect fit. Slim cut with stretch comfort and reinforced stitching. Made from high-quality denim that maintains its shape and color wash after wash.",
         "tags": ["denim", "classic", "casual", "slim-fit"],
         "colors": ["Dark Blue", "Black", "Light Blue", "Grey"],
         "sizes": ["30", "32", "34", "36", "38", "40"],
         "brand": "MANVUE Denim",
         "rating": 4.7,
         "reviews": 189,
-        "inStock": True
+        "inStock": True,
+        "features": [
+            "Premium Denim Fabric",
+            "Slim Fit Design",
+            "Stretch Comfort",
+            "Reinforced Stitching",
+            "Color-Fast Dye"
+        ]
     },
     {
         "id": 3,

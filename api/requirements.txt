@@ -1,0 +1,46 @@
+# ManVue Organized API Requirements
+# Organized API structure with MongoDB and ML integration
+
+# Core FastAPI and server
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+
+# MongoDB and async database
+motor>=3.3.0
+pymongo>=4.5.0
+
+# Image processing and storage
+Pillow>=10.0.0
+python-multipart>=0.0.6
+
+# Environment and configuration
+python-dotenv>=1.0.0
+pydantic>=2.4.0
+pydantic[email]>=2.4.0
+
+# HTTP requests and utilities
+requests>=2.31.0
+aiofiles>=23.0.0
+
+# Development and testing
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+httpx>=0.25.0
+
+# ML and AI (optional but recommended)
+torch>=2.0.0
+torchvision>=0.15.0
+transformers>=4.35.0
+numpy>=1.24.0
+scikit-learn>=1.3.0
+opencv-python>=4.8.0
+
+# Authentication and security
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+
+# Production server (optional)
+gunicorn>=21.2.0
+
+# Monitoring and logging
+structlog>=23.1.0

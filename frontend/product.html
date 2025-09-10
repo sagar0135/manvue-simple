@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Product - ManVue</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/product-page.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1><a href="index.html" style="text-decoration: none; color: inherit;">MANVUE</a></h1>
+            </div>
+            <nav class="nav-desktop">
+                <a href="index.html">Home</a>
+                <a href="index.html#products">Products</a>
+                <a href="index.html#admin">Admin</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <div class="container">
+            <a href="index.html">Home</a> > 
+            <a href="index.html#products">Products</a> > 
+            <span id="breadcrumb-product">Product</span>
+        </div>
+    </nav>
+
+    <!-- Product Details Section -->
+    <main class="product-main">
+        <div class="container">
+            <div class="product-details">
+                <!-- Product Images -->
+                <div class="product-images">
+                    <div class="main-image">
+                        <img id="main-product-image" src="" alt="Product Image">
+                        <div class="image-zoom" onclick="toggleImageZoom()">🔍</div>
+                    </div>
+                    <div class="thumbnail-images" id="thumbnail-images">
+                        <!-- Thumbnails will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Product Information -->
+                <div class="product-info">
+                    <h1 id="product-title">Product Title</h1>
+                    <div class="product-rating">
+                        <div class="stars" id="product-stars">
+                            ⭐⭐⭐⭐⭐
+                        </div>
+                        <span id="product-rating-text">4.5 (127 reviews)</span>
+                    </div>
+                    
+                    <div class="product-price">
+                        <span class="current-price" id="current-price">£29.99</span>
+                        <span class="original-price" id="original-price">£39.99</span>
+                        <span class="discount" id="discount">25% OFF</span>
+                    </div>
+
+                    <div class="product-description">
+                        <h3>Description</h3>
+                        <p id="product-description-text">Product description will be loaded here...</p>
+                    </div>
+
+                    <!-- Size Selection -->
+                    <div class="size-selection">
+                        <h3>Size</h3>
+                        <div class="size-options" id="size-options">
+                            <!-- Size options will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Color Selection -->
+                    <div class="color-selection">
+                        <h3>Color</h3>
+                        <div class="color-options" id="color-options">
+                            <!-- Color options will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Quantity Selection -->
+                    <div class="quantity-selection">
+                        <h3>Quantity</h3>
+                        <div class="quantity-controls">
+                            <button onclick="decreaseQuantity()">-</button>
+                            <input type="number" id="quantity" value="1" min="1" max="10">
+                            <button onclick="increaseQuantity()">+</button>
+                        </div>
+                    </div>
+
+                    <!-- Add to Cart -->
+                    <div class="add-to-cart">
+                        <button class="btn btn-primary btn-large" onclick="addToCart()">
+                            🛒 Add to Cart - <span id="total-price">£29.99</span>
+                        </button>
+                        <button class="btn btn-secondary" onclick="addToWishlist()">
+                            ❤️ Add to Wishlist
+                        </button>
+                    </div>
+
+                    <!-- Product Features -->
+                    <div class="product-features">
+                        <h3>Features</h3>
+                        <ul id="product-features">
+                            <!-- Features will be populated by JavaScript -->
+                        </ul>
+                    </div>
+
+                    <!-- Shipping Info -->
+                    <div class="shipping-info">
+                        <div class="shipping-item">
+                            <span class="icon">🚚</span>
+                            <span>Free shipping on orders over £50</span>
+                        </div>
+                        <div class="shipping-item">
+                            <span class="icon">↩️</span>
+                            <span>30-day return policy</span>
+                        </div>
+                        <div class="shipping-item">
+                            <span class="icon">🔒</span>
+                            <span>Secure checkout</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Recommendations Section -->
+            <section class="ai-recommendations">
+                <h2>🤖 AI-Powered Recommendations</h2>
+                <div class="recommendations-container">
+                    <div class="recommendation-category">
+                        <h3>Perfect Matches</h3>
+                        <div class="recommendation-grid" id="perfect-matches">
+                            <!-- AI recommendations will be populated here -->
+                        </div>
+                    </div>
+                    <div class="recommendation-category">
+                        <h3>Style Complements</h3>
+                        <div class="recommendation-grid" id="style-complements">
+                            <!-- Style complements will be populated here -->
+                        </div>
+                    </div>
+                    <div class="recommendation-category">
+                        <h3>Frequently Bought Together</h3>
+                        <div class="recommendation-grid" id="frequently-bought">
+                            <!-- Frequently bought together will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Product Reviews Section -->
+            <section class="product-reviews">
+                <h2>Customer Reviews</h2>
+                <div class="reviews-summary">
+                    <div class="rating-breakdown">
+                        <div class="rating-item">
+                            <span>5⭐</span>
+                            <div class="rating-bar">
+                                <div class="rating-fill" style="width: 80%"></div>
+                            </div>
+                            <span>80%</span>
+                        </div>
+                        <div class="rating-item">
+                            <span>4⭐</span>
+                            <div class="rating-bar">
+                                <div class="rating-fill" style="width: 15%"></div>
+                            </div>
+                            <span>15%</span>
+                        </div>
+                        <div class="rating-item">
+                            <span>3⭐</span>
+                            <div class="rating-bar">
+                                <div class="rating-fill" style="width: 3%"></div>
+                            </div>
+                            <span>3%</span>
+                        </div>
+                        <div class="rating-item">
+                            <span>2⭐</span>
+                            <div class="rating-bar">
+                                <div class="rating-fill" style="width: 1%"></div>
+                            </div>
+                            <span>1%</span>
+                        </div>
+                        <div class="rating-item">
+                            <span>1⭐</span>
+                            <div class="rating-bar">
+                                <div class="rating-fill" style="width: 1%"></div>
+                            </div>
+                            <span>1%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="reviews-list" id="reviews-list">
+                    <!-- Reviews will be populated by JavaScript -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Image Zoom Modal -->
+    <div id="image-zoom-modal" class="modal" onclick="closeImageZoom()">
+        <div class="modal-content">
+            <span class="close" onclick="closeImageZoom()">&times;</span>
+            <img id="zoomed-image" src="" alt="Zoomed Product Image">
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <a href="#">About us</a>
+                    <a href="#">Careers</a>
+                    <a href="#">Press</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Customer Service</h4>
+                    <a href="#">Contact Us</a>
+                    <a href="#">FAQ</a>
+                    <a href="#">Returns</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <a href="#">Instagram</a>
+                    <a href="#">Twitter</a>
+                    <a href="#">Facebook</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/product-page.js"></script>
+</body>
+</html>
