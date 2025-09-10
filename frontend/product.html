@@ -230,15 +230,26 @@
     <div id="auth-required-overlay" class="auth-overlay" style="display: none;">
         <div class="auth-overlay-content">
             <div class="auth-overlay-card">
-                <h2>🔒 Sign In Required</h2>
-                <p>Please sign in to view product details and add items to your cart.</p>
+                <div class="auth-icon">🔐</div>
+                <h2>Account Required</h2>
+                <p><strong>Please create an account or sign in to:</strong></p>
+                <ul class="auth-benefits">
+                    <li>✅ View product details and specifications</li>
+                    <li>✅ Add items to your cart and wishlist</li>
+                    <li>✅ Get personalized recommendations</li>
+                    <li>✅ Track your orders and delivery</li>
+                    <li>✅ Access exclusive member deals</li>
+                </ul>
                 <div class="auth-overlay-buttons">
-                    <button onclick="showLogin()" class="btn btn-primary">Sign In</button>
-                    <button onclick="showRegister()" class="btn btn-outline">Create Account</button>
+                    <button onclick="showRegister()" class="btn btn-primary">Create Free Account</button>
+                    <button onclick="showLogin()" class="btn btn-outline">Sign In</button>
                 </div>
                 <p class="auth-overlay-note">
-                    Join ManVue for personalized recommendations, exclusive deals, and secure checkout.
+                    📧 <strong>Email and phone number required</strong> for account security and order updates.
                 </p>
+                <div class="auth-security-note">
+                    <small>🛡️ Your information is secure and protected. We never share your data.</small>
+                </div>
             </div>
         </div>
     </div>
@@ -404,5 +415,12 @@
     </footer>
 
     <script src="js/product-page.js"></script>
+    
+    <!-- Voice Commands Integration -->
+    <link rel="stylesheet" href="../voice_commands/frontend/voice_commands.css">
+    <script src="../voice_commands/frontend/voice_ui.js"></script>
+    <script src="../voice_commands/frontend/voice_interface.js"></script>
+    <script src="../voice_commands/integration/simple_voice_fix.js"></script>
+    <script src="../voice_commands/integration/voice_button.js"></script>
 </body>
 </html>

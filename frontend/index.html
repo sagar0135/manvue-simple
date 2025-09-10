@@ -25,87 +25,50 @@
                 <h1><a href="#" onclick="goHome()" style="text-decoration: none; color: inherit; cursor: pointer;">MANVUE</a></h1>
             </div>
 
-            <!-- Desktop Navigation -->
-            <nav class="nav-desktop">
-                <div class="nav-item dropdown">
-                    <a href="#" onclick="showSection('trending')">Trending 2025</a>
-                </div>
-                <div class="nav-item dropdown">
-                    <a href="#" onclick="showSection('new-arrivals')">New Arrivals</a>
-                    <div class="dropdown-menu">
-                        <a href="#" onclick="filterByType('tops')">Shirts</a>
-                        <a href="#" onclick="filterByType('tops')">T-Shirts</a>
-                        <a href="#" onclick="filterByType('bottoms')">Bottoms</a>
-                    </div>
-                </div>
-                <div class="nav-item dropdown">
-                    <a href="#" onclick="filterByType('tops')">T-Shirts</a>
-                    <div class="dropdown-menu">
-                        <a href="#" onclick="searchProducts('polo')">Textured Polos</a>
-                        <a href="#" onclick="searchProducts('plain')">Plain T-Shirts</a>
-                        <a href="#" onclick="searchProducts('printed')">Printed T-Shirts</a>
-                    </div>
-                </div>
-                <div class="nav-item dropdown">
-                    <a href="#" onclick="filterByType('tops')">Shirts</a>
-                    <div class="dropdown-menu">
-                        <a href="#" onclick="searchProducts('plain')">Plain Shirts</a>
-                        <a href="#" onclick="searchProducts('checked')">Checked Shirts</a>
-                        <a href="#" onclick="searchProducts('printed')">Printed Shirts</a>
-                        <a href="#" onclick="searchProducts('striped')">Striped Shirts</a>
-                    </div>
-                </div>
-                <div class="nav-item dropdown">
-                    <a href="#" onclick="filterByType('bottoms')">Bottoms</a>
-                    <div class="dropdown-menu">
-                        <a href="#" onclick="searchProducts('track')">Track Pants</a>
-                        <a href="#" onclick="filterByType('bottoms')">Shorts</a>
-                        <a href="#" onclick="searchProducts('jeans')">Jeans & Cargo</a>
-                    </div>
-                </div>
-                <div class="nav-item">
-                    <a href="#" onclick="filterByType('outerwear')">Jackets</a>
-                </div>
-            </nav>
+            <!-- Long Search Bar -->
+            <div class="main-search-bar">
+                <input type="text" id="main-search-input" placeholder="Search products, brands, styles...">
+                <button onclick="searchProducts()">Search</button>
+                <button class="voice-btn" onclick="startVoiceSearch()">🎤</button>
+            </div>
 
             <!-- Header Actions -->
             <div class="header-actions">
-                <div class="search-icon" onclick="toggleSearch()">🔍</div>
                 <div class="wishlist-icon" onclick="toggleWishlist()">♡</div>
                 <div class="cart-icon" onclick="toggleCart()">
                     🛒 <span id="cart-count">0</span>
                 </div>
             </div>
         </div>
-
-        <!-- Search Bar -->
-        <div class="search-bar">
-            <div class="container">
-                <input type="text" id="search-input" placeholder="Search products, brands, styles...">
-                <button onclick="searchProducts()">Search</button>
-                <button class="voice-btn" onclick="startVoiceSearch()">🎤</button>
-                <button class="close-search" onclick="toggleSearch()">✕</button>
-            </div>
-        </div>
     </header>
 
-    <!-- Mobile Menu Toggle -->
-    <div class="mobile-menu-toggle" onclick="toggleMobileMenu()">
-        <span></span>
-        <span></span>
-        <span></span>
+    <!-- Sale Timer -->
+    <div class="sale-timer-banner">
+        <div class="container">
+            <div class="timer-content">
+                <span class="timer-icon">🔥</span>
+                <span class="timer-text">Flash Sale Ends In:</span>
+                <div class="countdown-timer" id="countdown-timer">
+                    <div class="time-unit">
+                        <span id="hours">23</span>
+                        <span class="time-label">HRS</span>
+                    </div>
+                    <div class="time-separator">:</div>
+                    <div class="time-unit">
+                        <span id="minutes">59</span>
+                        <span class="time-label">MIN</span>
+                    </div>
+                    <div class="time-separator">:</div>
+                    <div class="time-unit">
+                        <span id="seconds">59</span>
+                        <span class="time-label">SEC</span>
+                    </div>
+                </div>
+                <span class="timer-cta">Shop Now & Save!</span>
+            </div>
+        </div>
     </div>
 
-    <!-- Mobile Navigation -->
-    <nav class="nav-mobile">
-        <a href="#" onclick="showSection('trending')">Trending 2025</a>
-        <a href="#" onclick="showSection('new-arrivals')">New Arrivals</a>
-        <a href="#" onclick="filterByType('tops')">T-Shirts</a>
-        <a href="#" onclick="filterByType('tops')">Shirts</a>
-        <a href="#" onclick="filterByType('bottoms')">Bottoms</a>
-        <a href="#" onclick="filterByType('outerwear')">Jackets</a>
-        <a href="#" onclick="showSection('admin')">🛠️ Admin</a>
-    </nav>
 
     <!-- Main Content -->
     <main>
@@ -126,23 +89,23 @@
             <div class="container">
                 <h2>Category Collections</h2>
                 <div class="category-grid">
-                    <div class="category-card" onclick="filterByType('tops')">
+                    <div class="category-card" onclick="window.location.href='categories/tshirts/index.html'">
                         <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=300&h=200&fit=crop" alt="T-Shirts">
                         <h3>T-Shirts</h3>
                     </div>
-                    <div class="category-card" onclick="filterByType('tops')">
+                    <div class="category-card" onclick="window.location.href='categories/shirts/index.html'">
                         <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop" alt="Shirts">
                         <h3>Shirts</h3>
                     </div>
-                    <div class="category-card" onclick="filterByType('bottoms')">
+                    <div class="category-card" onclick="window.location.href='categories/bottoms/index.html'">
                         <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?w=300&h=200&fit=crop" alt="Bottoms">
                         <h3>Bottoms</h3>
                     </div>
-                    <div class="category-card" onclick="searchProducts('jeans')">
+                    <div class="category-card" onclick="window.location.href='categories/bottoms/index.html'">
                         <img src="https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=300&h=200&fit=crop" alt="Jeans & Cargo">
                         <h3>Jeans & Cargo</h3>
                     </div>
-                    <div class="category-card" onclick="filterByType('outerwear')">
+                    <div class="category-card" onclick="window.location.href='categories/jackets/index.html'">
                         <img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=300&h=200&fit=crop" alt="Jackets">
                         <h3>Jackets</h3>
                     </div>
@@ -905,16 +868,13 @@
             </div>
         </div>
         
-        <div class="voice-controls">
-            <button class="voice-btn primary" id="voice-toggle" onclick="toggleVoiceRecognition()">
-                <span id="voice-btn-text">🎤 Start Voice</span>
-            </button>
-            <button class="voice-btn secondary" onclick="showVoiceCommands()">
-                📋 Commands
-            </button>
-            <button class="voice-btn secondary" onclick="toggleVoiceSettings()">
-                ⚙️ Settings
-            </button>
+        <!-- Voice Recognition Display -->
+        <div class="voice-recognition-display" id="voice-recognition-display" style="display: none;">
+            <div class="voice-status">
+                <span class="voice-icon">🎤</span>
+                <span class="voice-text" id="voice-recognized-text">Listening...</span>
+                <span class="voice-confidence" id="voice-confidence"></span>
+            </div>
         </div>
     </div>
 
@@ -1448,5 +1408,93 @@
     <script src="data/products.js"></script>
     <script src="js/script.js"></script>
     <script src="../backend/ML/utils/ml_integration.js"></script>
+    
+    <!-- Voice Commands Integration -->
+    <link rel="stylesheet" href="../voice_commands/frontend/voice_commands.css">
+    <script src="../voice_commands/frontend/voice_ui.js"></script>
+    <script src="../voice_commands/frontend/voice_interface.js"></script>
+    <script src="../voice_commands/integration/simple_voice_fix.js"></script>
+    <script src="../voice_commands/integration/voice_button.js"></script>
+    
+    <script>
+        // Voice search function for the voice button in search bar
+        function startVoiceSearch() {
+            console.log('🎤 Voice search button clicked');
+            
+            // Show listening status on page
+            showVoiceListeningStatus();
+            
+            if (window.manvueVoiceIntegration) {
+                console.log('✅ Voice integration available');
+                if (window.manvueVoiceIntegration.startListening()) {
+                    console.log('✅ Voice recognition started');
+                } else {
+                    console.log('❌ Failed to start voice recognition');
+                }
+            } else if (window.manvueVoice) {
+                console.log('✅ Direct voice interface available');
+                if (window.manvueVoice.startListening()) {
+                    console.log('✅ Voice recognition started');
+                } else {
+                    console.log('❌ Failed to start voice recognition');
+                }
+            } else {
+                console.log('❌ No voice system available');
+            }
+        }
+        
+        // Show voice listening status on page
+        function showVoiceListeningStatus() {
+            const display = document.getElementById('voice-recognition-display');
+            const textElement = document.getElementById('voice-recognized-text');
+            const confidenceElement = document.getElementById('voice-confidence');
+            
+            if (display && textElement && confidenceElement) {
+                display.style.display = 'block';
+                textElement.textContent = 'Listening...';
+                confidenceElement.textContent = '';
+            }
+        }
+        
+        // Start the 24-hour countdown timer
+        function startCountdown() {
+            // Check if there's an existing sale end time
+            let targetTime = localStorage.getItem('saleEndTime');
+            if (!targetTime || parseInt(targetTime) <= new Date().getTime()) {
+                // Set target time to 24 hours from now
+                targetTime = new Date().getTime() + (24 * 60 * 60 * 1000);
+                localStorage.setItem('saleEndTime', targetTime);
+            } else {
+                targetTime = parseInt(targetTime);
+            }
+            
+            function updateTimer() {
+                const now = new Date().getTime();
+                const distance = targetTime - now;
+                
+                if (distance < 0) {
+                    // Timer expired, reset to 24 hours
+                    const newTarget = new Date().getTime() + (24 * 60 * 60 * 1000);
+                    localStorage.setItem('saleEndTime', newTarget);
+                    targetTime = newTarget;
+                    return;
+                }
+                
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+                document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+                document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            }
+            
+            updateTimer();
+            setInterval(updateTimer, 1000);
+        }
+        
+        // Start timer when page loads
+        document.addEventListener('DOMContentLoaded', startCountdown);
+    </script>
 </body>
 </html>

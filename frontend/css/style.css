@@ -43,6 +43,64 @@
     --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
 }
 
+/* Voice Recognition Display */
+.voice-recognition-display {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 15px 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    z-index: 10000;
+    max-width: 300px;
+    animation: slideIn 0.3s ease;
+}
+
+.voice-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.voice-icon {
+    font-size: 20px;
+    animation: pulse 1.5s infinite;
+}
+
+.voice-text {
+    font-weight: 500;
+    color: #333;
+    flex: 1;
+}
+
+.voice-confidence {
+    font-size: 12px;
+    color: #666;
+    background: #f0f0f0;
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
 /* Base Styles */
 body {
     font-family: var(--font-family);
@@ -4594,4 +4652,245 @@ h3 { font-size: var(--font-size-xl); }
         width: 100%;
         justify-content: space-between;
     }
+}
+
+/* Main Search Bar Styles */
+.main-search-bar {
+    flex: 1;
+    max-width: 600px;
+    margin: 0 2rem;
+    position: relative;
+}
+
+.main-search-bar input {
+    width: 100%;
+    padding: 12px 20px;
+    border: 2px solid var(--border-color);
+    border-radius: 25px;
+    font-size: var(--font-size-base);
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.main-search-bar input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+.main-search-bar button {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-right: 5px;
+    transition: background 0.3s ease;
+}
+
+.main-search-bar button:hover {
+    background: #333;
+}
+
+.main-search-bar .voice-btn {
+    right: 80px;
+    background: var(--accent-color);
+    width: 35px;
+    padding: 8px;
+    font-size: 14px;
+}
+
+.main-search-bar .voice-btn:hover {
+    background: #e55555;
+}
+
+/* Sale Timer Banner Styles */
+.sale-timer-banner {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    color: white;
+    padding: 12px 0;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    animation: pulse-glow 2s infinite;
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    50% {
+        box-shadow: 0 2px 20px rgba(255, 107, 107, 0.3);
+    }
+}
+
+.timer-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.timer-icon {
+    font-size: 1.2rem;
+    animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-5px);
+    }
+    60% {
+        transform: translateY(-3px);
+    }
+}
+
+.timer-text {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.countdown-timer {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 8px 16px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+}
+
+.time-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 45px;
+}
+
+.time-unit span:first-child {
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.time-label {
+    font-size: 0.7rem;
+    opacity: 0.9;
+    margin-top: 2px;
+}
+
+.time-separator {
+    font-size: 1.2rem;
+    font-weight: 700;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 50% {
+        opacity: 1;
+    }
+    51%, 100% {
+        opacity: 0.3;
+    }
+}
+
+.timer-cta {
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 6px 12px;
+    border-radius: 15px;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+}
+
+/* Responsive adjustments for search bar and timer */
+@media (max-width: 768px) {
+    .main-search-bar {
+        margin: 1rem 0;
+        max-width: none;
+        order: 3;
+        width: 100%;
+    }
+    
+    .header .container {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .timer-content {
+        gap: 0.5rem;
+        font-size: 0.9rem;
+    }
+    
+    .countdown-timer {
+        gap: 0.3rem;
+        padding: 6px 12px;
+    }
+    
+    .time-unit span:first-child {
+        font-size: 1.2rem;
+    }
+    
+    .timer-cta {
+        font-size: 0.8rem;
+        padding: 4px 8px;
+    }
+}
+
+/* Coming Soon Message Styles */
+.coming-soon-message {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: var(--light-gray);
+    border-radius: 12px;
+    margin: 2rem 0;
+}
+
+.coming-soon-message h3 {
+    font-size: 2rem;
+    color: var(--text-color);
+    margin-bottom: 1rem;
+}
+
+.coming-soon-message p {
+    font-size: 1.1rem;
+    color: var(--dark-gray);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.coming-soon-message .btn-primary {
+    padding: 12px 24px;
+    font-size: 1rem;
+}
+
+/* Category Header Styles */
+.category-header {
+    background: linear-gradient(135deg, var(--light-gray), var(--medium-gray));
+    padding: 3rem 0;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.category-header h1 {
+    font-size: 2.5rem;
+    color: var(--text-color);
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.category-header p {
+    font-size: 1.2rem;
+    color: var(--dark-gray);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
 }

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T-Shirts - MANVUE</title>
+    <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+    <!-- Header with Search Bar Only -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1><a href="../../index.html" style="text-decoration: none; color: inherit;">MANVUE</a></h1>
+            </div>
+            
+            <!-- Long Search Bar -->
+            <div class="main-search-bar">
+                <input type="text" id="main-search-input" placeholder="Search products, brands, styles...">
+                <button onclick="searchProducts()">Search</button>
+                <button class="voice-btn" onclick="startVoiceSearch()">🎤</button>
+            </div>
+
+            <!-- Header Actions -->
+            <div class="header-actions">
+                <div class="wishlist-icon" onclick="toggleWishlist()">♡</div>
+                <div class="cart-icon" onclick="toggleCart()">
+                    🛒 <span id="cart-count" class="cart-count">0</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sale Timer -->
+    <div class="sale-timer-banner">
+        <div class="container">
+            <div class="timer-content">
+                <span class="timer-icon">🔥</span>
+                <span class="timer-text">Flash Sale Ends In:</span>
+                <div class="countdown-timer" id="countdown-timer">
+                    <div class="time-unit">
+                        <span id="hours">23</span>
+                        <span class="time-label">HRS</span>
+                    </div>
+                    <div class="time-separator">:</div>
+                    <div class="time-unit">
+                        <span id="minutes">59</span>
+                        <span class="time-label">MIN</span>
+                    </div>
+                    <div class="time-separator">:</div>
+                    <div class="time-unit">
+                        <span id="seconds">59</span>
+                        <span class="time-label">SEC</span>
+                    </div>
+                </div>
+                <span class="timer-cta">Shop Now & Save!</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <div class="container">
+            <a href="../../index.html">Home</a> > 
+            <span>T-Shirts</span>
+        </div>
+    </nav>
+
+    <!-- Category Header -->
+    <section class="category-header">
+        <div class="container">
+            <h1>T-Shirts</h1>
+            <p>Discover our collection of premium men's t-shirts for every occasion</p>
+        </div>
+    </section>
+
+    <!-- Products Grid -->
+    <section class="products-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our T-Shirts Collection</h2>
+                <div class="view-controls">
+                    <button class="view-btn active" onclick="changeView('grid')">Grid</button>
+                    <button class="view-btn" onclick="changeView('list')">List</button>
+                    <select id="sort-select" onchange="sortProducts()">
+                        <option value="name">Sort by Name</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="rating">Highest Rated</option>
+                        <option value="newest">Newest First</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Product Grid -->
+            <div id="product-grid" class="product-grid">
+                <!-- Classic Cotton Crew Neck -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=500&fit=crop" alt="Classic Cotton Crew Neck">
+                        <div class="product-overlay">
+                            <button class="quick-view-btn" onclick="window.location.href='classic-cotton-crew-neck.html'">Quick View</button>
+                        </div>
+                        <div class="discount-badge">17% OFF</div>
+                    </div>
+                    <div class="product-info">
+                        <h3><a href="classic-cotton-crew-neck.html">Classic Cotton Crew Neck</a></h3>
+                        <p class="brand">MANVUE Basics</p>
+                        <div class="rating">
+                            <span class="stars">⭐⭐⭐⭐⭐</span>
+                            <span class="rating-text">4.5 (342)</span>
+                        </div>
+                        <div class="price">
+                            <span class="current-price">£24.99</span>
+                            <span class="original-price">£29.99</span>
+                        </div>
+                        <button class="add-to-cart-btn" onclick="addToCart('tshirt-001')">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Premium V-Neck Tee -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1583743814966-8936f37f4019?w=400&h=500&fit=crop" alt="Premium V-Neck Tee">
+                        <div class="product-overlay">
+                            <button class="quick-view-btn" onclick="window.location.href='premium-v-neck-tee.html'">Quick View</button>
+                        </div>
+                        <div class="discount-badge">18% OFF</div>
+                    </div>
+                    <div class="product-info">
+                        <h3><a href="premium-v-neck-tee.html">Premium V-Neck Tee</a></h3>
+                        <p class="brand">MANVUE Basics</p>
+                        <div class="rating">
+                            <span class="stars">⭐⭐⭐⭐⭐</span>
+                            <span class="rating-text">4.7 (198)</span>
+                        </div>
+                        <div class="price">
+                            <span class="current-price">£32.99</span>
+                            <span class="original-price">£39.99</span>
+                        </div>
+                        <button class="add-to-cart-btn" onclick="addToCart('tshirt-002')">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Graphic Print Vintage Tee -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=500&fit=crop" alt="Graphic Print Vintage Tee">
+                        <div class="product-overlay">
+                            <button class="quick-view-btn" onclick="window.location.href='graphic-print-vintage-tee.html'">Quick View</button>
+                        </div>
+                        <div class="discount-badge">17% OFF</div>
+                    </div>
+                    <div class="product-info">
+                        <h3><a href="graphic-print-vintage-tee.html">Graphic Print Vintage Tee</a></h3>
+                        <p class="brand">MANVUE Basics</p>
+                        <div class="rating">
+                            <span class="stars">⭐⭐⭐⭐☆</span>
+                            <span class="rating-text">4.3 (156)</span>
+                        </div>
+                        <div class="price">
+                            <span class="current-price">£28.99</span>
+                            <span class="original-price">£34.99</span>
+                        </div>
+                        <button class="add-to-cart-btn" onclick="addToCart('tshirt-003')">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Athletic Performance Tee -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&h=500&fit=crop" alt="Athletic Performance Tee">
+                        <div class="product-overlay">
+                            <button class="quick-view-btn" onclick="window.location.href='athletic-performance-tee.html'">Quick View</button>
+                        </div>
+                        <div class="discount-badge">16% OFF</div>
+                    </div>
+                    <div class="product-info">
+                        <h3><a href="athletic-performance-tee.html">Athletic Performance Tee</a></h3>
+                        <p class="brand">SportMax</p>
+                        <div class="rating">
+                            <span class="stars">⭐⭐⭐⭐⭐</span>
+                            <span class="rating-text">4.6 (287)</span>
+                        </div>
+                        <div class="price">
+                            <span class="current-price">£35.99</span>
+                            <span class="original-price">£42.99</span>
+                        </div>
+                        <button class="add-to-cart-btn" onclick="addToCart('tshirt-004')">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="../../js/script.js"></script>
+    <script>
+        // Start the 24-hour countdown timer
+        function startCountdown() {
+            // Check if there's an existing sale end time
+            let targetTime = localStorage.getItem('saleEndTime');
+            if (!targetTime || parseInt(targetTime) <= new Date().getTime()) {
+                // Set target time to 24 hours from now
+                targetTime = new Date().getTime() + (24 * 60 * 60 * 1000);
+                localStorage.setItem('saleEndTime', targetTime);
+            } else {
+                targetTime = parseInt(targetTime);
+            }
+            
+            function updateTimer() {
+                const now = new Date().getTime();
+                const distance = targetTime - now;
+                
+                if (distance < 0) {
+                    // Timer expired, reset to 24 hours
+                    const newTarget = new Date().getTime() + (24 * 60 * 60 * 1000);
+                    localStorage.setItem('saleEndTime', newTarget);
+                    targetTime = newTarget;
+                    return;
+                }
+                
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+                document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+                document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            }
+            
+            updateTimer();
+            setInterval(updateTimer, 1000);
+        }
+        
+        // Start timer when page loads
+        document.addEventListener('DOMContentLoaded', startCountdown);
+    </script>
+</body>
+</html>

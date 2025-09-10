@@ -74,6 +74,44 @@ function showAuthRequiredOverlay() {
         overlay.style.display = 'flex';
         productMain.style.filter = 'blur(5px)';
         productMain.style.pointerEvents = 'none';
+        
+        // Add authentication required styling to all interactive elements
+        addAuthRequiredStyling();
+    }
+}
+
+function addAuthRequiredStyling() {
+    // Disable all interactive elements visually
+    const interactiveElements = [
+        '.size-option',
+        '.color-option', 
+        '.quantity-controls button',
+        '.add-to-cart button',
+        '.btn',
+        '.thumbnail'
+    ];
+    
+    interactiveElements.forEach(selector => {
+        const elements = document.querySelectorAll(selector);
+        elements.forEach(element => {
+            element.style.opacity = '0.5';
+            element.style.cursor = 'not-allowed';
+            element.style.pointerEvents = 'none';
+        });
+    });
+    
+    // Add overlay message to product info
+    const productInfo = document.querySelector('.product-info');
+    if (productInfo && !document.querySelector('.auth-warning')) {
+        const authWarning = document.createElement('div');
+        authWarning.className = 'auth-warning';
+        authWarning.innerHTML = `
+            <div style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 1rem; margin: 1rem 0; text-align: center;">
+                <strong>🔒 Account Required</strong><br>
+                <small>Please sign in to interact with this product</small>
+            </div>
+        `;
+        productInfo.insertBefore(authWarning, productInfo.firstChild);
     }
 }
 
@@ -85,6 +123,36 @@ function hideAuthRequiredOverlay() {
         overlay.style.display = 'none';
         productMain.style.filter = 'none';
         productMain.style.pointerEvents = 'auto';
+        
+        // Remove authentication required styling
+        removeAuthRequiredStyling();
+    }
+}
+
+function removeAuthRequiredStyling() {
+    // Re-enable all interactive elements
+    const interactiveElements = [
+        '.size-option',
+        '.color-option', 
+        '.quantity-controls button',
+        '.add-to-cart button',
+        '.btn',
+        '.thumbnail'
+    ];
+    
+    interactiveElements.forEach(selector => {
+        const elements = document.querySelectorAll(selector);
+        elements.forEach(element => {
+            element.style.opacity = '';
+            element.style.cursor = '';
+            element.style.pointerEvents = '';
+        });
+    });
+    
+    // Remove auth warning message
+    const authWarning = document.querySelector('.auth-warning');
+    if (authWarning) {
+        authWarning.remove();
     }
 }
 
@@ -508,7 +576,12 @@ function createSizeOptions(sizes) {
 
 // Select size
 function selectSize(size, element) {
-    if (element.classList.contains('unavailable')) return;
+    if (!requireAuthentication('select product options')) return;
+    
+    if (element.classList.contains('unavailable')) {
+        showMessage('This size is currently unavailable.', 'warning');
+        return;
+    }
     
     // Update selected size
     document.querySelectorAll('.size-option').forEach(option => {
@@ -518,6 +591,12 @@ function selectSize(size, element) {
     
     selectedSize = size;
     updateTotalPrice();
+    
+    // Log size selection
+    logUserEvent('size_selected', {
+        product_id: currentProduct?.id,
+        size: size
+    });
 }
 
 // Create color options
@@ -549,6 +628,8 @@ function createColorOptions(colors) {
 
 // Select color
 function selectColor(color, element) {
+    if (!requireAuthentication('select product options')) return;
+    
     // Update selected color
     document.querySelectorAll('.color-option').forEach(option => {
         option.classList.remove('selected');
@@ -557,6 +638,12 @@ function selectColor(color, element) {
     
     selectedColor = color;
     updateTotalPrice();
+    
+    // Log color selection
+    logUserEvent('color_selected', {
+        product_id: currentProduct?.id,
+        color: color
+    });
 }
 
 // Create features list
@@ -718,22 +805,42 @@ function displayRecommendationCategory(containerId, products, title) {
 
 // Quantity controls
 function increaseQuantity() {
+    if (!requireAuthentication('adjust quantity')) return;
+    
     const quantityInput = document.getElementById('quantity');
     const currentValue = parseInt(quantityInput.value);
     if (currentValue < 10) {
         quantityInput.value = currentValue + 1;
         quantity = currentValue + 1;
         updateTotalPrice();
+        
+        // Log quantity change
+        logUserEvent('quantity_increased', {
+            product_id: currentProduct?.id,
+            new_quantity: quantity
+        });
+    } else {
+        showMessage('Maximum quantity is 10 items.', 'warning');
     }
 }
 
 function decreaseQuantity() {
+    if (!requireAuthentication('adjust quantity')) return;
+    
     const quantityInput = document.getElementById('quantity');
     const currentValue = parseInt(quantityInput.value);
     if (currentValue > 1) {
         quantityInput.value = currentValue - 1;
         quantity = currentValue - 1;
         updateTotalPrice();
+        
+        // Log quantity change
+        logUserEvent('quantity_decreased', {
+            product_id: currentProduct?.id,
+            new_quantity: quantity
+        });
+    } else {
+        showMessage('Minimum quantity is 1 item.', 'warning');
     }
 }
 
@@ -851,12 +958,20 @@ function addToWishlist() {
 
 // Image zoom functionality
 function toggleImageZoom() {
+    if (!requireAuthentication('view product images')) return;
+    
     const modal = document.getElementById('image-zoom-modal');
     const zoomedImage = document.getElementById('zoomed-image');
     const mainImage = document.getElementById('main-product-image');
     
     zoomedImage.src = mainImage.src;
     modal.style.display = 'block';
+    
+    // Log image zoom
+    logUserEvent('image_zoomed', {
+        product_id: currentProduct?.id,
+        image_url: mainImage.src
+    });
 }
 
 function closeImageZoom() {
@@ -866,6 +981,14 @@ function closeImageZoom() {
 
 // Navigate to product
 function goToProduct(productId) {
+    if (!requireAuthentication('view other products')) return;
+    
+    // Log product navigation
+    logUserEvent('product_navigation', {
+        from_product_id: currentProduct?.id,
+        to_product_id: productId
+    });
+    
     window.location.href = `product.html?id=${productId}`;
 }
 
@@ -902,42 +1025,95 @@ function showError(message) {
 }
 
 function showMessage(message, type = 'info') {
+    // Remove any existing messages
+    const existingMessages = document.querySelectorAll('.toast-message');
+    existingMessages.forEach(msg => msg.remove());
+    
     const messageDiv = document.createElement('div');
-    messageDiv.className = `message message-${type}`;
-    messageDiv.textContent = message;
+    messageDiv.className = `toast-message toast-${type}`;
+    messageDiv.innerHTML = `
+        <div class="toast-content">
+            <span class="toast-icon">${getToastIcon(type)}</span>
+            <span class="toast-text">${message}</span>
+            <button class="toast-close" onclick="this.parentElement.parentElement.remove()">×</button>
+        </div>
+    `;
+    
     messageDiv.style.cssText = `
         position: fixed;
         top: 20px;
         right: 20px;
-        padding: 1rem 2rem;
-        border-radius: 4px;
-        color: white;
-        font-weight: 500;
-        z-index: 1001;
-        animation: slideIn 0.3s ease;
+        min-width: 300px;
+        max-width: 500px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        z-index: 2001;
+        animation: slideInRight 0.3s ease;
+        border-left: 4px solid ${getToastColor(type)};
     `;
     
-    // Set background color based on type
-    switch (type) {
-        case 'success':
-            messageDiv.style.background = '#28a745';
-            break;
-        case 'error':
-            messageDiv.style.background = '#dc3545';
-            break;
-        case 'info':
-            messageDiv.style.background = '#17a2b8';
-            break;
-        default:
-            messageDiv.style.background = '#6c757d';
-    }
+    const toastContent = messageDiv.querySelector('.toast-content');
+    toastContent.style.cssText = `
+        display: flex;
+        align-items: center;
+        padding: 1rem;
+        gap: 0.5rem;
+    `;
+    
+    const toastIcon = messageDiv.querySelector('.toast-icon');
+    toastIcon.style.cssText = `
+        font-size: 1.2rem;
+        color: ${getToastColor(type)};
+    `;
+    
+    const toastText = messageDiv.querySelector('.toast-text');
+    toastText.style.cssText = `
+        flex: 1;
+        color: #333;
+        font-weight: 500;
+    `;
+    
+    const toastClose = messageDiv.querySelector('.toast-close');
+    toastClose.style.cssText = `
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        color: #999;
+        cursor: pointer;
+        padding: 0;
+        margin-left: auto;
+    `;
     
     document.body.appendChild(messageDiv);
     
-    // Remove after 3 seconds
+    // Auto-remove after duration based on type
+    const duration = type === 'error' ? 5000 : 3000;
     setTimeout(() => {
-        messageDiv.remove();
-    }, 3000);
+        if (messageDiv.parentElement) {
+            messageDiv.remove();
+        }
+    }, duration);
+}
+
+function getToastIcon(type) {
+    switch (type) {
+        case 'success': return '✅';
+        case 'error': return '❌';
+        case 'warning': return '⚠️';
+        case 'info': return 'ℹ️';
+        default: return 'ℹ️';
+    }
+}
+
+function getToastColor(type) {
+    switch (type) {
+        case 'success': return '#28a745';
+        case 'error': return '#dc3545';
+        case 'warning': return '#ffc107';
+        case 'info': return '#17a2b8';
+        default: return '#6c757d';
+    }
 }
 
 function showRecommendationsLoading() {
