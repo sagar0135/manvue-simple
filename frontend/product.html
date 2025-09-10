@@ -19,6 +19,28 @@
                 <a href="index.html#products">Products</a>
                 <a href="index.html#admin">Admin</a>
             </nav>
+            <!-- Header Actions -->
+            <div class="header-actions">
+                <div class="search-icon" onclick="goToSearchPage()">🔍</div>
+                <div class="wishlist-icon" onclick="toggleWishlist()">♡</div>
+                <div class="cart-icon" onclick="toggleCart()">
+                    🛒 <span id="cart-count" class="cart-count">0</span>
+                </div>
+                <div class="user-icon" onclick="toggleUserMenu()">
+                    <span id="user-icon-text">👤</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- User Menu Dropdown -->
+        <div id="user-menu" class="user-menu">
+            <div class="user-menu-header">
+                <h3 id="user-menu-title">Account</h3>
+                <button onclick="toggleUserMenu()" class="close-btn">×</button>
+            </div>
+            <div id="user-menu-content" class="user-menu-content">
+                <!-- Content will be populated by JavaScript -->
+            </div>
         </div>
     </header>
 
@@ -204,11 +226,144 @@
         </div>
     </main>
 
+    <!-- Authentication Required Overlay -->
+    <div id="auth-required-overlay" class="auth-overlay" style="display: none;">
+        <div class="auth-overlay-content">
+            <div class="auth-overlay-card">
+                <h2>🔒 Sign In Required</h2>
+                <p>Please sign in to view product details and add items to your cart.</p>
+                <div class="auth-overlay-buttons">
+                    <button onclick="showLogin()" class="btn btn-primary">Sign In</button>
+                    <button onclick="showRegister()" class="btn btn-outline">Create Account</button>
+                </div>
+                <p class="auth-overlay-note">
+                    Join ManVue for personalized recommendations, exclusive deals, and secure checkout.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content auth-modal">
+            <div class="modal-header">
+                <h2>Sign In to MANVUE</h2>
+                <span class="close" onclick="closeModal('login-modal')">&times;</span>
+            </div>
+            <form id="login-form" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="remember-me">
+                    <label for="remember-me">Remember me</label>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Sign In</button>
+                <div class="auth-links">
+                    <a href="#" onclick="showForgotPassword()">Forgot password?</a>
+                    <span>Don't have an account? <a href="#" onclick="switchToRegister()">Sign up</a></span>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="register-modal" class="modal">
+        <div class="modal-content auth-modal">
+            <div class="modal-header">
+                <h2>Create Account</h2>
+                <span class="close" onclick="closeModal('register-modal')">&times;</span>
+            </div>
+            <form id="register-form" onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label for="register-name">Full Name</label>
+                    <input type="text" id="register-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email</label>
+                    <input type="email" id="register-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Password</label>
+                    <input type="password" id="register-password" required minlength="6">
+                </div>
+                <div class="form-group">
+                    <label for="register-confirm-password">Confirm Password</label>
+                    <input type="password" id="register-confirm-password" required>
+                </div>
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="terms-agreement" required>
+                    <label for="terms-agreement">I agree to the Terms & Conditions</label>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Create Account</button>
+                <div class="auth-links">
+                    <span>Already have an account? <a href="#" onclick="switchToLogin()">Sign in</a></span>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div id="forgot-password-modal" class="modal">
+        <div class="modal-content auth-modal">
+            <div class="modal-header">
+                <h2>Reset Password</h2>
+                <span class="close" onclick="closeModal('forgot-password-modal')">&times;</span>
+            </div>
+            <form id="forgot-password-form" onsubmit="handleForgotPassword(event)">
+                <div class="form-group">
+                    <label for="forgot-email">Email Address</label>
+                    <input type="email" id="forgot-email" required>
+                    <small>We'll send you a link to reset your password</small>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Send Reset Link</button>
+                <div class="auth-links">
+                    <a href="#" onclick="switchToLogin()">Back to Sign In</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Image Zoom Modal -->
     <div id="image-zoom-modal" class="modal" onclick="closeImageZoom()">
         <div class="modal-content">
             <span class="close" onclick="closeImageZoom()">&times;</span>
             <img id="zoomed-image" src="" alt="Zoomed Product Image">
+        </div>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div id="cart-sidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h3>Shopping Cart</h3>
+            <button onclick="toggleCart()" class="close-btn">×</button>
+        </div>
+        <div id="cart-items" class="cart-items">
+            <!-- Cart items will be populated by JavaScript -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <strong>Total: £<span id="cart-total">0.00</span></strong>
+            </div>
+            <button class="btn btn-primary btn-full" onclick="proceedToCheckout()">
+                Proceed to Checkout
+            </button>
+        </div>
+    </div>
+
+    <!-- Wishlist Sidebar -->
+    <div id="wishlist-sidebar" class="wishlist-sidebar">
+        <div class="wishlist-header">
+            <h3>Wishlist</h3>
+            <button onclick="toggleWishlist()" class="close-btn">×</button>
+        </div>
+        <div id="wishlist-items" class="wishlist-items">
+            <!-- Wishlist items will be populated by JavaScript -->
         </div>
     </div>
 

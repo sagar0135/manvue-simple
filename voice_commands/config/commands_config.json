@@ -1,0 +1,269 @@
+{
+  "voice_commands": {
+    "navigation": {
+      "home": {
+        "patterns": [
+          "go home",
+          "go to home page",
+          "take me home",
+          "home page",
+          "main page"
+        ],
+        "action": "navigate_to_page",
+        "parameters": {
+          "page": "home",
+          "url": "/index.html"
+        }
+      },
+      "products": {
+        "patterns": [
+          "show products",
+          "view products",
+          "product catalog",
+          "browse products",
+          "see all products"
+        ],
+        "action": "navigate_to_page",
+        "parameters": {
+          "page": "products",
+          "url": "/index.html#products"
+        }
+      },
+      "cart": {
+        "patterns": [
+          "open cart",
+          "show cart",
+          "view cart",
+          "shopping cart",
+          "my cart"
+        ],
+        "action": "open_cart",
+        "parameters": {}
+      },
+      "profile": {
+        "patterns": [
+          "view profile",
+          "my profile",
+          "account settings",
+          "user profile"
+        ],
+        "action": "navigate_to_page",
+        "parameters": {
+          "page": "profile",
+          "url": "/profile.html"
+        }
+      }
+    },
+    "search": {
+      "product_search": {
+        "patterns": [
+          "search for {product}",
+          "find {product}",
+          "look for {product}",
+          "show me {product}"
+        ],
+        "action": "search_products",
+        "parameters": {
+          "type": "general_search"
+        }
+      },
+      "category_search": {
+        "patterns": [
+          "show {category} items",
+          "find {category} products",
+          "{category} section",
+          "browse {category}"
+        ],
+        "action": "filter_by_category",
+        "parameters": {
+          "type": "category_filter"
+        }
+      },
+      "color_search": {
+        "patterns": [
+          "show {color} {item}",
+          "find {color} products",
+          "{color} items",
+          "filter by {color}"
+        ],
+        "action": "filter_by_color",
+        "parameters": {
+          "type": "color_filter"
+        }
+      }
+    },
+    "product_actions": {
+      "add_to_cart": {
+        "patterns": [
+          "add to cart",
+          "add this to cart",
+          "buy this",
+          "purchase this",
+          "add to shopping cart"
+        ],
+        "action": "add_to_cart",
+        "parameters": {}
+      },
+      "view_details": {
+        "patterns": [
+          "show details",
+          "product details",
+          "more information",
+          "tell me about this",
+          "product info"
+        ],
+        "action": "show_product_details",
+        "parameters": {}
+      },
+      "compare": {
+        "patterns": [
+          "compare products",
+          "compare this",
+          "add to comparison",
+          "compare items"
+        ],
+        "action": "add_to_comparison",
+        "parameters": {}
+      }
+    },
+    "filtering": {
+      "price_filter": {
+        "patterns": [
+          "filter by price",
+          "show {price} items",
+          "products under {amount}",
+          "price range {min} to {max}"
+        ],
+        "action": "filter_by_price",
+        "parameters": {
+          "type": "price_filter"
+        }
+      },
+      "size_filter": {
+        "patterns": [
+          "show size {size}",
+          "filter by size {size}",
+          "{size} items only"
+        ],
+        "action": "filter_by_size",
+        "parameters": {
+          "type": "size_filter"
+        }
+      },
+      "brand_filter": {
+        "patterns": [
+          "show {brand} products",
+          "filter by {brand}",
+          "{brand} items"
+        ],
+        "action": "filter_by_brand",
+        "parameters": {
+          "type": "brand_filter"
+        }
+      }
+    },
+    "accessibility": {
+      "read_page": {
+        "patterns": [
+          "read page",
+          "read this page",
+          "describe page",
+          "what's on this page"
+        ],
+        "action": "read_page_content",
+        "parameters": {}
+      },
+      "describe_image": {
+        "patterns": [
+          "describe image",
+          "what's in this image",
+          "describe this picture",
+          "tell me about this image"
+        ],
+        "action": "describe_image",
+        "parameters": {}
+      },
+      "next_item": {
+        "patterns": [
+          "next item",
+          "go to next",
+          "next product",
+          "move to next"
+        ],
+        "action": "navigate_next_item",
+        "parameters": {}
+      },
+      "previous_item": {
+        "patterns": [
+          "previous item",
+          "go back",
+          "previous product",
+          "move to previous"
+        ],
+        "action": "navigate_previous_item",
+        "parameters": {}
+      }
+    },
+    "system": {
+      "help": {
+        "patterns": [
+          "help",
+          "what can I say",
+          "voice commands",
+          "how to use voice",
+          "voice help"
+        ],
+        "action": "show_voice_help",
+        "parameters": {}
+      },
+      "stop_listening": {
+        "patterns": [
+          "stop listening",
+          "turn off voice",
+          "disable voice",
+          "stop voice"
+        ],
+        "action": "stop_voice_recognition",
+        "parameters": {}
+      },
+      "start_listening": {
+        "patterns": [
+          "start listening",
+          "turn on voice",
+          "enable voice",
+          "activate voice"
+        ],
+        "action": "start_voice_recognition",
+        "parameters": {}
+      }
+    }
+  },
+  "categories": [
+    "shirts", "t-shirts", "pants", "jeans", "dresses", "skirts", 
+    "jackets", "coats", "shoes", "boots", "sneakers", "accessories",
+    "bags", "jewelry", "watches", "hats", "scarves"
+  ],
+  "colors": [
+    "red", "blue", "green", "yellow", "black", "white", "gray", "grey",
+    "brown", "pink", "purple", "orange", "navy", "beige", "khaki"
+  ],
+  "sizes": [
+    "xs", "extra small", "s", "small", "m", "medium", "l", "large",
+    "xl", "extra large", "xxl", "2xl", "xxxl", "3xl"
+  ],
+  "price_ranges": {
+    "cheap": { "max": 25 },
+    "affordable": { "min": 25, "max": 50 },
+    "moderate": { "min": 50, "max": 100 },
+    "expensive": { "min": 100, "max": 200 },
+    "luxury": { "min": 200 }
+  },
+  "confidence_thresholds": {
+    "navigation": 0.8,
+    "search": 0.7,
+    "product_actions": 0.9,
+    "filtering": 0.7,
+    "accessibility": 0.6,
+    "system": 0.9
+  }
+}
