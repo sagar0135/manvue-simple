@@ -1,14 +1,29 @@
 from fastapi import FastAPI, Depends, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from backend.database import db
-from backend.auth import hash_password, verify_password, create_token, decode_token
+from database import db
+from auth import hash_password, verify_password, create_token
+from products import get_products, add_product
 
 app = FastAPI()
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # In production, specify your frontend URL
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class User(BaseModel):
     email: str
     password: str
-    name: str | None = None
+
+class Product(BaseModel):
+    title: str
+    price: float
+    image_url: str
 
 @app.post("/register")
 async def register(user: User):
@@ -16,8 +31,8 @@ async def register(user: User):
     if existing:
         raise HTTPException(status_code=400, detail="Email already registered")
     hashed = hash_password(user.password)
-    await db.users.insert_one({"email": user.email, "password": hashed, "name": user.name})
-    return {"msg": "User registered successfully"}
+    await db.users.insert_one({"email": user.email, "password": hashed})
+    return {"msg": "User registered"}
 
 @app.post("/login")
 async def login(user: User):
@@ -28,6 +43,9 @@ async def login(user: User):
     return {"access_token": token, "token_type": "bearer"}
 
 @app.get("/products")
-async def get_products():
-    products = await db.products.find().to_list(100)
-    return products
+async def fetch_products():
+    return await get_products()
+
+@app.post("/products")
+async def create_product(product: Product):
+    return await add_product(product.dict())

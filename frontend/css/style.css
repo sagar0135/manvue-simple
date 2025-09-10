@@ -718,6 +718,44 @@ h3 { font-size: var(--font-size-xl); }
     box-shadow: var(--shadow-lg);
 }
 
+/* 4. Voice Command Product Highlighting */
+.product-card.highlight,
+.product.highlight {
+    border: 3px solid #ff6b6b;
+    transform: scale(1.05);
+    box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
+    z-index: 10;
+    position: relative;
+}
+
+/* 5. Voice Control Button Styling */
+.voice-control-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--success-color);
+    color: var(--secondary-color);
+    border: none;
+    border-radius: 50px;
+    padding: var(--spacing-md) var(--spacing-lg);
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: var(--shadow-lg);
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.voice-control-btn:hover {
+    background: #219653;
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px rgba(39, 174, 96, 0.3);
+}
+
+.voice-control-btn:active {
+    transform: translateY(0);
+}
+
 /* Product Image */
 .product-image {
     width: 100%;
@@ -2271,10 +2309,7 @@ h3 { font-size: var(--font-size-xl); }
     background: var(--info-color);
 }
 
-/* Voice Accessibility */
-.voice-interface[aria-label] {
-    /* Screen reader support */
-}
+/* Voice Accessibility - Screen reader support handled by aria-label attribute */
 
 .voice-command.speaking {
     color: var(--info-color);
@@ -2793,7 +2828,7 @@ h3 { font-size: var(--font-size-xl); }
     margin-bottom: var(--spacing-lg);
 }
 
-.3d-features {
+.threejs-features {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-md);
@@ -2823,7 +2858,7 @@ h3 { font-size: var(--font-size-xl); }
     color: var(--dark-gray);
 }
 
-.3d-actions {
+.threejs-actions {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-md);
