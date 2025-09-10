@@ -281,24 +281,34 @@
             </div>
             <form id="register-form" onsubmit="handleRegister(event)">
                 <div class="form-group">
-                    <label for="register-name">Full Name</label>
-                    <input type="text" id="register-name" required>
+                    <label for="register-name">Full Name *</label>
+                    <input type="text" id="register-name" required placeholder="Enter your full name">
                 </div>
                 <div class="form-group">
-                    <label for="register-email">Email</label>
-                    <input type="email" id="register-email" required>
+                    <label for="register-email">Email Address *</label>
+                    <input type="email" id="register-email" required placeholder="Enter your email address">
+                    <small>We'll use this for order updates and account recovery</small>
                 </div>
                 <div class="form-group">
-                    <label for="register-password">Password</label>
-                    <input type="password" id="register-password" required minlength="6">
+                    <label for="register-phone">Phone Number *</label>
+                    <input type="tel" id="register-phone" required placeholder="Enter your phone number" pattern="[0-9\s\-\+\(\)]{10,}">
+                    <small>Required for order delivery and verification</small>
                 </div>
                 <div class="form-group">
-                    <label for="register-confirm-password">Confirm Password</label>
-                    <input type="password" id="register-confirm-password" required>
+                    <label for="register-password">Password *</label>
+                    <input type="password" id="register-password" required minlength="6" placeholder="Minimum 6 characters">
+                </div>
+                <div class="form-group">
+                    <label for="register-confirm-password">Confirm Password *</label>
+                    <input type="password" id="register-confirm-password" required placeholder="Re-enter your password">
                 </div>
                 <div class="form-group checkbox-group">
                     <input type="checkbox" id="terms-agreement" required>
-                    <label for="terms-agreement">I agree to the Terms & Conditions</label>
+                    <label for="terms-agreement">I agree to the <a href="#" onclick="showTerms()">Terms & Conditions</a> and <a href="#" onclick="showPrivacy()">Privacy Policy</a> *</label>
+                </div>
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="marketing-consent">
+                    <label for="marketing-consent">I want to receive promotional emails and special offers</label>
                 </div>
                 <button type="submit" class="btn btn-primary btn-full">Create Account</button>
                 <div class="auth-links">

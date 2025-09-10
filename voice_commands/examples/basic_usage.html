@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Commands - Basic Usage Example</title>
+    <link rel="stylesheet" href="../frontend/voice_commands.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .example-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .example-section h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        
+        .command-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .command-list li {
+            background: white;
+            margin: 10px 0;
+            padding: 12px 16px;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .command-list li:hover {
+            background: #f0f4ff;
+            border-color: #667eea;
+        }
+        
+        .command-list li code {
+            background: #e7f3ff;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #0066cc;
+        }
+        
+        .controls {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 0 10px;
+            transition: background 0.2s ease;
+        }
+        
+        .btn:hover {
+            background: #5a6fd8;
+        }
+        
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .status {
+            text-align: center;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+            font-weight: 500;
+        }
+        
+        .status.listening {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        .results {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+            min-height: 100px;
+        }
+        
+        .result-item {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        
+        .result-meta {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎤 Voice Commands - Basic Usage Example</h1>
+        
+        <div class="example-section">
+            <h3>Getting Started</h3>
+            <p>This example demonstrates basic voice command functionality for the ManVue application. Click the "Start Voice Recognition" button below and try speaking one of the example commands.</p>
+            
+            <div class="controls">
+                <button id="startBtn" class="btn">Start Voice Recognition</button>
+                <button id="stopBtn" class="btn" disabled>Stop Voice Recognition</button>
+                <button id="helpBtn" class="btn">Show Help</button>
+            </div>
+            
+            <div id="status" class="status" style="display: none;"></div>
+        </div>
+        
+        <div class="example-section">
+            <h3>Navigation Commands</h3>
+            <p>Try these commands to navigate the application:</p>
+            <ul class="command-list">
+                <li onclick="simulateCommand('go home')"><code>"Go home"</code> - Navigate to the main page</li>
+                <li onclick="simulateCommand('show products')"><code>"Show products"</code> - View the product catalog</li>
+                <li onclick="simulateCommand('open cart')"><code>"Open cart"</code> - View shopping cart</li>
+                <li onclick="simulateCommand('view profile')"><code>"View profile"</code> - Open user profile</li>
+            </ul>
+        </div>
+        
+        <div class="example-section">
+            <h3>Search Commands</h3>
+            <p>Use these commands to search for products:</p>
+            <ul class="command-list">
+                <li onclick="simulateCommand('search for red dress')"><code>"Search for red dress"</code> - Find red dresses</li>
+                <li onclick="simulateCommand('show me blue jeans')"><code>"Show me blue jeans"</code> - Find blue jeans</li>
+                <li onclick="simulateCommand('find sneakers')"><code>"Find sneakers"</code> - Search for sneakers</li>
+                <li onclick="simulateCommand('show shirts')"><code>"Show shirts"</code> - Browse shirt category</li>
+            </ul>
+        </div>
+        
+        <div class="example-section">
+            <h3>Product Actions</h3>
+            <p>These commands work when viewing a product:</p>
+            <ul class="command-list">
+                <li onclick="simulateCommand('add to cart')"><code>"Add to cart"</code> - Add current product to cart</li>
+                <li onclick="simulateCommand('show details')"><code>"Show details"</code> - View product information</li>
+                <li onclick="simulateCommand('compare products')"><code>"Compare products"</code> - Add to comparison</li>
+            </ul>
+        </div>
+        
+        <div class="example-section">
+            <h3>System Commands</h3>
+            <p>General system commands:</p>
+            <ul class="command-list">
+                <li onclick="simulateCommand('help')"><code>"Help"</code> - Show available commands</li>
+                <li onclick="simulateCommand('stop listening')"><code>"Stop listening"</code> - Disable voice recognition</li>
+            </ul>
+        </div>
+        
+        <div class="example-section">
+            <h3>Results</h3>
+            <div id="results" class="results">
+                <p><em>Voice command results will appear here...</em></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include voice command scripts -->
+    <script src="../frontend/voice_ui.js"></script>
+    <script src="../frontend/voice_interface.js"></script>
+    
+    <script>
+        // Initialize voice interface
+        let voiceInterface = null;
+        let isListening = false;
+        
+        // DOM elements
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const helpBtn = document.getElementById('helpBtn');
+        const status = document.getElementById('status');
+        const results = document.getElementById('results');
+        
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeVoiceInterface();
+        });
+        
+        function initializeVoiceInterface() {
+            if (!VoiceInterface) {
+                showStatus('Voice interface not available', 'error');
+                return;
+            }
+            
+            voiceInterface = new VoiceInterface({
+                continuous: true,
+                interimResults: true,
+                onResult: handleVoiceResult,
+                onError: handleVoiceError,
+                onStart: handleVoiceStart,
+                onEnd: handleVoiceEnd
+            });
+            
+            if (!voiceInterface.getSupported()) {
+                showStatus('Voice recognition not supported in this browser', 'error');
+                startBtn.disabled = true;
+                return;
+            }
+            
+            showStatus('Voice interface ready. Click "Start" to begin.', 'success');
+        }
+        
+        function handleVoiceResult(transcript, confidence, commandResult) {
+            console.log('Voice result:', transcript, confidence, commandResult);
+            
+            const resultDiv = document.createElement('div');
+            resultDiv.className = 'result-item';
+            
+            if (commandResult) {
+                resultDiv.innerHTML = `
+                    <strong>Command:</strong> "${transcript}"<br>
+                    <strong>Action:</strong> ${commandResult.action}<br>
+                    <strong>Parameters:</strong> ${JSON.stringify(commandResult.parameters)}
+                    <div class="result-meta">
+                        Confidence: ${Math.round(confidence * 100)}% | 
+                        Match: ${Math.round((commandResult.matchConfidence || 0) * 100)}%
+                    </div>
+                `;
+            } else {
+                resultDiv.innerHTML = `
+                    <strong>Unrecognized:</strong> "${transcript}"
+                    <div class="result-meta">
+                        Confidence: ${Math.round(confidence * 100)}% | No matching command found
+                    </div>
+                `;
+            }
+            
+            results.appendChild(resultDiv);
+            results.scrollTop = results.scrollHeight;
+            
+            // Keep only last 10 results
+            while (results.children.length > 11) { // +1 for the initial message
+                results.removeChild(results.children[1]);
+            }
+        }
+        
+        function handleVoiceError(error, message) {
+            console.error('Voice error:', error, message);
+            showStatus(`Error: ${message}`, 'error');
+        }
+        
+        function handleVoiceStart() {
+            isListening = true;
+            startBtn.disabled = true;
+            stopBtn.disabled = false;
+            showStatus('Listening... Speak now!', 'listening');
+        }
+        
+        function handleVoiceEnd() {
+            isListening = false;
+            startBtn.disabled = false;
+            stopBtn.disabled = true;
+            showStatus('Voice recognition stopped', 'success');
+        }
+        
+        function showStatus(message, type) {
+            status.textContent = message;
+            status.className = `status ${type}`;
+            status.style.display = 'block';
+        }
+        
+        function simulateCommand(command) {
+            if (!voiceInterface) return;
+            
+            // Simulate a voice command for demo purposes
+            const confidence = 0.9;
+            const commandResult = voiceInterface.commandProcessor.processCommand(command, confidence);
+            handleVoiceResult(command, confidence, commandResult);
+        }
+        
+        // Event listeners
+        startBtn.addEventListener('click', function() {
+            if (voiceInterface) {
+                voiceInterface.startListening();
+            }
+        });
+        
+        stopBtn.addEventListener('click', function() {
+            if (voiceInterface) {
+                voiceInterface.stopListening();
+            }
+        });
+        
+        helpBtn.addEventListener('click', function() {
+            if (voiceInterface) {
+                voiceInterface.ui.showVoiceHelp();
+            }
+        });
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(event) {
+            if (event.ctrlKey && event.shiftKey && event.code === 'KeyV') {
+                event.preventDefault();
+                if (isListening) {
+                    stopBtn.click();
+                } else {
+                    startBtn.click();
+                }
+            }
+        });
+        
+        // Clear results button
+        function clearResults() {
+            results.innerHTML = '<p><em>Voice command results will appear here...</em></p>';
+        }
+        
+        // Add clear button
+        const clearBtn = document.createElement('button');
+        clearBtn.textContent = 'Clear Results';
+        clearBtn.className = 'btn';
+        clearBtn.onclick = clearResults;
+        document.querySelector('.controls').appendChild(clearBtn);
+    </script>
+</body>
+</html>

@@ -168,51 +168,91 @@ function handleLogin(event) {
 function handleRegister(event) {
     event.preventDefault();
     
-    const name = document.getElementById('register-name').value;
-    const email = document.getElementById('register-email').value;
+    const name = document.getElementById('register-name').value.trim();
+    const email = document.getElementById('register-email').value.trim();
+    const phone = document.getElementById('register-phone').value.trim();
     const password = document.getElementById('register-password').value;
     const confirmPassword = document.getElementById('register-confirm-password').value;
+    const termsAccepted = document.getElementById('terms-agreement').checked;
+    const marketingConsent = document.getElementById('marketing-consent').checked;
+    
+    // Comprehensive validation
+    if (!name || name.length < 2) {
+        showMessage('Please enter your full name (minimum 2 characters).', 'error');
+        return;
+    }
+    
+    if (!email || !isValidEmail(email)) {
+        showMessage('Please enter a valid email address.', 'error');
+        return;
+    }
+    
+    if (!phone || !isValidPhone(phone)) {
+        showMessage('Please enter a valid phone number (minimum 10 digits).', 'error');
+        return;
+    }
+    
+    if (!password || password.length < 6) {
+        showMessage('Password must be at least 6 characters long.', 'error');
+        return;
+    }
     
     if (password !== confirmPassword) {
-        showMessage('Passwords do not match.');
+        showMessage('Passwords do not match.', 'error');
         return;
     }
     
-    if (password.length < 6) {
-        showMessage('Password must be at least 6 characters long.');
+    if (!termsAccepted) {
+        showMessage('You must agree to the Terms & Conditions and Privacy Policy.', 'error');
         return;
     }
     
-    // Check if user already exists
+    // Check if user already exists (email or phone)
     const existingUsers = JSON.parse(localStorage.getItem('manvue_users') || '[]');
+    
     if (existingUsers.some(u => u.email === email)) {
-        showMessage('An account with this email already exists.');
+        showMessage('An account with this email already exists. Please sign in or use a different email.', 'error');
         return;
     }
     
-    // Create new user
+    if (existingUsers.some(u => u.phone === phone)) {
+        showMessage('An account with this phone number already exists. Please use a different number.', 'error');
+        return;
+    }
+    
+    // Create new user with all required fields
     const newUser = {
         id: Date.now().toString(),
         name: name,
         email: email,
-        password: password,
-        createdAt: new Date().toISOString()
+        phone: phone,
+        password: password, // In production, this should be hashed
+        marketingConsent: marketingConsent,
+        createdAt: new Date().toISOString(),
+        isVerified: false, // Email/phone verification status
+        lastLogin: new Date().toISOString()
     };
     
     existingUsers.push(newUser);
     localStorage.setItem('manvue_users', JSON.stringify(existingUsers));
     
-    // Auto-login
+    // Auto-login after successful registration
     currentUser = newUser;
     localStorage.setItem('manvue_user', JSON.stringify(currentUser));
     
     closeModal('register-modal');
     updateAuthUI();
     showProductContent();
-    showMessage('Account created successfully! Welcome to MANVUE.');
+    showMessage('🎉 Account created successfully! Welcome to MANVUE.', 'success');
     
     // Clear form
     document.getElementById('register-form').reset();
+    
+    // Log registration event
+    logUserEvent('user_registered', {
+        user_id: newUser.id,
+        registration_date: newUser.createdAt
+    });
 }
 
 function handleForgotPassword(event) {
@@ -1048,6 +1088,50 @@ function proceedToCheckout() {
 // Utility function to navigate to search page
 function goToSearchPage() {
     window.location.href = 'index.html#search';
+}
+
+// Validation Functions
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+function isValidPhone(phone) {
+    // Remove all non-digit characters for validation
+    const phoneDigits = phone.replace(/\D/g, '');
+    // Check if it has at least 10 digits (covers most international formats)
+    return phoneDigits.length >= 10 && phoneDigits.length <= 15;
+}
+
+// Enhanced authentication check for all actions
+function requireAuthentication(actionName = 'perform this action') {
+    if (!currentUser) {
+        showMessage(`🔒 Please sign in to ${actionName}.`, 'error');
+        showLogin();
+        return false;
+    }
+    return true;
+}
+
+// User event logging for analytics
+function logUserEvent(eventType, eventData = {}) {
+    const events = JSON.parse(localStorage.getItem('manvue_events') || '[]');
+    events.push({
+        type: eventType,
+        data: eventData,
+        timestamp: new Date().toISOString(),
+        userId: currentUser?.id || null
+    });
+    localStorage.setItem('manvue_events', JSON.stringify(events));
+}
+
+// Terms and Privacy functions
+function showTerms() {
+    showMessage('Terms & Conditions: By creating an account, you agree to our terms of service. Full terms available at manvue.com/terms', 'info');
+}
+
+function showPrivacy() {
+    showMessage('Privacy Policy: We protect your personal information. Read our full privacy policy at manvue.com/privacy', 'info');
 }
 
 // Helper function for getting product image URL (MongoDB-compatible)
