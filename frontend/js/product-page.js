@@ -416,8 +416,8 @@ function loadDemoProduct() {
         title: "Classic White T-Shirt",
         price: 24.99,
         originalPrice: 32.99,
-        image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&h=600&fit=crop",
-        image_url: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&h=600&fit=crop",
+        image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&h=600&fit=crop&auto=format",
+        image_url: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&h=600&fit=crop&auto=format",
         category: "tops",
         type: "tshirts",
         description: "Comfortable cotton t-shirt perfect for everyday wear. Made from 100% organic cotton with a relaxed fit. This classic piece features a crew neckline and short sleeves, making it ideal for layering or wearing on its own.",
@@ -480,7 +480,7 @@ function displayProduct(product) {
         imageUrl = `${API_BASE_URL}/api/images/${product.image_ids[0]}`;
     } else if (!imageUrl) {
         // Fallback to placeholder
-        imageUrl = "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&h=600&fit=crop";
+        imageUrl = "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&h=600&fit=crop&auto=format";
     }
     
     document.getElementById('main-product-image').src = imageUrl;
@@ -521,7 +521,7 @@ function createThumbnails(product) {
         thumbnails = [product.image];
     } else {
         // Use placeholder
-        thumbnails = ["https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=300&h=300&fit=crop"];
+        thumbnails = ["https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=300&h=300&fit=crop&auto=format"];
     }
     
     // Add additional images if available (legacy support)
@@ -749,8 +749,8 @@ function displayFallbackRecommendations(product) {
             name: "Premium Denim Jeans",
             title: "Premium Denim Jeans",
             price: 64.99,
-            image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=300&h=300&fit=crop",
-            image_url: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=300&h=300&fit=crop",
+            image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=300&h=300&fit=crop&auto=format",
+            image_url: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=300&h=300&fit=crop&auto=format",
             category: "bottoms"
         },
         {
@@ -758,8 +758,8 @@ function displayFallbackRecommendations(product) {
             name: "Cotton Dress Shirt",
             title: "Cotton Dress Shirt",
             price: 39.99,
-            image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=300&h=300&fit=crop",
-            image_url: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=300&h=300&fit=crop",
+            image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=300&h=300&fit=crop&auto=format",
+            image_url: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=300&h=300&fit=crop&auto=format",
             category: "tops"
         },
         {
@@ -767,8 +767,8 @@ function displayFallbackRecommendations(product) {
             name: "Athletic Running Trainers",
             title: "Athletic Running Trainers",
             price: 89.99,
-            image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&h=300&fit=crop",
-            image_url: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&h=300&fit=crop",
+            image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&h=300&fit=crop&auto=format",
+            image_url: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&h=300&fit=crop&auto=format",
             category: "shoes"
         }
     ];

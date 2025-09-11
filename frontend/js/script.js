@@ -35,7 +35,7 @@ function getProductImageUrl(product) {
     }
     
     // Fallback to placeholder image
-    return "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop";
+    return "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop&auto=format";
 }
 
 // Enhanced Men's Fashion Data with Advanced Filtering (Fallback)
@@ -52,7 +52,7 @@ const fallbackProducts = [
         brand: "MANVUE Basics",
         rating: 4.5,
         reviews: 127,
-        image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop",
+        image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop&auto=format",
         tags: ["casual", "cotton", "basic", "everyday", "comfortable"],
         inStock: true,
         description: "Comfortable cotton t-shirt perfect for everyday wear. Made from 100% organic cotton with a relaxed fit."
@@ -69,7 +69,7 @@ const fallbackProducts = [
         brand: "MANVUE Denim",
         rating: 4.7,
         reviews: 189,
-        image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&h=400&fit=crop",
+        image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&h=400&fit=crop&auto=format",
         tags: ["denim", "classic", "casual", "slim-fit", "premium"],
         inStock: true,
         description: "Premium denim jeans with a perfect fit. Slim cut with stretch comfort and reinforced stitching."
@@ -86,7 +86,7 @@ const fallbackProducts = [
         brand: "SportMax",
         rating: 4.8,
         reviews: 334,
-        image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=400&fit=crop",
+        image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400&h=400&fit=crop&auto=format",
         tags: ["sports", "running", "comfort", "breathable", "athletic"],
         inStock: true,
         description: "High-performance running trainers with breathable mesh upper and responsive cushioning."
@@ -103,7 +103,7 @@ const fallbackProducts = [
         brand: "MANVUE Professional",
         rating: 4.6,
         reviews: 256,
-        image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop",
+        image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&auto=format",
         tags: ["formal", "business", "professional", "cotton", "crisp"],
         inStock: true,
         description: "Professional dress shirt perfect for business meetings. Non-iron cotton with modern fit."
@@ -3342,18 +3342,57 @@ function searchByColor(colorName) {
     showMessage(`Searching for ${colorName} products...`);
 }
 
-// Visual Search Results Functions
-function performVisualSearch() {
-    if (!analysisResults) {
-        showMessage('Please analyze an image first.');
+// Enhanced Visual Search Functions
+async function performVisualSearch() {
+    if (!currentImageData) {
+        showMessage('Please upload an image first.');
         return;
     }
     
-    const searchResults = generateVisualSearchResults();
-    displayVisualSearchResults(searchResults);
-    
-    closeModal('visual-search-modal');
-    showModal('recognition-results-modal');
+    try {
+        showMessage('🔍 Analyzing image and finding similar products...');
+        
+        // Call the new visual search API
+        const response = await fetch('/api/visual-search/search', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                image: currentImageData,
+                max_products: 12,
+                max_outfits: 3
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error(`API request failed: ${response.status}`);
+        }
+        
+        const results = await response.json();
+        
+        if (results.success) {
+            displayEnhancedVisualSearchResults(results);
+            closeModal('visual-search-modal');
+            showModal('recognition-results-modal');
+        } else {
+            throw new Error(results.error || 'Visual search failed');
+        }
+        
+    } catch (error) {
+        console.error('Visual search error:', error);
+        showMessage('❌ Visual search failed. Using fallback method...');
+        
+        // Fallback to existing method
+        if (analysisResults) {
+            const searchResults = generateVisualSearchResults();
+            displayVisualSearchResults(searchResults);
+            closeModal('visual-search-modal');
+            showModal('recognition-results-modal');
+        } else {
+            showMessage('Please analyze an image first.');
+        }
+    }
 }
 
 function generateVisualSearchResults() {
@@ -3390,6 +3429,56 @@ function generateVisualSearchResults() {
     
     // Sort by relevance score
     return allMatches.sort((a, b) => b.relevanceScore - a.relevanceScore).slice(0, 12);
+}
+
+function displayEnhancedVisualSearchResults(apiResults) {
+    const analyzedImageDisplay = document.getElementById('analyzed-image-display');
+    const detectionTags = document.getElementById('detection-tags');
+    const totalMatches = document.getElementById('total-matches');
+    const avgConfidence = document.getElementById('avg-confidence');
+    const processingTime = document.getElementById('processing-time');
+    const visualSearchResults = document.getElementById('visual-search-results');
+    
+    // Display analyzed image
+    analyzedImageDisplay.src = currentImageData;
+    
+    // Display detection tags (from API results)
+    const detectedItems = apiResults.similar_products.slice(0, 3).map(item => 
+        `${item.product.category} (${item.confidence}%)`
+    );
+    detectionTags.innerHTML = detectedItems.map(item => 
+        `<span class="detection-tag">${item}</span>`
+    ).join('');
+    
+    // Update statistics
+    totalMatches.textContent = apiResults.similar_products.length;
+    const avgConf = Math.floor(apiResults.similar_products.reduce((sum, item) => sum + item.confidence, 0) / apiResults.similar_products.length);
+    avgConfidence.textContent = `${avgConf}%`;
+    processingTime.textContent = apiResults.analysis_metadata.processing_time;
+    
+    // Display search results
+    visualSearchResults.innerHTML = apiResults.similar_products.map(item => `
+        <div class="visual-result-item" onclick="quickView(${item.product.id})">
+            <img src="${item.product.image || item.product.image_urls[0] || 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=200&h=200&fit=crop&auto=format'}" alt="${item.product.name}">
+            <div class="visual-result-info">
+                <div class="visual-result-match">
+                    <span style="font-size: 0.8em; color: #666;">Similarity: ${item.similarity_score.toFixed(2)}</span>
+                    <div class="match-score">${item.confidence}%</div>
+                </div>
+                <div class="visual-result-title">${item.product.name}</div>
+                <div class="visual-result-price">£${item.product.price}</div>
+                <div class="visual-result-actions">
+                    <button class="add-to-cart-visual" onclick="addToCart(${item.product.id}); event.stopPropagation();">Add to Cart</button>
+                    <button class="view-details-visual" onclick="quickView(${item.product.id}); event.stopPropagation();">View Details</button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+    
+    // Display outfit recommendations if available
+    if (apiResults.outfit_recommendations && apiResults.outfit_recommendations.length > 0) {
+        displayOutfitRecommendations(apiResults.outfit_recommendations);
+    }
 }
 
 function displayVisualSearchResults(results) {
@@ -3431,6 +3520,60 @@ function displayVisualSearchResults(results) {
             </div>
         </div>
     `).join('');
+}
+
+function displayOutfitRecommendations(outfitRecommendations) {
+    // Create or update outfit recommendations section
+    let outfitSection = document.getElementById('outfit-recommendations-section');
+    if (!outfitSection) {
+        outfitSection = document.createElement('div');
+        outfitSection.id = 'outfit-recommendations-section';
+        outfitSection.className = 'outfit-recommendations-section';
+        
+        // Insert after visual search results
+        const visualSearchResults = document.getElementById('visual-search-results');
+        visualSearchResults.parentNode.insertBefore(outfitSection, visualSearchResults.nextSibling);
+    }
+    
+    outfitSection.innerHTML = `
+        <div class="outfit-recommendations-header">
+            <h3>🎯 Complete Outfit Recommendations</h3>
+            <p>AI-generated outfit suggestions based on your uploaded image</p>
+        </div>
+        <div class="outfit-recommendations-grid">
+            ${outfitRecommendations.map(outfit => `
+                <div class="outfit-recommendation-card">
+                    <div class="outfit-header">
+                        <h4>${outfit.style_description}</h4>
+                        <div class="outfit-confidence">${outfit.confidence}% Match</div>
+                    </div>
+                    <div class="outfit-items">
+                        ${outfit.items.map(item => `
+                            <div class="outfit-item" onclick="quickView(${item.product.id})">
+                                <img src="${item.product.image || item.product.image_urls[0] || 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=100&h=100&fit=crop&auto=format'}" alt="${item.product.name}">
+                                <div class="outfit-item-info">
+                                    <span class="outfit-item-name">${item.product.name}</span>
+                                    <span class="outfit-item-price">£${item.product.price}</span>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="outfit-footer">
+                        <div class="outfit-total-price">Total: £${outfit.total_price.toFixed(2)}</div>
+                        <button class="add-outfit-to-cart" onclick="addOutfitToCart('${outfit.id}')">
+                            Add Complete Outfit to Cart
+                        </button>
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+}
+
+function addOutfitToCart(outfitId) {
+    // This would add all items from the outfit to cart
+    showMessage('🎯 Adding complete outfit to cart...');
+    // Implementation would iterate through outfit items and add each to cart
 }
 
 function sortVisualResults() {

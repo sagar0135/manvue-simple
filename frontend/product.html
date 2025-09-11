@@ -416,11 +416,17 @@
 
     <script src="js/product-page.js"></script>
     
-    <!-- Voice Commands Integration -->
-    <link rel="stylesheet" href="../voice_commands/frontend/voice_commands.css">
-    <script src="../voice_commands/frontend/voice_ui.js"></script>
-    <script src="../voice_commands/frontend/voice_interface.js"></script>
-    <script src="../voice_commands/integration/simple_voice_fix.js"></script>
-    <script src="../voice_commands/integration/voice_button.js"></script>
+    <!-- Hands-Free Voice Commands -->
+    <script src="js/hands-free-voice.js"></script>
+    
+    <script>
+        // Hands-free voice system - no button needed!
+        function startVoiceSearch() {
+            console.log('🎤 Voice button clicked (but hands-free is already active)');
+            if (window.handsFreeVoice) {
+                window.handsFreeVoice.showStatus('Say "Hey MANVUE" to activate!', 'info');
+            }
+        }
+    </script>
 </body>
 </html>

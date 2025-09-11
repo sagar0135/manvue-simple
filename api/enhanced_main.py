@@ -12,6 +12,9 @@ from PIL import Image
 import requests
 import logging
 
+# Import visual search routes
+from routes.visual_search import router as visual_search_router
+
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -30,6 +33,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Include visual search routes
+app.include_router(visual_search_router)
 
 # Simple in-memory storage (replace with database in production)
 users_db = {}

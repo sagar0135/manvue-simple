@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Voice Commands Test - ManVue</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 20px;
+            background: #f0f0f0;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+        }
+        
+        .voice-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+            transition: background 0.2s;
+        }
+        
+        .voice-btn:hover {
+            background: #0056b3;
+        }
+        
+        .voice-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .command-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .command-item {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .command-item:hover {
+            border-color: #007bff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,123,255,0.15);
+        }
+        
+        .command-item code {
+            display: block;
+            background: #e7f3ff;
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin: 8px 0;
+            font-family: 'Courier New', monospace;
+            color: #0066cc;
+            font-weight: bold;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-success { background: #28a745; }
+        .status-error { background: #dc3545; }
+        .status-warning { background: #ffc107; }
+        .status-info { background: #17a2b8; }
+        
+        .console-output {
+            background: #1e1e1e;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+            margin: 15px 0;
+            border: 1px solid #333;
+        }
+        
+        .test-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎤 Simple Voice Commands Test</h1>
+        
+        <div class="test-section">
+            <h3>📊 System Status</h3>
+            <div id="system-status">
+                <p><span class="status-indicator status-info"></span>Checking system status...</p>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🎤 Voice Recognition Test</h3>
+            <p>Click the voice button below to test voice recognition with simple command processing.</p>
+            
+            <div class="test-buttons">
+                <button class="voice-btn" onclick="startVoiceTest()">🎤 Start Voice Recognition</button>
+                <button class="voice-btn" onclick="stopVoiceTest()">🛑 Stop Voice Recognition</button>
+                <button class="voice-btn" onclick="clearConsole()">🗑️ Clear Console</button>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🧪 Test Commands</h3>
+            <p>Click these buttons to simulate voice commands and see the execution:</p>
+            
+            <div class="command-list">
+                <div class="command-item" onclick="simulateCommand('go home')">
+                    <h4>🏠 Navigation</h4>
+                    <code>"Go home"</code>
+                    <p>Navigate to homepage</p>
+                </div>
+                
+                <div class="command-item" onclick="simulateCommand('search for red shoes')">
+                    <h4>🔍 Search</h4>
+                    <code>"Search for red shoes"</code>
+                    <p>Search for products</p>
+                </div>
+                
+                <div class="command-item" onclick="simulateCommand('add to cart')">
+                    <h4>🛒 Cart Actions</h4>
+                    <code>"Add to cart"</code>
+                    <p>Add current item to cart</p>
+                </div>
+                
+                <div class="command-item" onclick="simulateCommand('open cart')">
+                    <h4>🛒 Cart View</h4>
+                    <code>"Open cart"</code>
+                    <p>View shopping cart</p>
+                </div>
+                
+                <div class="command-item" onclick="simulateCommand('show shirts')">
+                    <h4>🏷️ Category Filter</h4>
+                    <code>"Show shirts"</code>
+                    <p>Filter by category</p>
+                </div>
+                
+                <div class="command-item" onclick="simulateCommand('help')">
+                    <h4>❓ Help</h4>
+                    <code>"Help"</code>
+                    <p>Show available commands</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h3>📝 Console Output</h3>
+            <p>All voice recognition and command execution logs will appear here:</p>
+            <div class="console-output" id="console-output">
+                <div>Console output will appear here...</div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h3>📋 Available Commands</h3>
+            <div class="command-list">
+                <div class="command-item">
+                    <h4>🧭 Navigation</h4>
+                    <code>"Go home"</code>
+                    <code>"Go to home"</code>
+                    <code>"Home page"</code>
+                </div>
+                
+                <div class="command-item">
+                    <h4>🔍 Search</h4>
+                    <code>"Search for [item]"</code>
+                    <code>"Find [item]"</code>
+                    <code>"Look for [item]"</code>
+                </div>
+                
+                <div class="command-item">
+                    <h4>🛒 Shopping</h4>
+                    <code>"Add to cart"</code>
+                    <code>"Add this to cart"</code>
+                    <code>"Open cart"</code>
+                    <code>"Show cart"</code>
+                </div>
+                
+                <div class="command-item">
+                    <h4>🏷️ Categories</h4>
+                    <code>"Show shirts"</code>
+                    <code>"Show t-shirts"</code>
+                    <code>"Show pants"</code>
+                    <code>"Show jackets"</code>
+                </div>
+                
+                <div class="command-item">
+                    <h4>❓ Help & Control</h4>
+                    <code>"Help"</code>
+                    <code>"What can you do"</code>
+                    <code>"Stop"</code>
+                    <code>"Stop listening"</code>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Voice Recognition Display -->
+    <div class="voice-recognition-display" id="voice-recognition-display" style="display: none;">
+        <div class="voice-status">
+            <span class="voice-icon">🎤</span>
+            <span class="voice-text" id="voice-recognized-text">Listening...</span>
+            <span class="voice-confidence" id="voice-confidence"></span>
+        </div>
+    </div>
+
+    <!-- Mock ManVue functions for testing -->
+    <script>
+        // Override console.log to also display in our console output
+        const originalConsoleLog = console.log;
+        const consoleOutput = document.getElementById('console-output');
+        
+        console.log = function(...args) {
+            originalConsoleLog.apply(console, args);
+            
+            // Add to our console output display
+            const logEntry = document.createElement('div');
+            logEntry.textContent = args.join(' ');
+            logEntry.style.marginBottom = '2px';
+            consoleOutput.appendChild(logEntry);
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        };
+        
+        // Mock ManVue functions for testing
+        window.goHome = function() {
+            console.log('🏠 Mock: Navigating to home page');
+            alert('Mock: Navigating to home page');
+            return true;
+        };
+        
+        window.searchProducts = function(query) {
+            console.log(`🔍 Mock: Searching for "${query}"`);
+            alert(`Mock: Searching for "${query}"`);
+            return true;
+        };
+        
+        window.addToCart = function() {
+            console.log('🛒 Mock: Adding current product to cart');
+            alert('Mock: Adding current product to cart');
+            return true;
+        };
+        
+        window.toggleCart = function() {
+            console.log('🛒 Mock: Opening shopping cart');
+            alert('Mock: Opening shopping cart');
+            return true;
+        };
+        
+        window.filterProducts = function(category) {
+            console.log(`🏷️ Mock: Filtering by category "${category}"`);
+            alert(`Mock: Filtering by category "${category}"`);
+            return true;
+        };
+    </script>
+    
+    <!-- Include simple voice commands -->
+    <script src="js/simple-voice-commands.js"></script>
+    
+    <script>
+        function startVoiceTest() {
+            console.log('🎤 Starting voice test...');
+            if (window.simpleVoiceCommands) {
+                const success = window.simpleVoiceCommands.startListening();
+                if (success) {
+                    console.log('✅ Voice recognition started successfully');
+                } else {
+                    console.log('❌ Failed to start voice recognition');
+                }
+            } else {
+                console.log('❌ Simple Voice Commands not available');
+            }
+        }
+        
+        function stopVoiceTest() {
+            console.log('🛑 Stopping voice test...');
+            if (window.simpleVoiceCommands) {
+                window.simpleVoiceCommands.stopListening();
+                console.log('✅ Voice recognition stopped');
+            } else {
+                console.log('❌ Simple Voice Commands not available');
+            }
+        }
+        
+        function simulateCommand(command) {
+            console.log(`🧪 Simulating command: "${command}"`);
+            if (window.simpleVoiceCommands) {
+                window.simpleVoiceCommands.processCommand(command);
+            } else {
+                console.log('❌ Simple Voice Commands not available');
+            }
+        }
+        
+        function clearConsole() {
+            console.log('🗑️ Clearing console...');
+            const consoleOutput = document.getElementById('console-output');
+            consoleOutput.innerHTML = '<div>Console cleared...</div>';
+        }
+        
+        function updateSystemStatus() {
+            const statusDiv = document.getElementById('system-status');
+            const status = {
+                speechRecognition: 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window,
+                simpleVoiceCommands: window.simpleVoiceCommands !== undefined,
+                mockFunctions: typeof window.goHome === 'function'
+            };
+            
+            let statusHTML = '';
+            for (const [key, value] of Object.entries(status)) {
+                const statusClass = value ? 'status-success' : 'status-error';
+                const statusText = value ? 'Available' : 'Not Available';
+                statusHTML += `<p><span class="status-indicator ${statusClass}"></span>${key}: ${statusText}</p>`;
+            }
+            
+            statusDiv.innerHTML = statusHTML;
+            console.log('📊 System status updated:', status);
+        }
+        
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Voice commands test page loaded');
+            
+            // Update system status
+            updateSystemStatus();
+            
+            // Update status again after voice commands load
+            setTimeout(() => {
+                updateSystemStatus();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

@@ -75,12 +75,12 @@
         <!-- Hero Banner -->
         <section class="hero-banner">
             <div class="hero-content">
-                <h2>Fresh Fits</h2>
+                <h2>Winter Collection</h2>
                 <p>Discover the latest trends in men's fashion</p>
                 <button class="cta-btn" onclick="showSection('new-arrivals')">Shop Now</button>
             </div>
             <div class="hero-image">
-                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop" alt="Men's Fashion">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop&auto=format" alt="Men's Fashion">
             </div>
         </section>
 
@@ -90,27 +90,27 @@
                 <h2>Category Collections</h2>
                 <div class="category-grid">
                     <div class="category-card" onclick="window.location.href='categories/tshirts/index.html'">
-                        <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=300&h=200&fit=crop" alt="T-Shirts">
+                        <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=300&h=200&fit=crop&auto=format" alt="T-Shirts">
                         <h3>T-Shirts</h3>
                     </div>
                     <div class="category-card" onclick="window.location.href='categories/shirts/index.html'">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop" alt="Shirts">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop&auto=format" alt="Shirts">
                         <h3>Shirts</h3>
                     </div>
                     <div class="category-card" onclick="window.location.href='categories/bottoms/index.html'">
-                        <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?w=300&h=200&fit=crop" alt="Bottoms">
+                        <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?w=300&h=200&fit=crop&auto=format" alt="Bottoms">
                         <h3>Bottoms</h3>
                     </div>
                     <div class="category-card" onclick="window.location.href='categories/bottoms/index.html'">
-                        <img src="https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=300&h=200&fit=crop" alt="Jeans & Cargo">
-                        <h3>Jeans & Cargo</h3>
+                        <img src="https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=300&h=200&fit=crop&auto=format" alt="Footwear">
+                        <h3>Footwear</h3>
                     </div>
                     <div class="category-card" onclick="window.location.href='categories/jackets/index.html'">
-                        <img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=300&h=200&fit=crop" alt="Jackets">
+                        <img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=300&h=200&fit=crop&auto=format" alt="Jackets">
                         <h3>Jackets</h3>
                     </div>
                     <div class="category-card" onclick="showDeals()">
-                        <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=300&h=200&fit=crop" alt="Super Deals">
+                        <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=300&h=200&fit=crop&auto=format" alt="Super Deals">
                         <h3>Super Deals</h3>
                     </div>
                 </div>
@@ -1511,71 +1511,16 @@
     <script src="js/script.js"></script>
     <script src="../backend/ML/utils/ml_integration.js"></script>
     
-    <!-- Voice Commands Integration -->
-    <link rel="stylesheet" href="../voice_commands/frontend/voice_commands.css">
-    <script src="../voice_commands/frontend/voice_ui.js"></script>
-    <script src="../voice_commands/frontend/voice_interface.js"></script>
-    <script src="../voice_commands/integration/simple_voice_fix.js"></script>
-    <script src="../voice_commands/integration/voice_button.js"></script>
+    <!-- Hands-Free Voice Commands -->
+    <script src="js/hands-free-voice.js"></script>
     
     <script>
-        // Voice search function for the voice button in search bar
+        // Hands-free voice system - no button needed!
         function startVoiceSearch() {
-            console.log(`🔧 FUNCTION CALLED: startVoiceSearch()`);
-            console.log('🎤 Voice search button clicked');
-            
-            // Show listening status on page
-            console.log(`🔧 Calling showVoiceListeningStatus()`);
-            showVoiceListeningStatus();
-            
-            if (window.manvueVoiceIntegration) {
-                console.log('✅ Voice integration available');
-                console.log(`🔧 Calling manvueVoiceIntegration.startListening()`);
-                if (window.manvueVoiceIntegration.startListening()) {
-                    console.log('✅ Voice recognition started');
-                } else {
-                    console.log('❌ Failed to start voice recognition');
-                }
-            } else if (window.manvueVoice) {
-                console.log('✅ Direct voice interface available');
-                console.log(`🔧 Calling manvueVoice.startListening()`);
-                if (window.manvueVoice.startListening()) {
-                    console.log('✅ Voice recognition started');
-                } else {
-                    console.log('❌ Failed to start voice recognition');
-                }
-            } else {
-                console.log('❌ No voice system available');
+            console.log('🎤 Voice button clicked (but hands-free is already active)');
+            if (window.handsFreeVoice) {
+                window.handsFreeVoice.showStatus('Say "Hey MANVUE" to activate!', 'info');
             }
-            
-            console.log(`🏁 FUNCTION COMPLETED: startVoiceSearch`);
-        }
-        
-        // Show voice listening status on page
-        function showVoiceListeningStatus() {
-            console.log(`🔧 FUNCTION CALLED: showVoiceListeningStatus()`);
-            
-            const display = document.getElementById('voice-recognition-display');
-            const textElement = document.getElementById('voice-recognized-text');
-            const confidenceElement = document.getElementById('voice-confidence');
-            
-            console.log(`🔍 Voice display elements found:`, {
-                display: display ? 'YES' : 'NO',
-                textElement: textElement ? 'YES' : 'NO',
-                confidenceElement: confidenceElement ? 'YES' : 'NO'
-            });
-            
-            if (display && textElement && confidenceElement) {
-                console.log(`📱 Setting voice display to listening mode`);
-                display.style.display = 'block';
-                textElement.textContent = 'Listening...';
-                confidenceElement.textContent = '';
-                console.log(`✅ Voice listening status displayed`);
-            } else {
-                console.log(`❌ Voice display elements not found`);
-            }
-            
-            console.log(`🏁 FUNCTION COMPLETED: showVoiceListeningStatus`);
         }
         
         // Start the 24-hour countdown timer

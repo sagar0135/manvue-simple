@@ -27,6 +27,7 @@ users_collection = db.users
 products_collection = db.products
 orders_collection = db.orders
 images_collection = db.images
+product_embeddings_collection = db.product_embeddings
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -328,4 +329,112 @@ async def update_user(user_id: str, update_data: Dict) -> bool:
     
     except Exception as e:
         logger.error(f"Error updating user {user_id}: {e}")
+        return False
+
+# Product embedding functions
+async def store_product_embedding(product_id: str, embedding: List[float], model_version: str = "clip-vit-base-patch32") -> bool:
+    """
+    Store product embedding for similarity search
+    
+    Args:
+        product_id: Product ID
+        embedding: CLIP embedding vector
+        model_version: Version of the model used
+    
+    Returns:
+        bool: True if successful
+    """
+    try:
+        embedding_data = {
+            "product_id": product_id,
+            "embedding": embedding,
+            "model_version": model_version,
+            "created_at": datetime.utcnow(),
+            "updated_at": datetime.utcnow()
+        }
+        
+        # Upsert embedding (update if exists, insert if not)
+        await product_embeddings_collection.update_one(
+            {"product_id": product_id, "model_version": model_version},
+            {"$set": embedding_data},
+            upsert=True
+        )
+        
+        logger.info(f"Product embedding stored for product {product_id}")
+        return True
+    
+    except Exception as e:
+        logger.error(f"Error storing product embedding for {product_id}: {e}")
+        return False
+
+async def get_product_embedding(product_id: str, model_version: str = "clip-vit-base-patch32") -> Optional[List[float]]:
+    """
+    Get product embedding
+    
+    Args:
+        product_id: Product ID
+        model_version: Version of the model
+    
+    Returns:
+        List[float]: Embedding vector or None
+    """
+    try:
+        embedding_doc = await product_embeddings_collection.find_one({
+            "product_id": product_id,
+            "model_version": model_version
+        })
+        
+        if embedding_doc:
+            return embedding_doc["embedding"]
+        
+        return None
+    
+    except Exception as e:
+        logger.error(f"Error getting product embedding for {product_id}: {e}")
+        return None
+
+async def get_all_product_embeddings(model_version: str = "clip-vit-base-patch32") -> Dict[str, List[float]]:
+    """
+    Get all product embeddings
+    
+    Args:
+        model_version: Version of the model
+    
+    Returns:
+        Dict[str, List[float]]: Dict of product_id -> embedding
+    """
+    try:
+        cursor = product_embeddings_collection.find({"model_version": model_version})
+        embeddings = {}
+        
+        async for doc in cursor:
+            embeddings[doc["product_id"]] = doc["embedding"]
+        
+        return embeddings
+    
+    except Exception as e:
+        logger.error(f"Error getting all product embeddings: {e}")
+        return {}
+
+async def delete_product_embedding(product_id: str, model_version: str = "clip-vit-base-patch32") -> bool:
+    """
+    Delete product embedding
+    
+    Args:
+        product_id: Product ID
+        model_version: Version of the model
+    
+    Returns:
+        bool: True if successful
+    """
+    try:
+        result = await product_embeddings_collection.delete_one({
+            "product_id": product_id,
+            "model_version": model_version
+        })
+        
+        return result.deleted_count > 0
+    
+    except Exception as e:
+        logger.error(f"Error deleting product embedding for {product_id}: {e}")
         return False
