@@ -31,6 +31,7 @@ class ManVueVoiceIntegration {
             return;
         }
         
+        
         // Initialize voice interface with ManVue integration
         window.manvueVoice = new VoiceInterface({
             continuous: true,

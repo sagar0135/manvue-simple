@@ -1419,13 +1419,16 @@
     <script>
         // Voice search function for the voice button in search bar
         function startVoiceSearch() {
+            console.log(`🔧 FUNCTION CALLED: startVoiceSearch()`);
             console.log('🎤 Voice search button clicked');
             
             // Show listening status on page
+            console.log(`🔧 Calling showVoiceListeningStatus()`);
             showVoiceListeningStatus();
             
             if (window.manvueVoiceIntegration) {
                 console.log('✅ Voice integration available');
+                console.log(`🔧 Calling manvueVoiceIntegration.startListening()`);
                 if (window.manvueVoiceIntegration.startListening()) {
                     console.log('✅ Voice recognition started');
                 } else {
@@ -1433,6 +1436,7 @@
                 }
             } else if (window.manvueVoice) {
                 console.log('✅ Direct voice interface available');
+                console.log(`🔧 Calling manvueVoice.startListening()`);
                 if (window.manvueVoice.startListening()) {
                     console.log('✅ Voice recognition started');
                 } else {
@@ -1441,19 +1445,35 @@
             } else {
                 console.log('❌ No voice system available');
             }
+            
+            console.log(`🏁 FUNCTION COMPLETED: startVoiceSearch`);
         }
         
         // Show voice listening status on page
         function showVoiceListeningStatus() {
+            console.log(`🔧 FUNCTION CALLED: showVoiceListeningStatus()`);
+            
             const display = document.getElementById('voice-recognition-display');
             const textElement = document.getElementById('voice-recognized-text');
             const confidenceElement = document.getElementById('voice-confidence');
             
+            console.log(`🔍 Voice display elements found:`, {
+                display: display ? 'YES' : 'NO',
+                textElement: textElement ? 'YES' : 'NO',
+                confidenceElement: confidenceElement ? 'YES' : 'NO'
+            });
+            
             if (display && textElement && confidenceElement) {
+                console.log(`📱 Setting voice display to listening mode`);
                 display.style.display = 'block';
                 textElement.textContent = 'Listening...';
                 confidenceElement.textContent = '';
+                console.log(`✅ Voice listening status displayed`);
+            } else {
+                console.log(`❌ Voice display elements not found`);
             }
+            
+            console.log(`🏁 FUNCTION COMPLETED: showVoiceListeningStatus`);
         }
         
         // Start the 24-hour countdown timer

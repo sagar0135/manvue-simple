@@ -14,38 +14,50 @@
     
     // Register an action handler (this is the equivalent of register_action_handler)
     function registerActionHandler(action, handler) {
+        console.log(`🔧 FUNCTION CALLED: registerActionHandler(${action})`);
+
         actionHandlers.set(action, handler);
         console.log(`✅ Registered handler for action: ${action}`);
+        console.log(`📊 Total handlers registered: ${actionHandlers.size}`);
+        console.log(`🏁 FUNCTION COMPLETED: registerActionHandler`);
     }
     
     // Execute an action
     function executeAction(action, parameters) {
+        console.log(`🔧 FUNCTION CALLED: executeAction(${action})`);
         console.log(`🚀 EXECUTE ACTION CALLED: ${action}`);
         alert(`🚀 EXECUTE ACTION CALLED: ${action}`);
         
         const handler = actionHandlers.get(action);
+        console.log(`🔍 Handler found: ${handler ? 'YES' : 'NO'}`);
+        
         if (handler) {
             console.log(`🎯 Executing action: ${action}`, parameters);
             alert(`🎯 EXECUTING ACTION: ${action}`);
             try {
                 const result = handler(parameters);
                 console.log(`✅ Action completed: ${action}`);
+                console.log(`📤 Action result:`, result);
                 alert(`✅ ACTION COMPLETED: ${action}`);
+                console.log(`🏁 FUNCTION COMPLETED: executeAction`);
                 return result;
             } catch (error) {
                 console.error(`❌ Action failed: ${action}`, error);
                 alert(`❌ ACTION FAILED: ${action} - ${error.message}`);
+                console.log(`🏁 FUNCTION COMPLETED: executeAction (with error)`);
                 return false;
             }
         } else {
             console.warn(`⚠️  No handler for action: ${action}`);
             alert(`⚠️ NO HANDLER FOR ACTION: ${action}`);
+            console.log(`🏁 FUNCTION COMPLETED: executeAction (no handler)`);
             return false;
         }
     }
     
     // Register ManVue action handlers
     function setupManVueHandlers() {
+        console.log(`🔧 FUNCTION CALLED: setupManVueHandlers()`);
         console.log('🔧 Setting up ManVue action handlers...');
         
         // Navigation actions
@@ -313,60 +325,98 @@
         });
         
         console.log(`✅ Registered ${actionHandlers.size} action handlers`);
+        console.log(`🏁 FUNCTION COMPLETED: setupManVueHandlers`);
     }
     
     // Get current product ID from various sources
     function getCurrentProductId() {
+        console.log(`🔧 FUNCTION CALLED: getCurrentProductId()`);
+        
         // Check for product page
         const productElement = document.querySelector('[data-product-id]');
+        console.log(`🔍 Product element found: ${productElement ? 'YES' : 'NO'}`);
         if (productElement) {
-            return parseInt(productElement.getAttribute('data-product-id'));
+            const productId = parseInt(productElement.getAttribute('data-product-id'));
+            console.log(`📦 Product ID from element: ${productId}`);
+            console.log(`🏁 FUNCTION COMPLETED: getCurrentProductId`);
+            return productId;
         }
         
         // Check quick view modal
         const modal = document.getElementById('quick-view-modal');
+        console.log(`🔍 Quick view modal found: ${modal ? 'YES' : 'NO'}`);
         if (modal && modal.style.display !== 'none') {
             const modalProductId = modal.getAttribute('data-product-id');
-            if (modalProductId) return parseInt(modalProductId);
+            if (modalProductId) {
+                const productId = parseInt(modalProductId);
+                console.log(`📦 Product ID from modal: ${productId}`);
+                console.log(`🏁 FUNCTION COMPLETED: getCurrentProductId`);
+                return productId;
+            }
         }
         
         // Check highlighted/selected product
         const highlighted = document.querySelector('.product-card.selected, .product-card:hover, .product-card.highlighted');
+        console.log(`🔍 Highlighted product found: ${highlighted ? 'YES' : 'NO'}`);
         if (highlighted) {
             const id = highlighted.getAttribute('data-product-id');
-            if (id) return parseInt(id);
+            if (id) {
+                const productId = parseInt(id);
+                console.log(`📦 Product ID from highlighted: ${productId}`);
+                console.log(`🏁 FUNCTION COMPLETED: getCurrentProductId`);
+                return productId;
+            }
         }
         
         // Default to first visible product as fallback
         const firstProduct = document.querySelector('.product-card:not(.hidden)');
+        console.log(`🔍 First visible product found: ${firstProduct ? 'YES' : 'NO'}`);
         if (firstProduct) {
             const id = firstProduct.getAttribute('data-product-id');
-            if (id) return parseInt(id);
+            if (id) {
+                const productId = parseInt(id);
+                console.log(`📦 Product ID from first visible: ${productId}`);
+                console.log(`🏁 FUNCTION COMPLETED: getCurrentProductId`);
+                return productId;
+            }
         }
         
+        console.log(`📦 Using fallback product ID: 1`);
+        console.log(`🏁 FUNCTION COMPLETED: getCurrentProductId`);
         return 1; // Fallback product ID
     }
     
     // Show feedback to user
     function showFeedback(message, type = 'success') {
+        console.log(`🔧 FUNCTION CALLED: showFeedback(${message}, ${type})`);
         console.log(`📢 Feedback: ${message}`);
         
         // Try to use existing ManVue message system
         if (typeof window.showMessage === 'function') {
+            console.log(`✅ Using ManVue showMessage function`);
             window.showMessage(message);
         } else {
+            console.log(`⚠️ ManVue showMessage not available, using simple feedback`);
             // Create a simple feedback display
             showSimpleFeedback(message, type);
         }
+        console.log(`🏁 FUNCTION COMPLETED: showFeedback`);
     }
     
     // Simple feedback display
     function showSimpleFeedback(message, type) {
+        console.log(`🔧 FUNCTION CALLED: showSimpleFeedback(${message}, ${type})`);
+        
         // Remove existing feedback
         const existing = document.getElementById('voice-feedback');
-        if (existing) existing.remove();
+        console.log(`🔍 Existing feedback element: ${existing ? 'FOUND' : 'NOT FOUND'}`);
+        if (existing) {
+            console.log(`🗑️ Removing existing feedback`);
+            existing.remove();
+        }
         
         // Create feedback element
+        console.log(`🆕 Creating new feedback element`);
         const feedback = document.createElement('div');
         feedback.id = 'voice-feedback';
         feedback.textContent = message;
@@ -386,18 +436,24 @@
             word-wrap: break-word;
         `;
         
+        console.log(`📝 Adding feedback to DOM`);
         document.body.appendChild(feedback);
         
         // Auto-remove after 3 seconds
+        console.log(`⏰ Setting auto-remove timer (3 seconds)`);
         setTimeout(() => {
             if (feedback.parentNode) {
+                console.log(`🗑️ Auto-removing feedback element`);
                 feedback.remove();
             }
         }, 3000);
+        
+        console.log(`🏁 FUNCTION COMPLETED: showSimpleFeedback`);
     }
     
     // Setup voice interface integration
     function setupVoiceIntegration() {
+        console.log(`🔧 FUNCTION CALLED: setupVoiceIntegration()`);
         console.log('🎤 Setting up voice integration...');
         
         // Wait for VoiceInterface to be available
@@ -444,6 +500,8 @@
                     handlers: actionHandlers
                 };
                 
+                console.log(`🏁 FUNCTION COMPLETED: setupVoiceIntegration`);
+                
             } else {
                 console.log('⏳ Waiting for VoiceInterface...');
                 setTimeout(checkVoiceInterface, 500);
@@ -455,60 +513,90 @@
     
     // Handle voice results
     function handleVoiceResult(transcript, confidence, commandResult) {
+        console.log(`🔧 FUNCTION CALLED: handleVoiceResult(${transcript}, ${confidence})`);
         console.log(`🎤 Voice: "${transcript}" (${Math.round(confidence * 100)}%)`, commandResult);
         
         // Show recognized text on the page
         showVoiceTextOnPage(transcript, confidence, commandResult);
         
         if (commandResult) {
+            console.log(`✅ Command result found: ${commandResult.action}`);
             showFeedback(`Recognized: "${transcript}"`);
         } else {
+            console.log(`❌ No command result found`);
             showFeedback(`"${transcript}" - command not recognized`, 'error');
         }
+        
+        console.log(`🏁 FUNCTION COMPLETED: handleVoiceResult`);
     }
     
     // Show voice recognized text on the page
     function showVoiceTextOnPage(transcript, confidence, commandResult) {
+        console.log(`🔧 FUNCTION CALLED: showVoiceTextOnPage(${transcript}, ${confidence})`);
+        
         const display = document.getElementById('voice-recognition-display');
         const textElement = document.getElementById('voice-recognized-text');
         const confidenceElement = document.getElementById('voice-confidence');
         
+        console.log(`🔍 Display elements found:`, {
+            display: display ? 'YES' : 'NO',
+            textElement: textElement ? 'YES' : 'NO',
+            confidenceElement: confidenceElement ? 'YES' : 'NO'
+        });
+        
         if (display && textElement && confidenceElement) {
+            console.log(`📱 Showing voice text display`);
+            
             // Show the display
             display.style.display = 'block';
+            console.log(`👁️ Display set to visible`);
             
             // Update text
             textElement.textContent = transcript;
+            console.log(`📝 Text updated: "${transcript}"`);
             
             // Update confidence
             confidenceElement.textContent = `${Math.round(confidence * 100)}%`;
+            console.log(`📊 Confidence updated: ${Math.round(confidence * 100)}%`);
             
             // Auto-hide after 3 seconds
+            console.log(`⏰ Setting auto-hide timer (3 seconds)`);
             setTimeout(() => {
                 display.style.display = 'none';
+                console.log(`👁️ Display hidden after timeout`);
             }, 3000);
             
             console.log(`📱 Voice text displayed on page: "${transcript}"`);
+        } else {
+            console.log(`❌ Voice display elements not found`);
         }
+        
+        console.log(`🏁 FUNCTION COMPLETED: showVoiceTextOnPage`);
     }
     
     // Handle voice errors
     function handleVoiceError(error, message) {
+        console.log(`🔧 FUNCTION CALLED: handleVoiceError(${error}, ${message})`);
         console.error('🔴 Voice error:', error, message);
         showFeedback(`Voice error: ${message}`, 'error');
+        console.log(`🏁 FUNCTION COMPLETED: handleVoiceError`);
     }
     
     // Initialize when DOM is ready
     function initialize() {
+        console.log(`🔧 FUNCTION CALLED: initialize()`);
         console.log('🚀 Initializing Simple Voice Fix...');
         
         // Setup ManVue handlers first
+        console.log(`🔧 Calling setupManVueHandlers()`);
         setupManVueHandlers();
         
         // Then setup voice integration
+        console.log(`🔧 Calling setupVoiceIntegration()`);
         setupVoiceIntegration();
         
         console.log('✅ Simple Voice Fix loaded successfully');
+        console.log(`🏁 FUNCTION COMPLETED: initialize`);
     }
     
     // Start initialization

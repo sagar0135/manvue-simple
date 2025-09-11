@@ -7,7 +7,12 @@
 
 class VoiceInterface {
     constructor(options = {}) {
+        console.log(`🔧 FUNCTION CALLED: VoiceInterface constructor`);
+        console.log(`🎤 VoiceInterface constructor called with options:`, options);
+        
         this.isSupported = this.checkSupport();
+        console.log(`🔍 Speech recognition supported: ${this.isSupported}`);
+        
         this.isListening = false;
         this.recognition = null;
         this.config = {
@@ -18,6 +23,7 @@ class VoiceInterface {
             autoStart: options.autoStart || false,
             ...options
         };
+        console.log(`⚙️ Voice config:`, this.config);
         
         this.callbacks = {
             onResult: options.onResult || this.defaultResultHandler.bind(this),
@@ -26,49 +32,77 @@ class VoiceInterface {
             onEnd: options.onEnd || (() => {}),
             onNoMatch: options.onNoMatch || (() => {})
         };
+        console.log(`📞 Callbacks configured:`, Object.keys(this.callbacks));
         
         this.commandProcessor = new VoiceCommandProcessor();
         this.ui = new VoiceUI();
+        console.log(`🔧 Command processor and UI initialized`);
         
         this.init();
+        console.log(`🏁 FUNCTION COMPLETED: VoiceInterface constructor`);
     }
     
     checkSupport() {
+        console.log(`🔧 FUNCTION CALLED: checkSupport()`);
+        
         if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
             console.warn('Speech recognition not supported in this browser');
+            console.log(`🏁 FUNCTION COMPLETED: checkSupport (not supported)`);
             return false;
         }
+        
+        console.log(`✅ Speech recognition is supported`);
+        console.log(`🏁 FUNCTION COMPLETED: checkSupport (supported)`);
         return true;
     }
     
     init() {
+        console.log(`🔧 FUNCTION CALLED: init()`);
+        
         if (!this.isSupported) {
+            console.log(`❌ Speech recognition not supported, showing error`);
             this.ui.showError('Voice commands are not supported in this browser');
+            console.log(`🏁 FUNCTION COMPLETED: init (not supported)`);
             return;
         }
         
+        console.log(`🔧 Initializing speech recognition`);
         // Initialize speech recognition
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         this.recognition = new SpeechRecognition();
+        console.log(`✅ Speech recognition object created`);
         
+        console.log(`⚙️ Configuring recognition settings`);
         // Configure recognition
         this.recognition.continuous = this.config.continuous;
         this.recognition.interimResults = this.config.interimResults;
         this.recognition.lang = this.config.language;
         this.recognition.maxAlternatives = this.config.maxAlternatives;
+        console.log(`✅ Recognition configured:`, {
+            continuous: this.recognition.continuous,
+            interimResults: this.recognition.interimResults,
+            lang: this.recognition.lang,
+            maxAlternatives: this.recognition.maxAlternatives
+        });
         
+        console.log(`🔧 Setting up event listeners`);
         // Set up event listeners
         this.setupEventListeners();
         
+        console.log(`🔧 Initializing UI`);
         // Initialize UI
         this.ui.init();
         
         // Auto-start if configured
         if (this.config.autoStart) {
+            console.log(`🔧 Auto-start enabled, starting listening`);
             this.startListening();
+        } else {
+            console.log(`⏸️ Auto-start disabled`);
         }
         
         console.log('Voice interface initialized');
+        console.log(`🏁 FUNCTION COMPLETED: init`);
     }
     
     setupEventListeners() {
@@ -294,16 +328,25 @@ class VoiceInterface {
     
     // Public API methods
     startListening() {
+        console.log(`🔧 FUNCTION CALLED: startListening()`);
+        
         if (!this.isSupported || this.isListening) {
+            console.log(`❌ Cannot start listening: supported=${this.isSupported}, listening=${this.isListening}`);
+            console.log(`🏁 FUNCTION COMPLETED: startListening (cannot start)`);
             return false;
         }
         
+        console.log(`🎤 Starting voice recognition...`);
         try {
             this.recognition.start();
+            console.log(`✅ Voice recognition started successfully`);
+            console.log(`🏁 FUNCTION COMPLETED: startListening (success)`);
             return true;
         } catch (error) {
             console.error('Failed to start voice recognition:', error);
+            console.log(`❌ Voice recognition start failed:`, error.message);
             this.ui.showError('Failed to start voice recognition');
+            console.log(`🏁 FUNCTION COMPLETED: startListening (error)`);
             return false;
         }
     }

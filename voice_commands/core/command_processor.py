@@ -290,3 +290,5 @@ class CommandProcessor:
         """Clear command processing context"""
         self.context.clear()
         self.last_command = None
+
+print
