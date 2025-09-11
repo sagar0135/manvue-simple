@@ -1337,60 +1337,162 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
+                <!-- Shop Categories -->
                 <div class="footer-section">
-                    <h4>Company</h4>
-                    <a href="#">About us</a>
-                    <a href="#">Blog</a>
-                    <a href="#">Affiliate Program</a>
-                    <a href="#">Sitemap</a>
-                    <a href="#">Contact Us</a>
+                    <h4>🛍️ Shop by Category</h4>
+                    <a href="categories/tshirts/index.html">T-Shirts & Tops</a>
+                    <a href="categories/shirts/index.html">Dress Shirts</a>
+                    <a href="categories/bottoms/index.html">Jeans & Bottoms</a>
+                    <a href="categories/jackets/index.html">Jackets & Outerwear</a>
+                    <a href="categories/accessories/index.html">Accessories</a>
+                    <a href="#" onclick="showDeals()">Sale & Clearance</a>
                 </div>
+
+                <!-- Customer Service -->
                 <div class="footer-section">
-                    <h4>Need Help From MANVUE</h4>
-                    <a href="#">Returns, Exchange & Refunds</a>
-                    <a href="#">Cancellation Policy</a>
-                    <a href="#">Shipping Policy</a>
-                    <a href="#">Privacy Policy</a>
-                    <a href="#">Terms & Conditions</a>
+                    <h4>🛠️ Customer Service</h4>
+                    <a href="#" onclick="showHelpCenter()">Help Center</a>
+                    <a href="#" onclick="showSizeGuide()">Size Guide</a>
+                    <a href="#" onclick="showShippingInfo()">Shipping Information</a>
+                    <a href="#" onclick="showReturns()">Returns & Exchanges</a>
+                    <a href="#" onclick="showTrackOrder()">Track Your Order</a>
+                    <a href="#" onclick="showContactUs()">Contact Us</a>
                 </div>
+
+                <!-- Company Info -->
                 <div class="footer-section">
-                    <h4>Support</h4>
-                    <p>📧 support@manvue.com</p>
-                    <p>📞 +44 20 1234 5678</p>
-                    <p>🕒 Mon - Sat : 10:30 AM - 06:00 PM</p>
+                    <h4>🏢 About MANVUE</h4>
+                    <a href="#" onclick="showAboutUs()">Our Story</a>
+                    <a href="#" onclick="showCareers()">Careers</a>
+                    <a href="#" onclick="showPress()">Press & Media</a>
+                    <a href="#" onclick="showSustainability()">Sustainability</a>
+                    <a href="#" onclick="showAffiliate()">Affiliate Program</a>
+                    <a href="#" onclick="showBecomeSeller()">Become a Seller</a>
                 </div>
+
+                <!-- Support & Contact -->
                 <div class="footer-section">
-                    <h4>Experience The MANVUE App</h4>
-                    <div class="app-links">
-                        <button class="app-btn">📱 Play Store</button>
-                        <button class="app-btn">🍎 App Store</button>
+                    <h4>📞 Get in Touch</h4>
+                    <div class="contact-info">
+                        <p><span class="contact-icon">📧</span> support@manvue.com</p>
+                        <p><span class="contact-icon">📞</span> +44 20 1234 5678</p>
+                        <p><span class="contact-icon">🕒</span> Mon-Sat: 9AM-8PM GMT</p>
+                        <p><span class="contact-icon">💬</span> Live Chat Available</p>
                     </div>
+                    <div class="newsletter-signup">
+                        <h5>📧 Stay Updated</h5>
+                        <div class="newsletter-form">
+                            <input type="email" placeholder="Enter your email" id="newsletter-email">
+                            <button onclick="subscribeNewsletter()">Subscribe</button>
+                        </div>
+                        <p class="newsletter-note">Get exclusive deals & style tips</p>
+                    </div>
+                </div>
+
+                <!-- Mobile App & Payment -->
+                <div class="footer-section">
+                    <h4>📱 Download Our App</h4>
+                    <div class="app-links">
+                        <a href="#" class="app-btn" onclick="downloadApp('android')">
+                            <span class="app-icon">📱</span>
+                            <div class="app-text">
+                                <span class="app-label">Get it on</span>
+                                <span class="app-name">Google Play</span>
+                            </div>
+                        </a>
+                        <a href="#" class="app-btn" onclick="downloadApp('ios')">
+                            <span class="app-icon">🍎</span>
+                            <div class="app-text">
+                                <span class="app-label">Download on the</span>
+                                <span class="app-name">App Store</span>
+                            </div>
+                        </a>
+                    </div>
+                    
                     <div class="payment-methods">
-                        <h5>Payment Methods</h5>
+                        <h5>💳 We Accept</h5>
                         <div class="payment-icons">
-                            <div class="payment-method">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg" alt="Visa" style="height: 30px; margin: 5px;">
+                            <div class="payment-method" title="Visa">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg" alt="Visa">
                             </div>
-                            <div class="payment-method">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="MasterCard" style="height: 30px; margin: 5px;">
+                            <div class="payment-method" title="Mastercard">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="MasterCard">
                             </div>
-                            <div class="payment-method">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal" style="height: 30px; margin: 5px;">
+                            <div class="payment-method" title="PayPal">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+                            </div>
+                            <div class="payment-method" title="Apple Pay">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_Pay_logo.svg" alt="Apple Pay">
+                            </div>
+                            <div class="payment-method" title="Google Pay">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google Pay">
                             </div>
                         </div>
-                        <p style="font-size: 0.9rem; margin-top: 8px;">💳 100% Secure Payment</p>
+                        <p class="security-note">🔒 256-bit SSL encryption</p>
                     </div>
                 </div>
             </div>
+
+            <!-- Footer Bottom -->
             <div class="footer-bottom">
-                <p>&copy; 2025 www.manvue.com. All rights reserved.</p>
-                <div class="social-links">
-                    <h5 style="margin-bottom: 10px;">Follow Us</h5>
-                    <div class="social-icons">
-                        <a href="https://facebook.com/manvue" target="_blank" title="Facebook" style="margin: 0 10px; font-size: 1.5rem; text-decoration: none;">📘</a>
-                        <a href="https://instagram.com/manvue" target="_blank" title="Instagram" style="margin: 0 10px; font-size: 1.5rem; text-decoration: none;">📷</a>
-                        <a href="https://twitter.com/manvue" target="_blank" title="Twitter" style="margin: 0 10px; font-size: 1.5rem; text-decoration: none;">🐦</a>
-                        <a href="https://linkedin.com/company/manvue" target="_blank" title="LinkedIn" style="margin: 0 10px; font-size: 1.5rem; text-decoration: none;">💼</a>
+                <div class="footer-bottom-content">
+                    <div class="copyright">
+                        <p>&copy; 2025 MANVUE. All rights reserved.</p>
+                        <div class="legal-links">
+                            <a href="#" onclick="showPrivacyPolicy()">Privacy Policy</a>
+                            <a href="#" onclick="showTerms()">Terms of Service</a>
+                            <a href="#" onclick="showCookies()">Cookie Policy</a>
+                        </div>
+                    </div>
+                    
+                    <div class="social-links">
+                        <h5>Follow Our Journey</h5>
+                        <div class="social-icons">
+                            <a href="https://instagram.com/manvue" target="_blank" title="Instagram" class="social-link">
+                                <span class="social-icon">📷</span>
+                                <span class="social-label">Instagram</span>
+                            </a>
+                            <a href="https://facebook.com/manvue" target="_blank" title="Facebook" class="social-link">
+                                <span class="social-icon">📘</span>
+                                <span class="social-label">Facebook</span>
+                            </a>
+                            <a href="https://twitter.com/manvue" target="_blank" title="Twitter" class="social-link">
+                                <span class="social-icon">🐦</span>
+                                <span class="social-label">Twitter</span>
+                            </a>
+                            <a href="https://linkedin.com/company/manvue" target="_blank" title="LinkedIn" class="social-link">
+                                <span class="social-icon">💼</span>
+                                <span class="social-label">LinkedIn</span>
+                            </a>
+                            <a href="https://youtube.com/manvue" target="_blank" title="YouTube" class="social-link">
+                                <span class="social-icon">📺</span>
+                                <span class="social-label">YouTube</span>
+                            </a>
+                            <a href="https://tiktok.com/@manvue" target="_blank" title="TikTok" class="social-link">
+                                <span class="social-icon">🎵</span>
+                                <span class="social-label">TikTok</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Trust Badges -->
+                <div class="trust-badges">
+                    <div class="trust-badge">
+                        <span class="trust-icon">🏆</span>
+                        <span class="trust-text">Trusted by 100K+ Customers</span>
+                    </div>
+                    <div class="trust-badge">
+                        <span class="trust-icon">🚚</span>
+                        <span class="trust-text">Free Shipping on Orders £50+</span>
+                    </div>
+                    <div class="trust-badge">
+                        <span class="trust-icon">🔄</span>
+                        <span class="trust-text">30-Day Returns</span>
+                    </div>
+                    <div class="trust-badge">
+                        <span class="trust-icon">⭐</span>
+                        <span class="trust-text">4.8/5 Customer Rating</span>
                     </div>
                 </div>
             </div>
@@ -1515,6 +1617,90 @@
         
         // Start timer when page loads
         document.addEventListener('DOMContentLoaded', startCountdown);
+        
+        // Footer interaction functions
+        function subscribeNewsletter() {
+            const email = document.getElementById('newsletter-email').value;
+            if (email && email.includes('@')) {
+                alert('Thank you for subscribing! You\'ll receive exclusive deals and style tips.');
+                document.getElementById('newsletter-email').value = '';
+            } else {
+                alert('Please enter a valid email address.');
+            }
+        }
+        
+        function downloadApp(platform) {
+            if (platform === 'android') {
+                alert('Redirecting to Google Play Store...');
+                // window.open('https://play.google.com/store/apps/details?id=com.manvue.app', '_blank');
+            } else if (platform === 'ios') {
+                alert('Redirecting to App Store...');
+                // window.open('https://apps.apple.com/app/manvue/id123456789', '_blank');
+            }
+        }
+        
+        // Customer Service Functions
+        function showHelpCenter() {
+            alert('Help Center: Find answers to common questions, sizing guides, and troubleshooting tips.');
+        }
+        
+        function showSizeGuide() {
+            alert('Size Guide: Use our comprehensive sizing chart to find your perfect fit for all clothing items.');
+        }
+        
+        function showShippingInfo() {
+            alert('Shipping Information: Free shipping on orders £50+, standard delivery 3-5 business days, express delivery available.');
+        }
+        
+        function showReturns() {
+            alert('Returns & Exchanges: 30-day return policy, free returns, easy exchange process.');
+        }
+        
+        function showTrackOrder() {
+            alert('Track Your Order: Enter your order number to track your package in real-time.');
+        }
+        
+        function showContactUs() {
+            alert('Contact Us: Email support@manvue.com or call +44 20 1234 5678. Live chat available Mon-Sat 9AM-8PM GMT.');
+        }
+        
+        // Company Functions
+        function showAboutUs() {
+            alert('Our Story: MANVUE is dedicated to providing premium men\'s fashion with exceptional quality and style.');
+        }
+        
+        function showCareers() {
+            alert('Careers: Join our team! We\'re always looking for passionate individuals to help us grow.');
+        }
+        
+        function showPress() {
+            alert('Press & Media: Latest news, press releases, and media resources about MANVUE.');
+        }
+        
+        function showSustainability() {
+            alert('Sustainability: Our commitment to ethical fashion and environmental responsibility.');
+        }
+        
+        function showAffiliate() {
+            alert('Affiliate Program: Earn commissions by promoting MANVUE products to your audience.');
+        }
+        
+        function showBecomeSeller() {
+            alert('Become a Seller: Join our marketplace and start selling your products to our customers.');
+        }
+        
+        // Legal Functions
+        function showPrivacyPolicy() {
+            alert('Privacy Policy: Learn how we collect, use, and protect your personal information.');
+        }
+        
+        function showTerms() {
+            alert('Terms of Service: Our terms and conditions for using MANVUE services.');
+        }
+        
+        function showCookies() {
+            alert('Cookie Policy: Information about how we use cookies to enhance your experience.');
+        }
     </script>
 </body>
 </html>
