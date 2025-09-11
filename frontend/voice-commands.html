@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MANVUE Voice Search Demo</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .demo-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .demo-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .demo-header h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .demo-header p {
+            color: #666;
+            font-size: 16px;
+        }
+        
+        .voice-demo-section {
+            text-align: center;
+            margin: 40px 0;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+        
+        .voice-demo-button {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 20px;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            font-size: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 20px;
+        }
+        
+        .voice-demo-button:hover {
+            background: #e55555;
+            transform: scale(1.05);
+        }
+        
+        .voice-demo-button.active {
+            background: #ff4444;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        .demo-instructions {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        
+        .demo-examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .example-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .example-card h3 {
+            color: var(--accent-color);
+            margin-bottom: 15px;
+        }
+        
+        .example-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .example-list li {
+            background: #f8f9fa;
+            margin: 8px 0;
+            padding: 10px;
+            border-radius: 6px;
+            font-family: monospace;
+            color: #333;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .feature-item {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .feature-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+        
+        .back-button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .back-button:hover {
+            background: #333;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="demo-header">
+            <h1>🎤 MANVUE Voice Search Demo</h1>
+            <p>Experience our clean, responsive voice recognition system</p>
+        </div>
+        
+        <div class="voice-demo-section">
+            <h2>Try Voice Search</h2>
+            <button class="voice-demo-button" onclick="startVoiceDemo()" id="voiceDemoBtn">🎤</button>
+            <p>Click the microphone and speak your command</p>
+        </div>
+        
+        <div class="demo-instructions">
+            <h3>📋 How to Use:</h3>
+            <ol>
+                <li>Click the microphone button above</li>
+                <li>Allow microphone access when prompted</li>
+                <li>Speak clearly one of the example commands</li>
+                <li>Watch as your speech is converted to text</li>
+                <li>See the search results and recommendations</li>
+            </ol>
+        </div>
+        
+        <div class="demo-examples">
+            <div class="example-card">
+                <h3>🔍 Search Commands</h3>
+                <ul class="example-list">
+                    <li>"show white t-shirt"</li>
+                    <li>"find black jeans"</li>
+                    <li>"search for blue shirt"</li>
+                    <li>"white shirt"</li>
+                </ul>
+            </div>
+            
+            <div class="example-card">
+                <h3>🏷️ Category Commands</h3>
+                <ul class="example-list">
+                    <li>"show shirts"</li>
+                    <li>"find jackets"</li>
+                    <li>"casual wear"</li>
+                    <li>"formal wear"</li>
+                </ul>
+            </div>
+            
+            <div class="example-card">
+                <h3>🎨 Color + Item</h3>
+                <ul class="example-list">
+                    <li>"red hoodie"</li>
+                    <li>"blue denim"</li>
+                    <li>"black pants"</li>
+                    <li>"white sneakers"</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-item">
+                <div class="feature-icon">🎯</div>
+                <h4>Accurate Recognition</h4>
+                <p>Clean speech-to-text conversion</p>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-icon">📱</div>
+                <h4>Responsive Display</h4>
+                <p>Real-time visual feedback</p>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-icon">🔍</div>
+                <h4>Smart Search</h4>
+                <p>Intelligent product matching</p>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-icon">💡</div>
+                <h4>Recommendations</h4>
+                <p>Helpful suggestions and alternatives</p>
+            </div>
+        </div>
+        
+        <div style="text-align: center;">
+            <a href="index.html" class="back-button">🏠 Back to MANVUE Store</a>
+        </div>
+    </div>
+    
+    <!-- Load products data -->
+    <script src="data/products.js"></script>
+    
+    <!-- Load main script with voice functionality -->
+    <script src="js/script.js"></script>
+    
+    <script>
+        // Demo-specific voice function with debugging
+        function startVoiceDemo() {
+            console.log('🎤 DEMO: Starting voice demo');
+            const btn = document.getElementById('voiceDemoBtn');
+            btn.classList.add('active');
+            
+            // Check if voice is supported
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                alert('❌ Voice recognition not supported. Please use Chrome or Edge browser.');
+                btn.classList.remove('active');
+                return;
+            }
+            
+            console.log('✅ Voice recognition supported');
+            
+            // Call the main voice search function
+            try {
+                startVoiceSearch();
+                console.log('✅ Voice search started successfully');
+            } catch (error) {
+                console.error('❌ Error starting voice search:', error);
+                alert('Error starting voice search: ' + error.message);
+            }
+            
+            // Remove active class after a delay
+            setTimeout(() => {
+                btn.classList.remove('active');
+            }, 5000);
+        }
+        
+        // Test function to verify products are loaded
+        function testProductsLoaded() {
+            console.log('📦 Testing products...');
+            console.log('window.products:', window.products);
+            console.log('Products count:', window.products ? window.products.length : 0);
+            
+            if (window.products && window.products.length > 0) {
+                console.log('✅ Products loaded successfully');
+                console.log('Sample product:', window.products[0]);
+            } else {
+                console.log('❌ No products found');
+            }
+        }
+        
+        // Override navigation functions for demo
+        window.showSection = function(section) {
+            console.log(`Demo: Would navigate to ${section} section`);
+        };
+        
+        // Add demo-specific styling to voice displays
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎤 Voice Demo Ready!');
+            console.log('Available voice commands:');
+            console.log('- "show white t-shirt"');
+            console.log('- "find black jeans"'); 
+            console.log('- "search for blue shirt"');
+            console.log('- "casual wear"');
+            console.log('- Or any product name/color combination');
+            
+            // Test products after page load
+            setTimeout(testProductsLoaded, 1000);
+            
+            // Add test button
+            const testBtn = document.createElement('button');
+            testBtn.textContent = '🧪 Test Voice System';
+            testBtn.style.cssText = 'position: fixed; bottom: 20px; left: 20px; padding: 10px 15px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; z-index: 1000;';
+            testBtn.onclick = function() {
+                console.log('🧪 Running voice system test...');
+                testProductsLoaded();
+                
+                // Test voice search with sample query
+                setTimeout(() => {
+                    console.log('🎤 Testing voice search with "white shirt"');
+                    processVoiceCommand('white shirt');
+                }, 1000);
+            };
+            document.body.appendChild(testBtn);
+        });
+        
+        // Demo message function
+        function showDemoMessage(message) {
+            alert(`[DEMO] ${message}`);
+        }
+        
+        // Check if voice recognition is supported
+        if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+            document.querySelector('.voice-demo-section').innerHTML = `
+                <h2>❌ Voice Recognition Not Supported</h2>
+                <p>Your browser doesn't support voice recognition. Please try:</p>
+                <ul style="text-align: left; max-width: 400px; margin: 0 auto;">
+                    <li>Chrome browser (recommended)</li>
+                    <li>Enable microphone permissions</li>
+                    <li>Use HTTPS connection</li>
+                </ul>
+            `;
+        }
+    </script>
+</body>
+</html>

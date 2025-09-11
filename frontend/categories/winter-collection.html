@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Winter Collection - MANVUE</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/product-page.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="index.html" style="text-decoration: none; color: inherit; cursor: pointer;">
+                        <h1>MANVUE</h1>
+                        <span class="logo-subtitle">Winter Collection</span>
+                    </a>
+                </div>
+                
+                <!-- Search Bar -->
+                <div class="main-search-bar">
+                    <input type="text" id="main-search-input" placeholder="Search winter collection..." class="search-input">
+                    <button class="search-btn" onclick="searchProducts()">🔍</button>
+                </div>
+                <button class="voice-btn" onclick="startVoiceSearch()">🎤</button>
+                
+                <div class="header-actions">
+                    <div class="wishlist-icon" onclick="toggleWishlist()">♡</div>
+                    <div class="cart-icon" onclick="toggleCart()">
+                        🛒 <span id="cart-count">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Winter Collection Hero -->
+    <section class="winter-hero">
+        <div class="container">
+            <div class="winter-hero-content">
+                <h1>Winter Collection 2024</h1>
+                <p>Stay warm and stylish with our premium winter essentials for men</p>
+                <div class="winter-stats">
+                    <div class="stat">
+                        <span class="stat-number">50+</span>
+                        <span class="stat-label">Winter Items</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">30%</span>
+                        <span class="stat-label">Off Selected Items</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">Free</span>
+                        <span class="stat-label">Shipping</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Winter Categories -->
+    <section class="winter-categories">
+        <div class="container">
+            <h2>Shop by Category</h2>
+            <div class="category-grid">
+                <div class="winter-category-card" onclick="filterByType('jacket')">
+                    <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop&auto=format" alt="Winter Jackets">
+                    <div class="category-overlay">
+                        <h3>Winter Jackets</h3>
+                        <p>Parkas, Coats & Outerwear</p>
+                    </div>
+                </div>
+                <div class="winter-category-card" onclick="filterByType('sweater')">
+                    <img src="" alt="Winter Sweaters">
+                    <div class="category-overlay">
+                        <h3>Winter Sweaters</h3>
+                        <p>Knitwear & Pullovers</p>
+                    </div>
+                </div>
+                <div class="winter-category-card" onclick="filterByType('footwear')">
+                    <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=300&fit=crop&auto=format" alt="Winter Boots">
+                    <div class="category-overlay">
+                        <h3>Winter Boots</h3>
+                        <p>Insulated & Waterproof</p>
+                    </div>
+                </div>
+                <div class="winter-category-card" onclick="filterByType('accessory')">
+                    <img src="https://images.unsplash.com/photo-1601925260369-1a0b3b3b3b3b?w=400&h=300&fit=crop&auto=format" alt="Winter Accessories">
+                    <div class="category-overlay">
+                        <h3>Winter Accessories</h3>
+                        <p>Scarves, Gloves & Hats</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Winter Products Section -->
+    <section id="winter-products" class="winter-products-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Winter Collection</h2>
+                <div class="view-controls">
+                    <button class="view-btn active" onclick="changeView('grid')">Grid</button>
+                    <button class="view-btn" onclick="changeView('list')">List</button>
+                </div>
+            </div>
+            
+            <div class="products-grid" id="products-grid">
+                <!-- Winter products will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Winter Features -->
+    <section class="winter-features">
+        <div class="container">
+            <h2>Why Choose Our Winter Collection?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🧥</div>
+                    <h3>Premium Materials</h3>
+                    <p>High-quality wool, cashmere, and down insulation for maximum warmth and comfort.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌡️</div>
+                    <h3>Weather Protection</h3>
+                    <p>Waterproof and wind-resistant materials to keep you protected in harsh winter conditions.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Modern Style</h3>
+                    <p>Contemporary designs that blend functionality with fashion-forward aesthetics.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💎</div>
+                    <h3>Durable Construction</h3>
+                    <p>Built to last with reinforced stitching and quality craftsmanship.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Winter Collection</h3>
+                    <ul>
+                        <li><a href="#" onclick="filterByType('jacket')">Winter Jackets</a></li>
+                        <li><a href="#" onclick="filterByType('sweater')">Sweaters</a></li>
+                        <li><a href="#" onclick="filterByType('footwear')">Winter Boots</a></li>
+                        <li><a href="#" onclick="filterByType('accessory')">Accessories</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Customer Service</h3>
+                    <ul>
+                        <li><a href="#" onclick="showHelpCenter()">Help Center</a></li>
+                        <li><a href="#" onclick="showSizeGuide()">Size Guide</a></li>
+                        <li><a href="#" onclick="showShippingInfo()">Shipping Info</a></li>
+                        <li><a href="#" onclick="showReturns()">Returns</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>About MANVUE</h3>
+                    <ul>
+                        <li><a href="#" onclick="showAboutUs()">About Us</a></li>
+                        <li><a href="#" onclick="showCareers()">Careers</a></li>
+                        <li><a href="#" onclick="showPress()">Press</a></li>
+                        <li><a href="#" onclick="showSustainability()">Sustainability</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Get in Touch</h3>
+                    <div class="contact-info">
+                        <p>📧 support@manvue.com</p>
+                        <p>📞 1-800-MANVUE</p>
+                        <p>💬 Live Chat Available</p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="copyright">
+                    <p>&copy; 2024 MANVUE. All rights reserved.</p>
+                </div>
+                <div class="legal-links">
+                    <a href="#" onclick="showPrivacyPolicy()">Privacy Policy</a>
+                    <a href="#" onclick="showTermsOfService()">Terms of Service</a>
+                    <a href="#" onclick="showCookiePolicy()">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart Sidebar -->
+    <div id="cart-sidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h3>Shopping Cart</h3>
+            <button onclick="toggleCart()">✕</button>
+        </div>
+        <div id="cart-items" class="cart-items">
+            <p>Your cart is empty</p>
+        </div>
+    </div>
+
+    <!-- Wishlist Sidebar -->
+    <div id="wishlist-sidebar" class="wishlist-sidebar">
+        <div class="wishlist-header">
+            <h3>Wishlist</h3>
+            <button onclick="toggleWishlist()">✕</button>
+        </div>
+        <div id="wishlist-items" class="wishlist-items">
+            <p>Your wishlist is empty</p>
+        </div>
+    </div>
+
+    <!-- Voice Recognition Display -->
+    <div id="voice-recognition-display" class="voice-recognition-display" style="display: none;">
+        <div class="voice-status">
+            <div class="voice-icon">🎤</div>
+            <div class="voice-text">
+                <div id="voice-recognized-text">Listening...</div>
+                <div class="voice-confidence">Voice recognition active</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/script.js"></script>
+    <script>
+        // Winter Collection specific JavaScript
+        let currentView = 'grid';
+        let filteredProducts = [];
+
+        // Winter products data
+        const winterProducts = [
+            {
+                id: 13,
+                name: "Heavy Winter Parka",
+                price: 199.99,
+                originalPrice: 249.99,
+                category: "winter",
+                type: "jacket",
+                size: ["S", "M", "L", "XL", "XXL"],
+                color: ["Black", "Navy", "Charcoal"],
+                brand: "MANVUE Winter",
+                rating: 4.8,
+                reviews: 156,
+                image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=500&fit=crop&auto=format",
+                tags: ["parka", "down", "winter", "warm"],
+                inStock: true,
+                description: "Ultra-warm winter parka with down insulation and fur-trimmed hood"
+            },
+            {
+                id: 14,
+                name: "Cable Knit Sweater",
+                price: 79.99,
+                originalPrice: 99.99,
+                category: "winter",
+                type: "sweater",
+                size: ["S", "M", "L", "XL"],
+                color: ["Cream", "Charcoal", "Navy", "Burgundy"],
+                brand: "MANVUE Basics",
+                rating: 4.5,
+                reviews: 178,
+                image: "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400&h=500&fit=crop&auto=format",
+                tags: ["cable-knit", "wool", "classic", "warm", "winter"],
+                inStock: true,
+                description: "Classic cable knit sweater in premium wool blend"
+            },
+            {
+                id: 15,
+                name: "Leather Winter Boots",
+                price: 149.99,
+                originalPrice: 199.99,
+                category: "winter",
+                type: "footwear",
+                size: ["8", "9", "10", "11", "12"],
+                color: ["Brown", "Black", "Tan"],
+                brand: "MANVUE Footwear",
+                rating: 4.8,
+                reviews: 267,
+                image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=500&fit=crop&auto=format",
+                tags: ["boots", "leather", "waterproof", "insulated", "winter"],
+                inStock: true,
+                description: "Waterproof leather boots with thermal insulation"
+            },
+            {
+                id: 16,
+                name: "Cashmere Scarf",
+                price: 89.99,
+                originalPrice: 119.99,
+                category: "winter",
+                type: "accessory",
+                size: ["One Size"],
+                color: ["Charcoal", "Navy", "Camel", "Cream"],
+                brand: "MANVUE Luxe",
+                rating: 4.8,
+                reviews: 98,
+                image: "https://images.unsplash.com/photo-1601925260369-1a0b3b3b3b3b?w=400&h=500&fit=crop&auto=format",
+                tags: ["cashmere", "scarf", "luxury", "soft", "winter"],
+                inStock: true,
+                description: "Luxurious cashmere scarf in classic winter colors"
+            },
+            {
+                id: 17,
+                name: "Wool Trousers",
+                price: 99.99,
+                originalPrice: 129.99,
+                category: "winter",
+                type: "bottoms",
+                size: ["30", "32", "34", "36", "38"],
+                color: ["Charcoal", "Navy", "Brown"],
+                brand: "MANVUE Professional",
+                rating: 4.6,
+                reviews: 98,
+                image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&h=500&fit=crop&auto=format",
+                tags: ["wool", "trousers", "slim-fit", "premium", "winter"],
+                inStock: true,
+                description: "Premium wool trousers with modern slim fit"
+            },
+            {
+                id: 18,
+                name: "Turtleneck Sweater",
+                price: 69.99,
+                originalPrice: 89.99,
+                category: "winter",
+                type: "sweater",
+                size: ["S", "M", "L", "XL"],
+                color: ["Black", "Navy", "Charcoal", "Cream"],
+                brand: "MANVUE Basics",
+                rating: 4.6,
+                reviews: 145,
+                image: "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400&h=500&fit=crop&auto=format",
+                tags: ["turtleneck", "merino", "soft", "comfortable", "winter"],
+                inStock: true,
+                description: "Soft merino wool turtleneck for ultimate winter comfort"
+            },
+            {
+                id: 19,
+                name: "Wool Peacoat",
+                price: 189.99,
+                originalPrice: 239.99,
+                category: "winter",
+                type: "jacket",
+                size: ["S", "M", "L", "XL"],
+                color: ["Navy", "Charcoal", "Camel"],
+                brand: "MANVUE Professional",
+                rating: 4.6,
+                reviews: 189,
+                image: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=400&h=500&fit=crop&auto=format",
+                tags: ["wool", "peacoat", "double-breasted", "winter"],
+                inStock: true,
+                description: "Classic wool peacoat with double-breasted design and timeless appeal"
+            },
+            {
+                id: 20,
+                name: "Leather Gloves",
+                price: 49.99,
+                originalPrice: 69.99,
+                category: "winter",
+                type: "accessory",
+                size: ["S", "M", "L", "XL"],
+                color: ["Black", "Brown", "Tan"],
+                brand: "MANVUE Basics",
+                rating: 4.5,
+                reviews: 167,
+                image: "https://images.unsplash.com/photo-1601925260369-1a0b3b3b3b3b?w=400&h=500&fit=crop&auto=format",
+                tags: ["gloves", "leather", "touchscreen", "premium", "winter"],
+                inStock: true,
+                description: "Premium leather gloves with touchscreen compatibility"
+            }
+        ];
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            displayWinterProducts(winterProducts);
+            filteredProducts = winterProducts;
+        });
+
+        // Display winter products
+        function displayWinterProducts(products) {
+            const productsGrid = document.getElementById('products-grid');
+            if (!productsGrid) return;
+
+            if (products.length === 0) {
+                productsGrid.innerHTML = '<div class="no-products">No winter products found.</div>';
+                return;
+            }
+
+            productsGrid.innerHTML = products.map(product => `
+                <div class="product-card" data-product-id="${product.id}">
+                    <div class="product-image">
+                        <img src="${product.image}" alt="${product.name}" loading="lazy">
+                        <div class="product-badge">Winter</div>
+                        <div class="product-actions">
+                            <button class="btn-outline add-to-wishlist" onclick="addToWishlist(${product.id})">
+                                ♡
+                            </button>
+                            <button class="btn-primary add-to-cart" onclick="addToCart(${product.id})">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">${product.name}</h3>
+                        <p class="product-brand">${product.brand}</p>
+                        <div class="product-rating">
+                            <span class="stars">${'★'.repeat(Math.floor(product.rating))}${'☆'.repeat(5-Math.floor(product.rating))}</span>
+                            <span class="rating-text">(${product.reviews})</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">$${product.price}</span>
+                            <span class="original-price">$${product.originalPrice}</span>
+                            <span class="discount">${Math.round((1 - product.price/product.originalPrice) * 100)}% OFF</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Filter by product type
+        function filterByType(type) {
+            const filtered = winterProducts.filter(product => product.type === type);
+            displayWinterProducts(filtered);
+            filteredProducts = filtered;
+            
+            // Update section title
+            const sectionTitle = document.querySelector('#winter-products h2');
+            if (sectionTitle) {
+                const typeNames = {
+                    'jacket': 'Winter Jackets',
+                    'sweater': 'Winter Sweaters', 
+                    'footwear': 'Winter Boots',
+                    'accessory': 'Winter Accessories',
+                    'bottoms': 'Winter Bottoms'
+                };
+                sectionTitle.textContent = typeNames[type] || 'Winter Collection';
+            }
+        }
+
+        // Change view (grid/list)
+        function changeView(view) {
+            currentView = view;
+            const productsGrid = document.getElementById('products-grid');
+            const viewButtons = document.querySelectorAll('.view-btn');
+            
+            viewButtons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (view === 'list') {
+                productsGrid.classList.add('list-view');
+            } else {
+                productsGrid.classList.remove('list-view');
+            }
+        }
+
+        // Search functionality
+        function searchProducts() {
+            const searchInput = document.getElementById('main-search-input');
+            const searchTerm = searchInput.value.toLowerCase();
+            
+            if (!searchTerm) {
+                displayWinterProducts(winterProducts);
+                filteredProducts = winterProducts;
+                return;
+            }
+            
+            const filtered = winterProducts.filter(product => 
+                product.name.toLowerCase().includes(searchTerm) ||
+                product.brand.toLowerCase().includes(searchTerm) ||
+                product.tags.some(tag => tag.toLowerCase().includes(searchTerm)) ||
+                product.description.toLowerCase().includes(searchTerm)
+            );
+            
+            displayWinterProducts(filtered);
+            filteredProducts = filtered;
+        }
+
+        // Add to cart function
+        function addToCart(productId) {
+            const product = winterProducts.find(p => p.id === productId);
+            if (product) {
+                // Use the main cart functionality from script.js
+                if (window.addToCart) {
+                    window.addToCart(productId);
+                } else {
+                    alert(`${product.name} added to cart!`);
+                }
+            }
+        }
+
+        // Add to wishlist function
+        function addToWishlist(productId) {
+            const product = winterProducts.find(p => p.id === productId);
+            if (product) {
+                // Use the main wishlist functionality from script.js
+                if (window.addToWishlist) {
+                    window.addToWishlist(productId);
+                } else {
+                    alert(`${product.name} added to wishlist!`);
+                }
+            }
+        }
+
+        // Navigation functions
+        function trackOrder() {
+            const orderNumber = prompt('Please enter your order number:');
+            if (orderNumber) {
+                alert(`Tracking order #${orderNumber}...\n\nStatus: In Transit\nExpected Delivery: 2-3 business days\n\nYou can also track your order at: tracking.manvue.com`);
+            }
+        }
+
+        function storeLocator() {
+            alert('Store Locator\n\n📍 Find MANVUE stores near you:\n\n• New York - 123 Fashion Ave\n• Los Angeles - 456 Style Blvd\n• Chicago - 789 Trend St\n• Miami - 321 Winter Way\n\nVisit: stores.manvue.com for more locations');
+        }
+
+        function contactUs() {
+            alert('Contact Us\n\n📞 Phone: 1-800-MANVUE (1-800-626-883)\n📧 Email: support@manvue.com\n💬 Live Chat: Available 24/7\n⏰ Hours: Mon-Fri 9AM-9PM EST\n\nWe\'re here to help with your winter collection needs!');
+        }
+
+        function showLogin() {
+            const isLoggedIn = localStorage.getItem('userLoggedIn') === 'true';
+            if (isLoggedIn) {
+                const username = localStorage.getItem('username') || 'User';
+                alert(`Welcome back, ${username}!\n\n✅ You are logged in\n🛒 View your orders\n❤️ Check your wishlist\n⚙️ Manage your account`);
+            } else {
+                const action = confirm('Login Required\n\nWould you like to:\n• OK = Login\n• Cancel = Register');
+                if (action) {
+                    const username = prompt('Enter your email:');
+                    const password = prompt('Enter your password:');
+                    if (username && password) {
+                        localStorage.setItem('userLoggedIn', 'true');
+                        localStorage.setItem('username', username);
+                        alert(`Welcome back, ${username}!\n\n✅ Successfully logged in\n🛒 Access your orders\n❤️ View your wishlist`);
+                    }
+                } else {
+                    const newUsername = prompt('Create Account\n\nEnter your email:');
+                    const newPassword = prompt('Enter your password:');
+                    if (newUsername && newPassword) {
+                        localStorage.setItem('userLoggedIn', 'true');
+                        localStorage.setItem('username', newUsername);
+                        alert(`Welcome to MANVUE, ${newUsername}!\n\n✅ Account created successfully\n🛒 Start shopping\n❤️ Build your wishlist`);
+                    }
+                }
+            }
+        }
+
+        // Search by tag function
+        function searchByTag(tag) {
+            const searchInput = document.getElementById('main-search-input');
+            searchInput.value = tag;
+            searchProducts();
+        }
+
+        // Show all winter products
+        function showAllWinterProducts() {
+            displayWinterProducts(winterProducts);
+            filteredProducts = winterProducts;
+            
+            const sectionTitle = document.querySelector('#winter-products h2');
+            if (sectionTitle) {
+                sectionTitle.textContent = 'Winter Collection';
+            }
+        }
+
+        // Placeholder functions for footer links
+        function showHelpCenter() { alert('Help Center - Coming Soon!'); }
+        function showSizeGuide() { alert('Size Guide - Coming Soon!'); }
+        function showShippingInfo() { alert('Shipping Info - Coming Soon!'); }
+        function showReturns() { alert('Returns - Coming Soon!'); }
+        function showAboutUs() { alert('About Us - Coming Soon!'); }
+        function showCareers() { alert('Careers - Coming Soon!'); }
+        function showPress() { alert('Press - Coming Soon!'); }
+        function showSustainability() { alert('Sustainability - Coming Soon!'); }
+        function showPrivacyPolicy() { alert('Privacy Policy - Coming Soon!'); }
+        function showTermsOfService() { alert('Terms of Service - Coming Soon!'); }
+        function showCookiePolicy() { alert('Cookie Policy - Coming Soon!'); }
+    </script>
+</body>
+</html>

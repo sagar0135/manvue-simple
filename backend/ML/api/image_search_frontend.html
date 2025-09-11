@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Men's Fashion Store</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f5f5f5; }
+    .container { max-width: 800px; margin: auto; text-align: center; }
+    .product-grid { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-top: 20px; }
+    .product-card { background: white; padding: 15px; border-radius: 10px; width: 200px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+    .product-card img { width: 100%; border-radius: 10px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🛍️ Men's Fashion Store</h1>
+    <form id="uploadForm">
+      <input type="file" name="image" id="imageInput" accept="image/*" required>
+      <button type="submit">Upload & Find Similar</button>
+    </form>
+    <div class="product-grid" id="results"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById("uploadForm");
+    const resultsDiv = document.getElementById("results");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const formData = new FormData();
+      formData.append("image", document.getElementById("imageInput").files[0]);
+
+      const response = await fetch("/upload", { method: "POST", body: formData });
+      const data = await response.json();
+
+      resultsDiv.innerHTML = "";
+      data.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "product-card";
+        card.innerHTML = `
+          <img src="/image/${item.filename}" alt="${item.name}">
+          <h3>${item.name}</h3>
+          <p>Category: ${item.category || "N/A"}</p>
+        `;
+        resultsDiv.appendChild(card);
+      });
+    });
+  </script>
+</body>
+</html>
