@@ -913,15 +913,21 @@ function addToCart() {
 
 // Add to wishlist
 function addToWishlist() {
+    // Prevent multiple rapid clicks
+    if (window.wishlistButtonClicked) return;
+    window.wishlistButtonClicked = true;
+    
     // Check if user is authenticated
     if (!currentUser) {
         showMessage('Please sign in to add items to your wishlist.', 'error');
         showLogin();
+        window.wishlistButtonClicked = false;
         return;
     }
     
     if (!currentProduct) {
         showMessage('Product information not available.', 'error');
+        window.wishlistButtonClicked = false;
         return;
     }
     
@@ -954,6 +960,20 @@ function addToWishlist() {
     } else {
         showMessage('Already in wishlist!', 'info');
     }
+    
+    // Add visual feedback
+    const button = event.target;
+    if (button) {
+        button.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+            button.style.transform = '';
+        }, 150);
+    }
+    
+    // Reset click prevention after a short delay
+    setTimeout(() => {
+        window.wishlistButtonClicked = false;
+    }, 500);
 }
 
 // Image zoom functionality

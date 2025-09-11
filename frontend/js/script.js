@@ -243,6 +243,109 @@ const fallbackProducts = [
         tags: ["wool", "winter", "scarf", "warm", "sophisticated"],
         inStock: true,
         description: "Premium wool scarf with classic patterns. Essential winter accessory for style and warmth."
+    },
+    // Winter Collection Products
+    {
+        id: 13,
+        name: "Heavy Winter Parka",
+        price: 199.99,
+        originalPrice: 249.99,
+        category: "winter",
+        type: "jacket",
+        size: ["S", "M", "L", "XL", "XXL"],
+        color: ["Black", "Navy", "Charcoal"],
+        brand: "MANVUE Winter",
+        rating: 4.8,
+        reviews: 156,
+        image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=500&fit=crop&auto=format",
+        tags: ["parka", "down", "winter", "warm"],
+        inStock: true,
+        description: "Ultra-warm winter parka with down insulation and fur-trimmed hood"
+    },
+    {
+        id: 14,
+        name: "Cable Knit Sweater",
+        price: 79.99,
+        originalPrice: 99.99,
+        category: "winter",
+        type: "sweater",
+        size: ["S", "M", "L", "XL"],
+        color: ["Cream", "Charcoal", "Navy", "Burgundy"],
+        brand: "MANVUE Basics",
+        rating: 4.5,
+        reviews: 178,
+        image: "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400&h=500&fit=crop&auto=format",
+        tags: ["cable-knit", "wool", "classic", "warm", "winter"],
+        inStock: true,
+        description: "Classic cable knit sweater in premium wool blend"
+    },
+    {
+        id: 15,
+        name: "Leather Winter Boots",
+        price: 149.99,
+        originalPrice: 199.99,
+        category: "winter",
+        type: "footwear",
+        size: ["8", "9", "10", "11", "12"],
+        color: ["Brown", "Black", "Tan"],
+        brand: "MANVUE Footwear",
+        rating: 4.8,
+        reviews: 267,
+        image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=500&fit=crop&auto=format",
+        tags: ["boots", "leather", "waterproof", "insulated", "winter"],
+        inStock: true,
+        description: "Waterproof leather boots with thermal insulation"
+    },
+    {
+        id: 16,
+        name: "Cashmere Scarf",
+        price: 89.99,
+        originalPrice: 119.99,
+        category: "winter",
+        type: "accessory",
+        size: ["One Size"],
+        color: ["Charcoal", "Navy", "Camel", "Cream"],
+        brand: "MANVUE Luxe",
+        rating: 4.8,
+        reviews: 98,
+        image: "https://images.unsplash.com/photo-1601925260369-1a0b3b3b3b3b?w=400&h=500&fit=crop&auto=format",
+        tags: ["cashmere", "scarf", "luxury", "soft", "winter"],
+        inStock: true,
+        description: "Luxurious cashmere scarf in classic winter colors"
+    },
+    {
+        id: 17,
+        name: "Wool Trousers",
+        price: 99.99,
+        originalPrice: 129.99,
+        category: "winter",
+        type: "bottoms",
+        size: ["30", "32", "34", "36", "38"],
+        color: ["Charcoal", "Navy", "Brown"],
+        brand: "MANVUE Professional",
+        rating: 4.6,
+        reviews: 98,
+        image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&h=500&fit=crop&auto=format",
+        tags: ["wool", "trousers", "slim-fit", "premium", "winter"],
+        inStock: true,
+        description: "Premium wool trousers with modern slim fit"
+    },
+    {
+        id: 18,
+        name: "Turtleneck Sweater",
+        price: 69.99,
+        originalPrice: 89.99,
+        category: "winter",
+        type: "sweater",
+        size: ["S", "M", "L", "XL"],
+        color: ["Black", "Navy", "Charcoal", "Cream"],
+        brand: "MANVUE Basics",
+        rating: 4.6,
+        reviews: 145,
+        image: "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400&h=500&fit=crop&auto=format",
+        tags: ["turtleneck", "merino", "soft", "comfortable", "winter"],
+        inStock: true,
+        description: "Soft merino wool turtleneck for ultimate winter comfort"
     }
 ];
 
@@ -379,34 +482,591 @@ function searchProducts() {
     toggleSearch();
 }
 
-// Voice Search Function (Basic Implementation)
+// Responsive Voice Search Function - Immediate Feedback
 function startVoiceSearch() {
-    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    console.log('🎤 Starting voice search...');
+    
+    // Check browser support
+    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+        alert('Voice search not supported in this browser. Please use Chrome or Edge.');
+        return;
+    }
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+    
+    // Optimized configuration for responsiveness
         recognition.lang = 'en-US';
         recognition.continuous = false;
-        recognition.interimResults = false;
+    recognition.interimResults = true;  // Show results as you speak
+    recognition.maxAlternatives = 1;
+    
+    // Get elements
+    const voiceBtn = document.querySelector('.voice-btn');
+    const searchInput = document.getElementById('main-search-input');
+    
+    // Immediate visual feedback
+    if (voiceBtn) {
+        voiceBtn.textContent = '🔴';
+        voiceBtn.style.background = '#ff4444';
+        voiceBtn.style.color = 'white';
+    }
+    
+    // Show listening indicator immediately
+    showInstantFeedback('🎤 Listening... Speak now!', 'listening');
         
         recognition.onstart = function() {
-            console.log('Voice search started');
-            alert('Voice search started! Speak now...');
+        console.log('🎤 Voice recognition started successfully');
+        if (searchInput) {
+            searchInput.placeholder = '🔴 Listening... Speak now';
+            searchInput.style.borderColor = '#ff4444';
+        }
         };
         
         recognition.onresult = function(event) {
-            const transcript = event.results[0][0].transcript;
-            document.getElementById('search-input').value = transcript;
-            searchProducts();
+        let finalTranscript = '';
+        let interimTranscript = '';
+        
+        // Process all results for immediate feedback
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+            const transcript = event.results[i][0].transcript;
+            
+            if (event.results[i].isFinal) {
+                finalTranscript += transcript;
+            } else {
+                interimTranscript += transcript;
+            }
+        }
+        
+        // Show interim results immediately
+        if (interimTranscript) {
+            console.log('Hearing (interim):', interimTranscript);
+            if (searchInput) {
+                searchInput.value = interimTranscript;
+            }
+            showInstantFeedback(`Hearing: "${interimTranscript}"`, 'processing');
+        }
+        
+        // Process final results
+        if (finalTranscript) {
+            console.log('Final heard:', finalTranscript);
+            
+            if (searchInput) {
+                searchInput.value = finalTranscript;
+            }
+            
+            showInstantFeedback(`Processing: "${finalTranscript}"`, 'success');
+            
+            // Process the command immediately
+            setTimeout(() => {
+                processVoiceCommand(finalTranscript);
+            }, 100);
+        }
         };
         
         recognition.onerror = function(event) {
-            console.error('Voice search error:', event.error);
-            alert('Voice search not available. Please type your search.');
-        };
+        console.error('Voice error:', event.error);
         
+        let errorMsg = 'Voice recognition failed. ';
+        switch(event.error) {
+            case 'no-speech':
+                errorMsg = 'No speech detected. Please try again.';
+                break;
+            case 'audio-capture':
+                errorMsg = 'Microphone not found. Please check your microphone.';
+                break;
+            case 'not-allowed':
+                errorMsg = 'Microphone access denied. Please allow microphone access.';
+                break;
+            default:
+                errorMsg += 'Please try again.';
+        }
+        
+        showInstantFeedback(errorMsg, 'error');
+        resetVoiceButton();
+    };
+    
+    recognition.onend = function() {
+        console.log('Voice recognition ended');
+        resetVoiceButton();
+        
+        setTimeout(() => {
+            hideInstantFeedback();
+        }, 3000);
+    };
+    
+    // Start recognition with error handling
+    try {
         recognition.start();
-    } else {
-        alert('Voice search not supported in this browser. Please type your search.');
+        console.log('Recognition started successfully');
+    } catch (error) {
+        console.error('Failed to start voice recognition:', error);
+        showInstantFeedback('Failed to start voice recognition. Please try again.', 'error');
+        resetVoiceButton();
     }
+}
+
+// Reset voice button appearance
+function resetVoiceButton() {
+    const voiceBtn = document.querySelector('.voice-btn');
+    const searchInput = document.getElementById('main-search-input');
+    
+    if (voiceBtn) {
+        voiceBtn.textContent = '🎤';
+        voiceBtn.style.background = '';
+        voiceBtn.style.color = '';
+    }
+    
+    if (searchInput) {
+        searchInput.placeholder = 'Search products, brands, styles...';
+        searchInput.style.borderColor = '';
+    }
+}
+
+// Instant feedback function for immediate user response
+function showInstantFeedback(message, type = 'info') {
+    console.log(`[VOICE] ${message}`);
+    
+    // Remove any existing feedback
+    hideInstantFeedback();
+    
+    // Create feedback element
+    const feedback = document.createElement('div');
+    feedback.id = 'voice-instant-feedback';
+    feedback.style.cssText = `
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: ${type === 'error' ? '#ff4444' : type === 'success' ? '#28a745' : type === 'processing' ? '#ffc107' : '#17a2b8'};
+        color: white;
+        padding: 15px 25px;
+        border-radius: 25px;
+        font-weight: 600;
+        font-size: 16px;
+        z-index: 10001;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        animation: slideDown 0.3s ease-out;
+        text-align: center;
+        min-width: 300px;
+        max-width: 500px;
+    `;
+    
+    feedback.innerHTML = message;
+    document.body.appendChild(feedback);
+    
+    // Add CSS animation
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideDown {
+            from { 
+                opacity: 0; 
+                transform: translateX(-50%) translateY(-20px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateX(-50%) translateY(0); 
+            }
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+// Hide instant feedback
+function hideInstantFeedback() {
+    const existing = document.getElementById('voice-instant-feedback');
+    if (existing) {
+        existing.remove();
+    }
+}
+
+// Process voice command and navigate to results - SIMPLIFIED & RESPONSIVE
+function processVoiceCommand(transcript) {
+    console.log('🎯 Processing voice command:', transcript);
+    
+    // Show immediate feedback
+    showInstantFeedback(`Searching for: "${transcript}"`, 'processing');
+    
+    // Clean up the transcript
+    const searchTerm = transcript.toLowerCase().trim();
+    
+    // Extract actual search query (remove command words)
+    let query = searchTerm;
+    if (searchTerm.includes('show me')) {
+        query = searchTerm.replace('show me', '').trim();
+    } else if (searchTerm.includes('show')) {
+        query = searchTerm.replace('show', '').trim();
+    } else if (searchTerm.includes('find')) {
+        query = searchTerm.replace('find', '').trim();
+    } else if (searchTerm.includes('search for')) {
+        query = searchTerm.replace('search for', '').trim();
+    } else if (searchTerm.includes('search')) {
+        query = searchTerm.replace('search', '').trim();
+    }
+    
+    // If query is empty after cleanup, use original transcript
+    if (!query || query.length < 2) {
+        query = transcript.trim();
+    }
+    
+    console.log('Final search query:', query);
+    
+    // Perform the search immediately
+    performVoiceSearch(query);
+}
+
+// Simplified voice search function - RESPONSIVE & IMMEDIATE
+function performVoiceSearch(query) {
+    console.log('🔍 Performing voice search for:', query);
+    
+    // Update search input immediately
+    const searchInput = document.getElementById('main-search-input');
+    if (searchInput) {
+        searchInput.value = query;
+    }
+    
+    // Use existing search function if available, otherwise create simple search
+    if (typeof searchProducts === 'function') {
+        console.log('Using existing searchProducts function');
+        searchProducts(query);
+        showInstantFeedback(`✅ Searching for "${query}"`, 'success');
+    } else {
+        console.log('Using simple product search');
+        simpleProductSearch(query);
+    }
+    
+    // Show what we searched for with recommendations
+    setTimeout(() => {
+        showVoiceRecommendations(query);
+    }, 1000);
+}
+
+// Simple product search for voice commands
+function simpleProductSearch(query) {
+    console.log('🏷️ Simple search for:', query);
+    
+    // Get all products
+    const allProducts = window.products || [];
+    console.log('Available products:', allProducts.length);
+    
+    if (allProducts.length === 0) {
+        showInstantFeedback('⚠️ No products loaded. Please refresh the page.', 'error');
+        return;
+    }
+    
+    // Search through products
+    const searchTerms = query.toLowerCase().split(' ');
+    const results = allProducts.filter(product => {
+        const productInfo = `${product.title} ${product.description || ''} ${product.category || ''} ${product.type || ''}`.toLowerCase();
+        
+        // Check if any search term matches
+        return searchTerms.some(term => 
+            productInfo.includes(term) || 
+            product.title.toLowerCase().includes(term)
+        );
+    });
+    
+    console.log('Search results:', results.length);
+    
+    if (results.length > 0) {
+        // Display results using existing function
+        if (typeof displayProducts === 'function') {
+            displayProducts(results);
+        }
+        
+        // Show products section
+        if (typeof showSection === 'function') {
+            showSection('products');
+        }
+        
+        showInstantFeedback(`✅ Found ${results.length} results for "${query}"`, 'success');
+        
+        // Highlight first result
+        setTimeout(() => {
+            highlightFirstResult();
+        }, 500);
+    } else {
+        showInstantFeedback(`❌ No results found for "${query}". Try: "white shirt", "black jeans", "blue t-shirt"`, 'error');
+    }
+}
+
+// Highlight the first search result
+function highlightFirstResult() {
+    const firstProduct = document.querySelector('.product-card, .product-item');
+    if (firstProduct) {
+        firstProduct.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        firstProduct.style.border = '3px solid #ff6b6b';
+        firstProduct.style.boxShadow = '0 0 20px rgba(255, 107, 107, 0.5)';
+        
+        // Remove highlight after 3 seconds
+        setTimeout(() => {
+            firstProduct.style.border = '';
+            firstProduct.style.boxShadow = '';
+        }, 3000);
+    }
+}
+
+// Simple voice recommendations
+function showVoiceRecommendations(query) {
+    const recommendations = [];
+    const lowerQuery = query.toLowerCase();
+    
+    // Color-based recommendations
+    if (lowerQuery.includes('white')) {
+        recommendations.push('💡 Try: "off white shirt", "cream t-shirt", "light blue jeans"');
+    } else if (lowerQuery.includes('black')) {
+        recommendations.push('💡 Try: "dark gray shirt", "navy pants", "charcoal hoodie"');
+    } else if (lowerQuery.includes('blue')) {
+        recommendations.push('💡 Try: "navy shirt", "light blue jeans", "denim jacket"');
+    }
+    
+    // Category recommendations
+    if (lowerQuery.includes('shirt')) {
+        recommendations.push('💡 Complete the look: "black jeans", "white sneakers"');
+    } else if (lowerQuery.includes('jeans') || lowerQuery.includes('pants')) {
+        recommendations.push('💡 Pair with: "white t-shirt", "blue shirt"');
+    }
+    
+    // General recommendations
+    recommendations.push('💡 Popular searches: "white t-shirt", "black jeans", "blue shirt"');
+    
+    // Show recommendations if any
+    if (recommendations.length > 0) {
+        setTimeout(() => {
+            showSimpleRecommendations(recommendations);
+        }, 2000);
+    }
+}
+
+// Show simple recommendations popup
+function showSimpleRecommendations(recommendations) {
+    const recDiv = document.createElement('div');
+    recDiv.id = 'voice-simple-recommendations';
+    recDiv.style.cssText = `
+        position: fixed;
+        top: 80px;
+        right: 20px;
+        background: rgba(255, 255, 255, 0.95);
+        border: 2px solid #28a745;
+        border-radius: 12px;
+        padding: 15px 20px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        z-index: 9999;
+        max-width: 300px;
+        font-family: Arial, sans-serif;
+        animation: slideIn 0.3s ease-out;
+    `;
+    
+    const recHtml = recommendations.map(rec => 
+        `<div style="margin: 8px 0; padding: 8px; background: #f8f9fa; border-radius: 6px; font-size: 13px; color: #333; cursor: pointer;" onclick="searchFromRecommendation('${rec.replace('💡 Try: ', '').replace(/"/g, '')}')">${rec}</div>`
+    ).join('');
+    
+    recDiv.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+            <span style="font-size: 18px;">💡</span>
+            <strong style="color: #333;">Suggestions</strong>
+        </div>
+        ${recHtml}
+        <div style="text-align: center; margin-top: 10px;">
+            <button onclick="document.getElementById('voice-simple-recommendations').remove()" style="background: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Close</button>
+        </div>
+    `;
+    
+    // Remove existing recommendations
+    const existing = document.getElementById('voice-simple-recommendations');
+    if (existing) existing.remove();
+    
+    document.body.appendChild(recDiv);
+    
+    // Auto-hide after 10 seconds
+    setTimeout(() => {
+        if (recDiv && recDiv.parentNode) {
+            recDiv.remove();
+        }
+    }, 10000);
+}
+
+// Search from recommendation click
+function searchFromRecommendation(query) {
+    const cleanQuery = query.replace(/"/g, '').trim();
+    console.log('Searching from recommendation:', cleanQuery);
+    
+    document.getElementById('voice-simple-recommendations')?.remove();
+    performVoiceSearch(cleanQuery);
+}
+
+// Highlight the best matching product
+function highlightBestMatch(results, query) {
+    if (results.length === 0) return;
+    
+    // Find the best match (exact title match or closest match)
+    const bestMatch = results.find(product => 
+        product.title.toLowerCase().includes(query.toLowerCase())
+    ) || results[0];
+    
+    // Scroll to and highlight the best match
+    setTimeout(() => {
+        const productElement = document.querySelector(`[data-product-id="${bestMatch.id}"]`);
+        if (productElement) {
+            productElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            productElement.style.border = '3px solid #ff6b6b';
+            productElement.style.boxShadow = '0 0 20px rgba(255, 107, 107, 0.5)';
+            
+            // Remove highlight after 3 seconds
+            setTimeout(() => {
+                productElement.style.border = '';
+                productElement.style.boxShadow = '';
+            }, 3000);
+        }
+    }, 500);
+}
+
+// Show voice transcript on screen
+function showVoiceTranscript(transcript) {
+    // Create or update transcript display
+    let transcriptDiv = document.getElementById('voice-transcript-display');
+    
+    if (!transcriptDiv) {
+        transcriptDiv = document.createElement('div');
+        transcriptDiv.id = 'voice-transcript-display';
+        transcriptDiv.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid #ff6b6b;
+            border-radius: 12px;
+            padding: 15px 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            z-index: 10000;
+            max-width: 300px;
+            font-family: Arial, sans-serif;
+        `;
+        document.body.appendChild(transcriptDiv);
+    }
+    
+    transcriptDiv.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+            <span style="font-size: 20px;">🎤</span>
+            <strong style="color: #333;">Voice Command</strong>
+        </div>
+        <div style="color: #666; font-size: 14px;">"${transcript}"</div>
+    `;
+    
+    // Auto-hide after 5 seconds
+    setTimeout(() => {
+        if (transcriptDiv && transcriptDiv.parentNode) {
+            transcriptDiv.remove();
+        }
+    }, 5000);
+}
+
+// Show voice search results
+function showVoiceResult(message, type = 'info') {
+    let resultDiv = document.getElementById('voice-result-display');
+    
+    if (!resultDiv) {
+        resultDiv = document.createElement('div');
+        resultDiv.id = 'voice-result-display';
+        resultDiv.style.cssText = `
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 15px 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            z-index: 9999;
+            max-width: 300px;
+            font-family: Arial, sans-serif;
+        `;
+        document.body.appendChild(resultDiv);
+    }
+    
+    const colors = {
+        success: '#28a745',
+        warning: '#ffc107',
+        error: '#dc3545',
+        info: '#17a2b8'
+    };
+    
+    const icons = {
+        success: '✅',
+        warning: '⚠️',
+        error: '❌',
+        info: 'ℹ️'
+    };
+    
+    resultDiv.style.border = `2px solid ${colors[type]}`;
+    
+    resultDiv.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 18px;">${icons[type]}</span>
+            <div style="color: #333; font-size: 14px;">${message}</div>
+        </div>
+    `;
+    
+    // Auto-hide after 4 seconds
+    setTimeout(() => {
+        if (resultDiv && resultDiv.parentNode) {
+            resultDiv.remove();
+        }
+    }, 4000);
+}
+
+// Show recommendations
+function showRecommendations(recommendations) {
+    let recDiv = document.getElementById('voice-recommendations-display');
+    
+    if (!recDiv) {
+        recDiv = document.createElement('div');
+        recDiv.id = 'voice-recommendations-display';
+        recDiv.style.cssText = `
+            position: fixed;
+            top: 140px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid #28a745;
+            border-radius: 12px;
+            padding: 15px 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            z-index: 9998;
+            max-width: 320px;
+            font-family: Arial, sans-serif;
+        `;
+        document.body.appendChild(recDiv);
+    }
+    
+    const recHtml = recommendations.map(rec => 
+        `<div style="margin: 8px 0; padding: 8px; background: #f8f9fa; border-radius: 6px; font-size: 13px; color: #333;">${rec}</div>`
+    ).join('');
+    
+    recDiv.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+            <span style="font-size: 18px;">💡</span>
+            <strong style="color: #333;">Recommendations</strong>
+        </div>
+        ${recHtml}
+    `;
+    
+    // Auto-hide after 8 seconds
+    setTimeout(() => {
+        if (recDiv && recDiv.parentNode) {
+            recDiv.remove();
+        }
+    }, 8000);
+}
+
+// Show search suggestions when no results found
+function showSearchSuggestions(originalQuery) {
+    const suggestions = [
+        'Try "white shirt" or "black t-shirt"',
+        'Search for "casual wear" or "formal wear"',
+        'Look for "jeans", "pants", or "jackets"',
+        'Try color + item: "blue jeans", "red shirt"'
+    ];
+    
+    showRecommendations(suggestions);
 }
 
 // Enhanced ML Search Functions
@@ -845,25 +1505,42 @@ function applyAllFilters() {
 
 // Updated showDeals function
 function showDeals() {
-    // Filter products to show only discounted items
-    const discountedProducts = products.filter(product => 
-        product.originalPrice && product.originalPrice > product.price
-    );
-    displayProducts(discountedProducts);
+    // Show saved/wishlist items instead of discounted products
+    const savedDeals = JSON.parse(localStorage.getItem('wishlist')) || [];
+    
+    if (savedDeals.length === 0) {
+        showMessage('No saved deals found. Add items to your wishlist to see them here!', 'info');
+        return;
+    }
+    
+    // Convert wishlist items to product format for display
+    const wishlistProducts = savedDeals.map(item => ({
+        id: item.id,
+        name: item.title || item.name,
+        price: item.price,
+        image: item.image_url || item.image,
+        category: item.category || 'Saved Deals',
+        description: item.description || 'Your saved item',
+        originalPrice: item.originalPrice,
+        discount: item.discount
+    }));
+    
+    displayProducts(wishlistProducts);
     const productsSection = document.getElementById('products');
     if (productsSection) {
         productsSection.scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    // Update section title to show it's displaying saved deals
+    const sectionTitle = document.querySelector('#products h2');
+    if (sectionTitle) {
+        sectionTitle.textContent = `Your Saved Deals (${savedDeals.length} items)`;
     }
 }
 
-// Updated showAllProducts function
+// Updated showAllProducts function - now redirects to dedicated page
 function showAllProducts() {
-    currentPage = 1;
-    displayProducts(products); // Show all API-loaded products
-    const productsSection = document.getElementById('products');
-    if (productsSection) {
-        productsSection.scrollIntoView({ behavior: 'smooth' });
-    }
+    window.location.href = 'all-products.html';
 }
 
 function filterProducts(category) {
@@ -1807,11 +2484,30 @@ function updateWishlistItems() {
 }
 
 function addToWishlist(productId) {
+    // Prevent multiple rapid clicks
+    if (window.wishlistButtonClicked) return;
+    window.wishlistButtonClicked = true;
+    
     const product = products.find(p => p.id === productId);
     if (product && !wishlist.find(item => item.id === productId)) {
         wishlist.push(product);
         showMessage(`${product.name} added to wishlist!`);
+        updateWishlistItems();
+        
+        // Add visual feedback
+        const button = event.target;
+        if (button) {
+            button.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                button.style.transform = '';
+            }, 150);
+        }
     }
+    
+    // Reset click prevention after a short delay
+    setTimeout(() => {
+        window.wishlistButtonClicked = false;
+    }, 500);
 }
 
 function removeFromWishlist(index) {
@@ -1821,14 +2517,36 @@ function removeFromWishlist(index) {
 
 // Deal functions
 function showDeals() {
-    // Filter products to show only discounted items
-    const discountedProducts = products.filter(product => 
-        product.originalPrice && product.originalPrice > product.price
-    );
-    displayProducts(discountedProducts);
+    // Show saved/wishlist items instead of discounted products
+    const savedDeals = JSON.parse(localStorage.getItem('wishlist')) || [];
+    
+    if (savedDeals.length === 0) {
+        showMessage('No saved deals found. Add items to your wishlist to see them here!', 'info');
+        return;
+    }
+    
+    // Convert wishlist items to product format for display
+    const wishlistProducts = savedDeals.map(item => ({
+        id: item.id,
+        name: item.title || item.name,
+        price: item.price,
+        image: item.image_url || item.image,
+        category: item.category || 'Saved Deals',
+        description: item.description || 'Your saved item',
+        originalPrice: item.originalPrice,
+        discount: item.discount
+    }));
+    
+    displayProducts(wishlistProducts);
     const productsSection = document.getElementById('products');
     if (productsSection) {
         productsSection.scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    // Update section title to show it's displaying saved deals
+    const sectionTitle = document.querySelector('#products h2');
+    if (sectionTitle) {
+        sectionTitle.textContent = `Your Saved Deals (${savedDeals.length} items)`;
     }
 }
 
@@ -1838,6 +2556,37 @@ function showAllProducts() {
     const productsSection = document.getElementById('products');
     if (productsSection) {
         productsSection.scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    // Reset section title to default
+    const sectionTitle = document.querySelector('#products h2');
+    if (sectionTitle) {
+        sectionTitle.textContent = 'All Products';
+    }
+}
+
+// Winter Collection function
+function showWinterCollection() {
+    // Filter products to show only winter collection items
+    const winterProducts = products.filter(product => 
+        product.category === 'winter' || product.tags.includes('winter')
+    );
+    
+    if (winterProducts.length === 0) {
+        showMessage('Winter collection coming soon!', 'info');
+        return;
+    }
+    
+    displayProducts(winterProducts);
+    const productsSection = document.getElementById('products');
+    if (productsSection) {
+        productsSection.scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    // Update section title to show it's displaying winter collection
+    const sectionTitle = document.querySelector('#products h2');
+    if (sectionTitle) {
+        sectionTitle.textContent = `Winter Collection (${winterProducts.length} items)`;
     }
 }
 

@@ -20,23 +20,26 @@
     <!-- Header -->
     <header class="header">
         <div class="container">
-            <!-- Logo - Home Button -->
-            <div class="logo">
-                <h1><a href="#" onclick="goHome()" style="text-decoration: none; color: inherit; cursor: pointer;">MANVUE</a></h1>
-            </div>
-
-            <!-- Long Search Bar -->
-            <div class="main-search-bar">
-                <input type="text" id="main-search-input" placeholder="Search products, brands, styles...">
-                <button onclick="searchProducts()">Search</button>
+            <div class="header-content">
+                <div class="logo">
+                    <a href="#" onclick="goHome()" style="text-decoration: none; color: inherit; cursor: pointer;">
+                        <h1>MANVUE</h1>
+                        <span class="logo-subtitle">Premium Fashion</span>
+                    </a>
+                </div>
+                
+                <!-- Search Bar -->
+                <div class="main-search-bar">
+                    <input type="text" id="main-search-input" placeholder="Search products, brands, styles..." class="search-input">
+                    <button class="search-btn" onclick="searchProducts()">🔍</button>
+                </div>
                 <button class="voice-btn" onclick="startVoiceSearch()">🎤</button>
-            </div>
-
-            <!-- Header Actions -->
-            <div class="header-actions">
-                <div class="wishlist-icon" onclick="toggleWishlist()">♡</div>
-                <div class="cart-icon" onclick="toggleCart()">
-                    🛒 <span id="cart-count">0</span>
+                
+                <div class="header-actions">
+                    <div class="wishlist-icon" onclick="toggleWishlist()">♡</div>
+                    <div class="cart-icon" onclick="toggleCart()">
+                        🛒 <span id="cart-count">0</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -76,11 +79,11 @@
         <section class="hero-banner">
             <div class="hero-content">
                 <h2>Winter Collection</h2>
-                <p>Discover the latest trends in men's fashion</p>
-                <button class="cta-btn" onclick="showSection('new-arrivals')">Shop Now</button>
+                <p>Keep yourself warmed up</p>
+                <button class="cta-btn" onclick="window.location.href='winter-collection.html'">Shop Winter Collection</button>
             </div>
             <div class="hero-image">
-                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop&auto=format" alt="Men's Fashion">
+                <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=600&fit=crop&auto=format" alt="Men's Fashion">
             </div>
         </section>
 
@@ -102,7 +105,7 @@
                         <h3>Bottoms</h3>
                     </div>
                     <div class="category-card" onclick="window.location.href='categories/bottoms/index.html'">
-                        <img src="https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=300&h=200&fit=crop&auto=format" alt="Footwear">
+                        <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=300&h=200&fit=crop&auto=format" alt="Footwear">
                         <h3>Footwear</h3>
                     </div>
                     <div class="category-card" onclick="window.location.href='categories/jackets/index.html'">
@@ -110,7 +113,7 @@
                         <h3>Jackets</h3>
                     </div>
                     <div class="category-card" onclick="showDeals()">
-                        <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=300&h=200&fit=crop&auto=format" alt="Super Deals">
+                        <img src="https://images.unsplash.com/photo-1607082349566-187342175e2f?w=300&h=200&fit=crop&auto=format" alt="Super Deals">
                         <h3>Super Deals</h3>
                     </div>
                 </div>
@@ -118,96 +121,6 @@
         </section>
 
         
-
-        <!-- Products Section -->
-        <section id="products" class="products-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2>New Arrivals</h2>
-                    <div class="view-controls">
-                        <button class="view-btn active" onclick="changeView('grid')">Grid</button>
-                        <button class="view-btn" onclick="changeView('list')">List</button>
-                        <select id="sort-select" onchange="sortProducts()">
-                            <option value="name">Sort by Name</option>
-                            <option value="price-low">Price: Low to High</option>
-                            <option value="price-high">Price: High to Low</option>
-                            <option value="rating">Highest Rated</option>
-                            <option value="newest">Newest First</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Advanced Filters -->
-                <div class="filter-section">
-                    <!-- Category Filters -->
-                    <div class="filter-group">
-                        <h4>Category</h4>
-                        <div class="filters">
-                            <button class="filter-btn active" onclick="filterProducts('all')">All Products</button>
-                            <button class="filter-btn" onclick="filterProducts('accessories')">Accessories</button>
-                        </div>
-                    </div>
-
-                    <!-- Type Filters -->
-                    <div class="filter-group">
-                        <h4>Type</h4>
-                        <div class="filters">
-                            <button class="filter-btn" onclick="filterByType('tops')">Tops</button>
-                            <button class="filter-btn" onclick="filterByType('bottoms')">Bottoms</button>
-                            <button class="filter-btn" onclick="filterByType('shoes')">Shoes</button>
-                            <button class="filter-btn" onclick="filterByType('outerwear')">Outerwear</button>
-                        </div>
-                    </div>
-
-                    <!-- Price Range -->
-                    <div class="filter-group">
-                        <h4>Price Range</h4>
-                        <div class="price-filter">
-                            <input type="range" id="price-min" min="0" max="250" value="0" oninput="updatePriceFilter()">
-                            <input type="range" id="price-max" min="0" max="250" value="250" oninput="updatePriceFilter()">
-                            <div class="price-display">
-                                £<span id="price-min-display">0</span> - £<span id="price-max-display">250</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Brand Filter -->
-                    <div class="filter-group">
-                        <h4>Brand</h4>
-                        <select id="brand-filter" onchange="filterByBrand()">
-                            <option value="">All Brands</option>
-                            <option value="MANVUE Basics">MANVUE Basics</option>
-                            <option value="MANVUE Denim">MANVUE Denim</option>
-                            <option value="SportMax">SportMax</option>
-                            <option value="MANVUE Professional">MANVUE Professional</option>
-                            <option value="LuxeLeather">LuxeLeather</option>
-                        </select>
-                    </div>
-
-                    <!-- In Stock Filter -->
-                    <div class="filter-group">
-                        <label class="checkbox-label">
-                            <input type="checkbox" id="in-stock-filter" onchange="filterByStock()" checked>
-                            <span>In Stock Only</span>
-                        </label>
-                    </div>
-
-                    <!-- Clear Filters -->
-                    <div class="filter-group">
-                        <button class="clear-filters-btn" onclick="clearAllFilters()">Clear All Filters</button>
-                    </div>
-                </div>
-
-                <!-- Results Info -->
-                <div class="results-info">
-                    <span id="results-count">Showing all products</span>
-                </div>
-
-                <!-- Product Grid -->
-                <div id="product-grid" class="product-grid">
-                    <!-- Products will be loaded here -->
-                </div>
-
                 <!-- Load More Button -->
                 <div class="load-more-section">
                     <button id="load-more-btn" class="btn-secondary" onclick="loadMoreProducts()" style="display: none;">
@@ -217,7 +130,7 @@
 
                 <!-- View All Button -->
                 <div class="view-all-section">
-                    <button class="btn-outline" onclick="showAllProducts()">View ALL Products</button>
+                    <button class="btn-outline" onclick="window.location.href='all-products.html'">View ALL Products</button>
                 </div>
             </div>
         </section>

@@ -4,6 +4,7 @@ import shirts from './shirts.js';
 import bottoms from './bottoms.js';
 import jackets from './jackets.js';
 import accessories from './accessories.js';
+import winterCollection from './winter-collection.js';
 
 // Combine all product categories
 const allProducts = [
@@ -11,7 +12,8 @@ const allProducts = [
     ...shirts,
     ...bottoms,
     ...jackets,
-    ...accessories
+    ...accessories,
+    ...winterCollection
 ];
 
 // Product categories for easy filtering
@@ -20,7 +22,8 @@ const productCategories = {
     shirts: shirts,
     bottoms: bottoms,
     jackets: jackets,
-    accessories: accessories
+    accessories: accessories,
+    winter: winterCollection
 };
 
 // Helper functions for product management
@@ -43,6 +46,9 @@ const productUtils = {
                 return jackets;
             case 'accessories':
                 return accessories;
+            case 'winter':
+            case 'winter-collection':
+                return winterCollection;
             default:
                 return allProducts;
         }

@@ -106,3 +106,57 @@ async def get_featured_products(limit: int = 10):
     except Exception as e:
         logger.error(f"Error getting featured products: {e}")
         raise HTTPException(status_code=500, detail="Failed to retrieve featured products")
+
+@router.get("/{product_id}/images")
+async def get_product_images(product_id: str, color: Optional[str] = None):
+    """Get product images, optionally filtered by color"""
+    try:
+        product = await product_service.get_product(product_id)
+        if not product:
+            raise HTTPException(status_code=404, detail="Product not found")
+        
+        # If color is specified, try to get color-specific images
+        if color:
+            # This would need to be implemented based on your database structure
+            # For now, we'll return all images and let the frontend handle color filtering
+            pass
+        
+        return {
+            "product_id": product_id,
+            "images": product.image_urls,
+            "primary_image": product.image,
+            "image_ids": product.image_ids,
+            "colors": product.color
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error getting product images for {product_id}: {e}")
+        raise HTTPException(status_code=500, detail="Failed to retrieve product images")
+
+@router.get("/{product_id}/images/{color}")
+async def get_product_images_by_color(product_id: str, color: str):
+    """Get product images for a specific color variant"""
+    try:
+        product = await product_service.get_product(product_id)
+        if not product:
+            raise HTTPException(status_code=404, detail="Product not found")
+        
+        # Check if the requested color is available
+        if color not in product.color:
+            raise HTTPException(status_code=400, detail=f"Color '{color}' not available for this product")
+        
+        # For now, return all images. In a real implementation, you'd have color-specific image IDs
+        # stored in the database or use image metadata to filter by color
+        return {
+            "product_id": product_id,
+            "color": color,
+            "images": product.image_urls,
+            "primary_image": product.image,
+            "image_ids": product.image_ids
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error getting product images for {product_id} color {color}: {e}")
+        raise HTTPException(status_code=500, detail="Failed to retrieve product images")

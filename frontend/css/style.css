@@ -164,11 +164,24 @@ h3 { font-size: var(--font-size-xl); }
     background: transparent;
     color: var(--primary-color);
     border: 2px solid var(--primary-color);
+    min-height: 44px; /* Minimum touch target size */
+    min-width: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
 }
 
 .btn-outline:hover {
     background: var(--primary-color);
     color: var(--secondary-color);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-outline:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .cta-btn {
@@ -308,11 +321,21 @@ h3 { font-size: var(--font-size-xl); }
     transition: all 0.3s ease;
     position: relative;
     font-size: var(--font-size-lg);
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    touch-action: manipulation;
 }
 
 .search-icon:hover, .wishlist-icon:hover, .cart-icon:hover {
     background: var(--light-gray);
     transform: scale(1.1);
+}
+
+.search-icon:active, .wishlist-icon:active, .cart-icon:active {
+    transform: scale(0.95);
 }
 
 .cart-icon span {
@@ -2133,6 +2156,77 @@ h3 { font-size: var(--font-size-xl); }
 .add-outfit-to-cart:hover {
     background: var(--primary-dark);
     transform: translateY(-1px);
+}
+
+/* Wishlist Button Specific Styles */
+.add-to-wishlist {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.add-to-wishlist::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease, height 0.3s ease;
+}
+
+.add-to-wishlist:active::before {
+    width: 100px;
+    height: 100px;
+}
+
+.add-to-wishlist:hover {
+    background: var(--primary-color);
+    color: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.add-to-wishlist:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.add-to-wishlist:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* Wishlist button in product cards */
+.product-card .add-to-wishlist {
+    width: 100%;
+    margin-top: var(--spacing-sm);
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+}
+
+/* Wishlist button in product pages */
+.product-actions .add-to-wishlist {
+    flex: 1;
+    margin-left: var(--spacing-sm);
+    font-size: var(--font-size-base);
+    padding: var(--spacing-md) var(--spacing-lg);
+}
+
+/* Wishlist button in visual search results */
+.visual-result-actions .add-to-wishlist {
+    flex: 1;
+    margin-right: var(--spacing-sm);
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
 }
 
 .visual-result-item {
@@ -4762,6 +4856,38 @@ h3 { font-size: var(--font-size-xl); }
         right: -100%;
     }
     
+    /* Mobile wishlist button improvements */
+    .add-to-wishlist {
+        min-height: 48px;
+        font-size: var(--font-size-base);
+        padding: var(--spacing-md) var(--spacing-lg);
+    }
+    
+    .product-card .add-to-wishlist {
+        min-height: 44px;
+        font-size: var(--font-size-sm);
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+    
+    .product-actions .add-to-wishlist {
+        min-height: 48px;
+        font-size: var(--font-size-base);
+        padding: var(--spacing-md) var(--spacing-lg);
+    }
+    
+    .visual-result-actions .add-to-wishlist {
+        min-height: 44px;
+        font-size: var(--font-size-sm);
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+    
+    /* Ensure wishlist icons are touch-friendly */
+    .wishlist-icon {
+        min-width: 48px;
+        min-height: 48px;
+        font-size: var(--font-size-xl);
+    }
+    
     .chatbot {
         width: 90%;
         right: 5%;
@@ -4847,10 +4973,24 @@ h3 { font-size: var(--font-size-xl); }
     width: 35px;
     padding: 8px;
     font-size: 14px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
 }
 
 .main-search-bar .voice-btn:hover {
     background: #e55555;
+    transform: scale(1.05);
+}
+
+.main-search-bar .voice-btn:active {
+    transform: scale(0.95);
+}
+
+/* Simple voice button active state */
+.main-search-bar .voice-btn.active {
+    background: #ff4444 !important;
+    color: white;
 }
 
 /* Sale Timer Banner Styles */
@@ -5391,4 +5531,421 @@ h3 { font-size: var(--font-size-xl); }
     .app-btn {
         max-width: 200px;
     }
+}
+
+/* Winter Collection Styles */
+.winter-hero {
+    background: linear-gradient(135deg, #2c3e50, #34495e, #2c3e50);
+    padding: var(--spacing-xxl) 0;
+    color: white;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.winter-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="snow" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="5" cy="5" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23snow)"/></svg>');
+    animation: snow 20s linear infinite;
+}
+
+.winter-hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.winter-hero h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: var(--spacing-lg);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.winter-hero p {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--spacing-xl);
+    opacity: 0.9;
+}
+
+.winter-stats {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-xl);
+    margin-top: var(--spacing-xl);
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat-number {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--accent-color);
+}
+
+.stat-label {
+    font-size: var(--font-size-sm);
+    opacity: 0.8;
+}
+
+.winter-categories {
+    padding: var(--spacing-xxl) 0;
+    background: var(--light-gray);
+}
+
+.winter-categories h2 {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+    color: var(--primary-color);
+}
+
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.winter-category-card {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 200px;
+}
+
+.winter-category-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.winter-category-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.winter-category-card:hover img {
+    transform: scale(1.05);
+}
+
+.category-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+    color: white;
+    padding: var(--spacing-lg);
+    text-align: center;
+}
+
+.category-overlay h3 {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    margin-bottom: var(--spacing-xs);
+}
+
+.category-overlay p {
+    font-size: var(--font-size-sm);
+    opacity: 0.9;
+}
+
+.winter-products-section {
+    padding: var(--spacing-xxl) 0;
+}
+
+.winter-features {
+    padding: var(--spacing-xxl) 0;
+    background: var(--light-gray);
+}
+
+.winter-features h2 {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+    color: var(--primary-color);
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.feature-card {
+    background: white;
+    padding: var(--spacing-xl);
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+
+.feature-icon {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.feature-card h3 {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    margin-bottom: var(--spacing-md);
+    color: var(--primary-color);
+}
+
+.feature-card p {
+    color: var(--dark-gray);
+    line-height: 1.6;
+}
+
+/* Product card enhancements for winter collection */
+.product-card .product-badge {
+    position: absolute;
+    top: var(--spacing-sm);
+    left: var(--spacing-sm);
+    background: var(--accent-color);
+    color: white;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: 20px;
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    z-index: 2;
+}
+
+.product-card .product-actions {
+    position: absolute;
+    top: var(--spacing-sm);
+    right: var(--spacing-sm);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.product-card:hover .product-actions {
+    opacity: 1;
+}
+
+.product-card .product-actions .btn-outline {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: var(--spacing-xs);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.product-card .product-actions .btn-outline:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+.product-card .product-actions .btn-primary {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: 20px;
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.product-card .product-actions .btn-primary:hover {
+    background: var(--accent-color);
+    transform: translateY(-2px);
+}
+
+/* List view for products */
+.products-grid.list-view {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.products-grid.list-view .product-card {
+    display: flex;
+    flex-direction: row;
+    height: 200px;
+    padding: var(--spacing-md);
+}
+
+.products-grid.list-view .product-image {
+    width: 200px;
+    height: 100%;
+    margin-right: var(--spacing-lg);
+}
+
+.products-grid.list-view .product-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Responsive styles for winter collection */
+@media (max-width: 768px) {
+    .winter-hero h1 {
+        font-size: 2.5rem;
+    }
+    
+    .winter-stats {
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+    
+    .category-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .products-grid.list-view .product-card {
+        flex-direction: column;
+        height: auto;
+    }
+    
+    .products-grid.list-view .product-image {
+        width: 100%;
+        height: 200px;
+        margin-right: 0;
+        margin-bottom: var(--spacing-md);
+    }
+}
+
+/* Simple Header Styling */
+.header {
+    background: white;
+    padding: var(--spacing-md) 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-lg);
+}
+
+.logo h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--primary-color);
+}
+
+.logo-subtitle {
+    display: block;
+    font-size: var(--font-size-sm);
+    color: var(--accent-color);
+    font-weight: 500;
+    margin-top: -5px;
+}
+
+.main-search-bar {
+    flex: 1;
+    max-width: 500px;
+    display: flex;
+    align-items: center;
+    background: var(--light-gray);
+    border-radius: 25px;
+    padding: var(--spacing-xs);
+    margin-right: var(--spacing-sm);
+}
+
+.search-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: var(--font-size-base);
+    outline: none;
+}
+
+.search-btn {
+    background: var(--primary-color);
+    border: none;
+    color: white;
+    padding: var(--spacing-sm);
+    border-radius: 50%;
+    cursor: pointer;
+    margin-left: var(--spacing-xs);
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-btn:hover {
+    background: var(--accent-color);
+}
+
+.voice-btn {
+    background: var(--accent-color);
+    border: none;
+    color: white;
+    padding: var(--spacing-sm);
+    border-radius: 50%;
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: var(--spacing-lg);
+}
+
+.voice-btn:hover {
+    background: var(--primary-color);
+}
+
+.header-actions {
+    display: flex;
+    gap: var(--spacing-lg);
+    align-items: center;
+}
+
+.wishlist-icon, .cart-icon {
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: var(--spacing-sm);
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+}
+
+.wishlist-icon:hover, .cart-icon:hover {
+    background: var(--light-gray);
+}
+
+#cart-count {
+    background: var(--accent-color);
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: var(--font-size-xs);
+    margin-left: 5px;
 }

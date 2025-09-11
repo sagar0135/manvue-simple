@@ -75,8 +75,11 @@
                 <!-- Product Images -->
                 <div class="product-images">
                     <div class="main-image">
-                        <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=500&fit=crop" alt="Classic Cotton Crew Neck">
+                        <img id="main-product-image" src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=500&fit=crop" alt="Classic Cotton Crew Neck">
                         <div class="image-zoom" onclick="toggleImageZoom()">🔍</div>
+                    </div>
+                    <div 
+                        </div>
                     </div>
                 </div>
 
@@ -119,8 +122,9 @@
                     <div class="color-selection">
                         <h3>Color</h3>
                         <div class="color-options">
-                            <button class="color-option" onclick="selectColor('Black')" style="background-color: black;" title="Black"></button>
+                            
                             <button class="color-option" onclick="selectColor('White')" style="background-color: white; border: 1px solid #ccc;" title="White"></button>
+                            <button class="color-option" onclick="selectColor('Black')" style="background-color: black;" title="Black"></button>
                             <button class="color-option" onclick="selectColor('Navy')" style="background-color: navy;" title="Navy"></button>
                             <button class="color-option" onclick="selectColor('Gray')" style="background-color: gray;" title="Gray"></button>
                         </div>
@@ -153,11 +157,380 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Product Reviews Section -->
+            <div class="product-reviews">
+                <h2>Customer Reviews</h2>
+                <div class="rating-breakdown">
+                    <div class="rating-item">
+                        <span>5⭐</span>
+                        <div class="rating-bar">
+                            <div class="rating-fill" style="width: 75%"></div>
+                        </div>
+                        <span>75%</span>
+                    </div>
+                    <div class="rating-item">
+                        <span>4⭐</span>
+                        <div class="rating-bar">
+                            <div class="rating-fill" style="width: 20%"></div>
+                        </div>
+                        <span>20%</span>
+                    </div>
+                    <div class="rating-item">
+                        <span>3⭐</span>
+                        <div class="rating-bar">
+                            <div class="rating-fill" style="width: 3%"></div>
+                        </div>
+                        <span>3%</span>
+                    </div>
+                    <div class="rating-item">
+                        <span>2⭐</span>
+                        <div class="rating-bar">
+                            <div class="rating-fill" style="width: 1%"></div>
+                        </div>
+                        <span>1%</span>
+                    </div>
+                    <div class="rating-item">
+                        <span>1⭐</span>
+                        <div class="rating-bar">
+                            <div class="rating-fill" style="width: 1%"></div>
+                        </div>
+                        <span>1%</span>
+                    </div>
+                </div>
+                
+                <div class="reviews-list">
+                    <div class="review-item">
+                        <div class="review-header">
+                            <div class="reviewer-name">Alex Thompson</div>
+                            <div class="review-rating">⭐⭐⭐⭐⭐</div>
+                        </div>
+                        <div class="review-text">
+                            "Perfect fit and incredibly comfortable! The cotton is soft and the quality is excellent. 
+                            I've washed it multiple times and it still looks brand new. Highly recommend!"
+                        </div>
+                        <div class="review-date">2 days ago</div>
+                    </div>
+                    
+                    <div class="review-item">
+                        <div class="review-header">
+                            <div class="reviewer-name">Marcus Johnson</div>
+                            <div class="review-rating">⭐⭐⭐⭐⭐</div>
+                        </div>
+                        <div class="review-text">
+                            "Great basic tee! The material is breathable and the cut is flattering. 
+                            I bought it in multiple colors. Fast shipping and excellent customer service."
+                        </div>
+                        <div class="review-date">1 week ago</div>
+                    </div>
+                    
+                    <div class="review-item">
+                        <div class="review-header">
+                            <div class="reviewer-name">David Chen</div>
+                            <div class="review-rating">⭐⭐⭐⭐</div>
+                        </div>
+                        <div class="review-text">
+                            "Good quality t-shirt for the price. The fit is true to size and the fabric feels nice. 
+                            Only minor issue is it shrinks slightly after first wash, but still fits well."
+                        </div>
+                        <div class="review-date">2 weeks ago</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI-Powered Recommendations -->
+            <div class="ai-recommendations">
+                <h2>🤖 AI-Powered Recommendations</h2>
+                <p class="ai-subtitle">Based on your interest in this product, you might also like:</p>
+                
+                <div class="recommendations-container">
+                    <div class="recommendation-category">
+                        <h3>Complete the Look</h3>
+                        <div class="recommendation-grid">
+                            <div class="recommendation-item" onclick="viewProduct('jeans-001')">
+                                <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?w=150&h=120&fit=crop" alt="Classic Jeans">
+                                <h4>Classic Jeans</h4>
+                                <div class="price">£49.99</div>
+                            </div>
+                            <div class="recommendation-item" onclick="viewProduct('jacket-001')">
+                                <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=150&h=120&fit=crop" alt="Denim Jacket">
+                                <h4>Denim Jacket</h4>
+                                <div class="price">£69.99</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="recommendation-category">
+                        <h3>Similar Styles</h3>
+                        <div class="recommendation-grid">
+                            <div class="recommendation-item" onclick="viewProduct('tshirt-002')">
+                                <img src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=150&h=120&fit=crop" alt="V-Neck Tee">
+                                <h4>V-Neck Tee</h4>
+                                <div class="price">£22.99</div>
+                            </div>
+                            <div class="recommendation-item" onclick="viewProduct('tshirt-003')">
+                                <img src="https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=150&h=120&fit=crop" alt="Polo Shirt">
+                                <h4>Polo Shirt</h4>
+                                <div class="price">£34.99</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="recommendation-category">
+                        <h3>Popular Combos</h3>
+                        <div class="recommendation-grid">
+                            <div class="recommendation-item" onclick="viewProduct('shoes-001')">
+                                <img src="https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=150&h=120&fit=crop" alt="Sneakers">
+                                <h4>White Sneakers</h4>
+                                <div class="price">£89.99</div>
+                            </div>
+                            <div class="recommendation-item" onclick="viewProduct('accessory-001')">
+                                <img src="https://images.unsplash.com/photo-1523170335258-f5c6c6f7ff67?w=150&h=120&fit=crop" alt="Watch">
+                                <h4>Classic Watch</h4>
+                                <div class="price">£129.99</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 
+    <!-- Image Zoom Modal -->
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeImageModal()">&times;</span>
+        <div class="modal-content">
+            <img id="modalImage" src="" alt="Product Image">
+        </div>
+    </div>
+
     <script src="../../js/script.js"></script>
     <script>
+        // API Configuration
+        const API_BASE_URL = 'http://localhost:5001/api';
+        const PRODUCT_ID = 'tshirt-001'; // This should match your database product ID
+        
+        // Global variables for product data
+        let productData = null;
+        let productImages = {};
+        
+        // Fetch product data from database
+        async function fetchProductData() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/products/${PRODUCT_ID}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                productData = await response.json();
+                console.log('Product data loaded:', productData);
+                
+                // Load product images for each color
+                await loadProductImages();
+                
+                // Update the page with database data
+                updateProductInfo();
+                
+            } catch (error) {
+                console.error('Error fetching product data:', error);
+                // Fallback to hardcoded data if API fails
+                useFallbackData();
+            }
+        }
+        
+        // Load images for each color variant
+        async function loadProductImages() {
+            if (!productData || !productData.color) return;
+            
+            for (const color of productData.color) {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/products/${PRODUCT_ID}/images/${color}`);
+                    if (response.ok) {
+                        const imageData = await response.json();
+                        productImages[color] = imageData.images || [];
+                        console.log(`Loaded images for ${color}:`, productImages[color]);
+                    }
+                } catch (error) {
+                    console.error(`Error loading images for ${color}:`, error);
+                    // Use fallback images for this color
+                    productImages[color] = getFallbackImages(color);
+                }
+            }
+        }
+        
+        // Update product information with database data
+        function updateProductInfo() {
+            if (!productData) return;
+            
+            // Update product title
+            const titleElement = document.querySelector('.product-info h1');
+            if (titleElement && productData.name) {
+                titleElement.textContent = productData.name;
+            }
+            
+            // Update brand
+            const brandElement = document.querySelector('.brand-name');
+            if (brandElement && productData.brand) {
+                brandElement.textContent = productData.brand;
+            }
+            
+            // Update price
+            const currentPriceElement = document.querySelector('.current-price');
+            if (currentPriceElement && productData.price) {
+                currentPriceElement.textContent = `£${productData.price.toFixed(2)}`;
+            }
+            
+            const originalPriceElement = document.querySelector('.original-price');
+            if (originalPriceElement && productData.originalPrice) {
+                originalPriceElement.textContent = `£${productData.originalPrice.toFixed(2)}`;
+            }
+            
+            // Update description
+            const descriptionElement = document.querySelector('.product-description p');
+            if (descriptionElement && productData.description) {
+                descriptionElement.textContent = productData.description;
+            }
+            
+            // Update rating
+            const ratingElement = document.querySelector('.product-rating span');
+            if (ratingElement && productData.reviews) {
+                ratingElement.textContent = `${productData.rating} (${productData.reviews} reviews)`;
+            }
+            
+            // Update available sizes
+            updateSizeOptions();
+            
+            // Update available colors
+            updateColorOptions();
+            
+            // Set initial image
+            if (productData.image) {
+                const mainImage = document.getElementById('main-product-image');
+                if (mainImage) {
+                    mainImage.src = productData.image;
+                }
+            }
+        }
+        
+        // Update size options based on database data
+        function updateSizeOptions() {
+            if (!productData || !productData.size) return;
+            
+            const sizeContainer = document.querySelector('.size-options');
+            if (!sizeContainer) return;
+            
+            // Clear existing sizes
+            sizeContainer.innerHTML = '';
+            
+            // Add sizes from database
+            productData.size.forEach(size => {
+                const button = document.createElement('button');
+                button.className = 'size-option';
+                button.textContent = size;
+                button.onclick = () => selectSize(size);
+                sizeContainer.appendChild(button);
+            });
+        }
+        
+        // Update color options based on database data
+        function updateColorOptions() {
+            if (!productData || !productData.color) return;
+            
+            const colorContainer = document.querySelector('.color-options');
+            if (!colorContainer) return;
+            
+            // Clear existing colors
+            colorContainer.innerHTML = '';
+            
+            // Add colors from database
+            productData.color.forEach(color => {
+                const button = document.createElement('button');
+                button.className = 'color-option';
+                button.title = color;
+                button.onclick = () => selectColor(color);
+                
+                // Set color based on color name
+                const colorValue = getColorValue(color);
+                button.style.backgroundColor = colorValue;
+                if (color.toLowerCase() === 'white') {
+                    button.style.border = '1px solid #ccc';
+                }
+                
+                colorContainer.appendChild(button);
+            });
+        }
+        
+        // Get CSS color value from color name
+        function getColorValue(colorName) {
+            const colorMap = {
+                'Black': 'black',
+                'White': 'white',
+                'Navy': 'navy',
+                'Gray': 'gray',
+                'Grey': 'gray',
+                'Red': 'red',
+                'Blue': 'blue',
+                'Green': 'green',
+                'Yellow': 'yellow',
+                'Orange': 'orange',
+                'Purple': 'purple',
+                'Pink': 'pink',
+                'Brown': 'brown'
+            };
+            return colorMap[colorName] || colorName.toLowerCase();
+        }
+        
+        // Fallback data when API is not available
+        function useFallbackData() {
+            console.log('Using fallback data');
+            productData = {
+                id: PRODUCT_ID,
+                name: "Classic Cotton Crew Neck",
+                brand: "MANVUE Basics",
+                price: 24.99,
+                originalPrice: 29.99,
+                rating: 4.5,
+                reviews: 342,
+                description: "Comfortable 100% cotton crew neck t-shirt perfect for everyday wear",
+                size: ["XS", "S", "M", "L", "XL", "XXL"],
+                color: ["Black", "White", "Navy", "Gray"],
+                image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=500&fit=crop&auto=format"
+            };
+            
+            // Set fallback images for each color
+            productData.color.forEach(color => {
+                productImages[color] = getFallbackImages(color);
+            });
+            
+            updateProductInfo();
+        }
+        
+        // Get fallback images for a color
+        function getFallbackImages(color) {
+            const fallbackImages = {
+                'Black': [
+                    'https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=400&h=500&fit=crop&auto=format',
+                    'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=500&fit=crop&auto=format',
+                    'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=400&h=500&fit=crop&auto=format'
+                ],
+                'White': [
+                    'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=400&h=500&fit=crop&auto=format',
+                    'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=500&fit=crop&auto=format',
+                    'https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=400&h=500&fit=crop&auto=format'
+                ],
+                'Navy': [
+                    'https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=400&h=500&fit=crop&auto=format',
+                    'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=500&fit=crop&auto=format',
+                    'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=400&h=500&fit=crop&auto=format'
+                ],
+                'Gray': [
+                    'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=400&h=500&fit=crop&auto=format',
+                    'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=500&fit=crop&auto=format',
+                    'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=400&h=500&fit=crop&auto=format'
+                ]
+            };
+            return fallbackImages[color] || fallbackImages['Black'];
+        }
+        
         // Start the 24-hour countdown timer
         function startCountdown() {
             // Check if there's an existing sale end time
@@ -202,12 +575,227 @@
         function selectSize(size) {
             document.querySelectorAll('.size-option').forEach(btn => btn.classList.remove('selected'));
             event.target.classList.add('selected');
+            
+            // Add visual feedback
+            event.target.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                event.target.style.transform = 'scale(1)';
+            }, 200);
         }
         
         function selectColor(color) {
             document.querySelectorAll('.color-option').forEach(btn => btn.classList.remove('selected'));
             event.target.classList.add('selected');
+            
+            // Get images for the selected color from database or fallback
+            const colorImages = productImages[color] || getFallbackImages(color);
+            
+            if (colorImages && colorImages.length > 0) {
+                const mainImage = document.getElementById('main-product-image');
+                
+                // Fade out main image
+                mainImage.style.opacity = '0.7';
+                mainImage.style.transform = 'scale(0.95)';
+                
+                setTimeout(() => {
+                    // Update main image with first image from database
+                    mainImage.src = colorImages[0];
+                    mainImage.style.opacity = '1';
+                    mainImage.style.transform = 'scale(1)';
+                    
+                    // Update thumbnail images
+                    updateThumbnailImages(colorImages);
+                }, 150);
+            }
+            
+            // Add visual feedback
+            event.target.style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                event.target.style.transform = 'scale(1.1)';
+            }, 200);
+            
+            // Show color change notification
+            showColorChangeNotification(color);
         }
+        
+        // Update thumbnail images based on color images from database
+        function updateThumbnailImages(colorImages) {
+            const thumbnails = document.querySelectorAll('.thumbnail img');
+            thumbnails.forEach((thumb, index) => {
+                if (colorImages[index]) {
+                    // Convert full-size image URL to thumbnail size
+                    const thumbnailUrl = colorImages[index].replace(/w=\d+&h=\d+/, 'w=100&h=100');
+                    thumb.src = thumbnailUrl;
+                }
+            });
+        }
+        
+        function showColorChangeNotification(color) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = 'color-change-notification';
+            notification.innerHTML = `
+                <div class="notification-content">
+                    <span class="notification-icon">🎨</span>
+                    <span class="notification-text">Switched to ${color} color</span>
+                </div>
+            `;
+            
+            // Add to page
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+            
+            // Remove after 2 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 2000);
+        }
+        
+        // Image interaction functions
+        function changeMainImage(imageUrl) {
+            const mainImage = document.getElementById('main-product-image');
+            const thumbnails = document.querySelectorAll('.thumbnail');
+            
+            // Update thumbnails
+            thumbnails.forEach(thumb => thumb.classList.remove('active'));
+            event.target.closest('.thumbnail').classList.add('active');
+            
+            // Change main image with enhanced fade effect
+            mainImage.style.opacity = '0.7';
+            mainImage.style.transform = 'scale(0.95)';
+            
+            setTimeout(() => {
+                mainImage.src = imageUrl;
+                mainImage.style.opacity = '1';
+                mainImage.style.transform = 'scale(1)';
+            }, 150);
+        }
+        
+        function toggleImageZoom() {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const mainImage = document.getElementById('main-product-image');
+            
+            modalImage.src = mainImage.src;
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeImageModal() {
+            const modal = document.getElementById('imageModal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('imageModal');
+            if (event.target === modal) {
+                closeImageModal();
+            }
+        }
+        
+        // AI Recommendation functions
+        function viewProduct(productId) {
+            // Add visual feedback
+            event.target.closest('.recommendation-item').style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                event.target.closest('.recommendation-item').style.transform = 'scale(1)';
+            }, 150);
+            
+            // In a real app, this would navigate to the product page
+            console.log('Viewing product:', productId);
+            alert(`Viewing product: ${productId}\n\nIn a real application, this would navigate to the product page.`);
+        }
+        
+        // Enhanced add to cart with animation
+        function addToCart(productId) {
+            const button = event.target;
+            const originalText = button.textContent;
+            
+            // Button animation
+            button.textContent = 'Adding...';
+            button.style.transform = 'scale(0.95)';
+            button.style.backgroundColor = '#28a745';
+            
+            setTimeout(() => {
+                button.textContent = 'Added! ✓';
+                button.style.transform = 'scale(1.05)';
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.transform = 'scale(1)';
+                    button.style.backgroundColor = '';
+                }, 1000);
+            }, 500);
+            
+            // Update cart count
+            const cartCount = document.getElementById('cart-count');
+            let currentCount = parseInt(cartCount.textContent) || 0;
+            cartCount.textContent = currentCount + 1;
+            cartCount.parentElement.classList.add('bounce');
+            setTimeout(() => {
+                cartCount.parentElement.classList.remove('bounce');
+            }, 600);
+        }
+        
+        // Enhanced wishlist with animation
+        function addToWishlist(productId) {
+            const button = event.target;
+            const originalText = button.textContent;
+            
+            // Button animation
+            button.textContent = 'Adding...';
+            button.style.transform = 'scale(0.95)';
+            
+            setTimeout(() => {
+                button.textContent = 'Added! ♥';
+                button.style.color = '#e74c3c';
+                button.style.transform = 'scale(1.05)';
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.transform = 'scale(1)';
+                    button.style.color = '';
+                }, 1000);
+            }, 500);
+        }
+        
+        // Initialize page interactions
+        document.addEventListener('DOMContentLoaded', function() {
+            // Fetch product data from database
+            fetchProductData();
+            
+            // Add hover effects to interactive elements
+            const interactiveElements = document.querySelectorAll('.size-option, .color-option, .recommendation-item');
+            
+            interactiveElements.forEach(element => {
+                element.addEventListener('mouseenter', function() {
+                    this.style.transition = 'all 0.3s ease';
+                });
+            });
+            
+            // Add smooth scrolling for better UX
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        });
     </script>
 </body>
 </html>
