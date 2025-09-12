@@ -1,0 +1,335 @@
+version: "3.1"
+
+nlu:
+- intent: greet
+  examples: |
+    - hey
+    - hello
+    - hi
+    - hello there
+    - good morning
+    - good evening
+    - moin
+    - hey there
+    - let's go
+    - hey dude
+    - goodmorning
+    - goodevening
+    - good afternoon
+    - what's up
+    - hi there
+    - hello manvue
+    - hey manvue
+
+- intent: goodbye
+  examples: |
+    - cu
+    - good by
+    - cee you later
+    - good night
+    - bye
+    - goodbye
+    - have a nice day
+    - see you around
+    - bye bye
+    - see you later
+    - thanks and goodbye
+    - thank you goodbye
+    - catch you later
+
+- intent: affirm
+  examples: |
+    - yes
+    - y
+    - indeed
+    - of course
+    - that sounds good
+    - correct
+    - yes please
+    - absolutely
+    - sure
+    - definitely
+    - right
+    - exactly
+    - perfect
+    - great
+    - ok
+    - okay
+
+- intent: deny
+  examples: |
+    - no
+    - n
+    - never
+    - I don't think so
+    - don't like that
+    - no way
+    - not really
+    - nope
+    - not interested
+    - I disagree
+    - incorrect
+    - wrong
+
+- intent: mood_great
+  examples: |
+    - perfect
+    - great
+    - amazing
+    - feeling like a king
+    - wonderful
+    - I am feeling very good
+    - I am great
+    - I am amazing
+    - I am going to save the world
+    - super stoked
+    - extremely good
+    - so so perfect
+    - so good
+    - so perfect
+
+- intent: mood_unhappy
+  examples: |
+    - my day was horrible
+    - I am sad
+    - I don't feel very well
+    - I am disappointed
+    - super sad
+    - I'm so sad
+    - sad
+    - very sad
+    - unhappy
+    - not good
+    - not very good
+    - extremly sad
+    - so saad
+    - so sad
+
+- intent: bot_challenge
+  examples: |
+    - are you a bot?
+    - are you a human?
+    - am I talking to a bot?
+    - am I talking to a human?
+    - who are you?
+    - what are you?
+
+- intent: ask_product_info
+  examples: |
+    - tell me about [t-shirts](product_type)
+    - what [shirts](product_type) do you have?
+    - show me [jackets](product_type)
+    - do you have [winter coats](product_type)?
+    - what's available in [bottoms](product_type)?
+    - tell me about your [accessories](product_type)
+    - what [hoodies](product_type) do you sell?
+    - show me your [sweaters](product_type)
+    - do you have [formal shirts](product_type)?
+    - what about [casual wear](product_type)?
+    - tell me about [jeans](product_type)
+    - show me [polo shirts](product_type)
+
+- intent: search_products
+  examples: |
+    - I'm looking for [blue](color) [t-shirts](product_type)
+    - find me [red](color) [shirts](product_type)
+    - search for [black](color) [jackets](product_type)
+    - I want [white](color) [sneakers](product_type)
+    - show me [cotton](material) [pants](product_type)
+    - find [leather](material) [boots](product_type)
+    - I need [size large](size) [hoodies](product_type)
+    - search for [medium](size) [t-shirts](product_type)
+    - looking for something under [$50](price_range)
+    - find products between [$20-40](price_range)
+    - search for [green](color) [winter jacket](product_type)
+
+- intent: ask_size_guide
+  examples: |
+    - what sizes do you have?
+    - size guide
+    - how do I know my size?
+    - what's your size chart?
+    - size information
+    - help with sizing
+    - what size should I get?
+    - how does sizing work?
+    - size measurements
+    - sizing help
+
+- intent: ask_shipping_info
+  examples: |
+    - shipping information
+    - how long does shipping take?
+    - delivery time
+    - shipping cost
+    - free shipping
+    - express delivery
+    - international shipping
+    - tracking information
+    - when will my order arrive?
+    - shipping options
+
+- intent: ask_return_policy
+  examples: |
+    - return policy
+    - can I return this?
+    - how to return
+    - refund policy
+    - exchange policy
+    - return process
+    - how do returns work?
+    - can I get a refund?
+    - return timeframe
+    - return conditions
+
+- intent: ask_price_range
+  examples: |
+    - what's the price range?
+    - how much do [t-shirts](product_type) cost?
+    - price of [jackets](product_type)
+    - what's your cheapest [shirt](product_type)?
+    - most expensive [pants](product_type)
+    - price for [shoes](product_type)
+    - cost of [accessories](product_type)
+    - budget options
+    - affordable clothing
+
+- intent: ask_categories
+  examples: |
+    - what categories do you have?
+    - product categories
+    - types of clothing
+    - what do you sell?
+    - clothing sections
+    - departments
+    - what's available?
+    - show me categories
+
+- intent: ask_recommendations
+  examples: |
+    - recommend something
+    - what do you suggest?
+    - popular items
+    - best sellers
+    - trending products
+    - what's hot right now?
+    - fashion recommendations
+    - what should I buy?
+    - seasonal recommendations
+
+- intent: ask_deals
+  examples: |
+    - any deals?
+    - current offers
+    - discounts available
+    - sales
+    - promotions
+    - special offers
+    - coupons
+    - what's on sale?
+    - best deals
+
+- intent: ask_availability
+  examples: |
+    - is this available?
+    - do you have this in stock?
+    - availability
+    - stock status
+    - in stock
+    - out of stock
+    - when will it be available?
+
+- intent: ask_material
+  examples: |
+    - what material is this?
+    - fabric information
+    - what's it made of?
+    - material details
+    - fabric type
+    - clothing material
+
+- intent: ask_color_options
+  examples: |
+    - what colors are available?
+    - color options
+    - available colors
+    - other colors
+    - color choices
+    - what colors do you have?
+
+- intent: ask_care_instructions
+  examples: |
+    - how to care for this?
+    - washing instructions
+    - care instructions
+    - how to wash?
+    - maintenance
+    - care guide
+
+- intent: ask_payment_methods
+  examples: |
+    - payment options
+    - what payment methods do you accept?
+    - how can I pay?
+    - payment information
+    - accepted cards
+    - payment security
+
+- intent: track_order
+  examples: |
+    - track my order
+    - order status
+    - where is my order?
+    - tracking information
+    - order tracking
+    - delivery status
+
+- intent: cancel_order
+  examples: |
+    - cancel my order
+    - I want to cancel
+    - cancel order [12345](order_id)
+    - stop my order
+    - order cancellation
+
+- intent: change_order
+  examples: |
+    - change my order
+    - modify order
+    - update my order
+    - edit order
+    - order changes
+
+- intent: ask_store_locations
+  examples: |
+    - store locations
+    - physical stores
+    - where are your stores?
+    - store finder
+    - retail locations
+
+- intent: ask_contact_info
+  examples: |
+    - contact information
+    - how to contact you?
+    - customer service
+    - support
+    - phone number
+    - email address
+
+- intent: subscribe_newsletter
+  examples: |
+    - subscribe to newsletter
+    - sign up for updates
+    - email updates
+    - newsletter subscription
+    - stay updated
+
+- intent: ask_loyalty_program
+  examples: |
+    - loyalty program
+    - rewards program
+    - points system
+    - membership benefits
+    - VIP program
+

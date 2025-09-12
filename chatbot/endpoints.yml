@@ -1,0 +1,32 @@
+# ManVue Chatbot Endpoints Configuration
+
+# Action server configuration
+action_endpoint:
+  url: "http://localhost:5055/webhook"
+
+# Model server configuration  
+# model:
+#   url: "http://localhost:5002"
+#   token: ""
+#   wait_time_between_pulls: 10
+
+# Event broker configuration (optional)
+# event_broker:
+#   type: file
+#   path: events.db
+
+# Tracker store configuration
+tracker_store:
+  type: InMemoryTrackerStore
+
+# Lock store configuration
+lock_store:
+  type: InMemoryLockStore
+
+# Natural Language Generation endpoint (optional)
+# nlg:
+#   url: "http://localhost:5056/nlg"
+
+# Environment-specific configurations
+# Production should use proper databases and distributed systems
+

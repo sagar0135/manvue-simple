@@ -1,0 +1,99 @@
+version: "3.1"
+
+stories:
+
+- story: happy path
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_great
+  - action: utter_happy
+
+- story: sad path 1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_unhappy
+  - action: utter_cheer_up
+  - action: utter_did_that_help
+  - intent: affirm
+  - action: utter_happy
+
+- story: sad path 2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_unhappy
+  - action: utter_cheer_up
+  - action: utter_did_that_help
+  - intent: deny
+  - action: utter_goodbye
+
+- story: product search flow
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: search_products
+  - action: action_search_products
+  - intent: ask_product_info
+  - slot_was_set:
+    - product_type: "t-shirts"
+  - action: action_get_product_recommendations
+
+- story: size guide request
+  steps:
+  - intent: ask_size_guide
+  - action: utter_size_guide
+  - intent: ask_product_info
+  - action: action_get_size_recommendation
+
+- story: shipping inquiry
+  steps:
+  - intent: ask_shipping_info
+  - action: utter_shipping_info
+  - intent: track_order
+  - action: action_track_order
+
+- story: return policy inquiry
+  steps:
+  - intent: ask_return_policy
+  - action: utter_return_policy
+  - intent: affirm
+  - action: utter_happy
+
+- story: product categories
+  steps:
+  - intent: ask_categories
+  - action: utter_product_categories
+  - intent: ask_product_info
+  - action: action_get_product_recommendations
+
+- story: deals and offers
+  steps:
+  - intent: ask_deals
+  - action: utter_deals
+  - intent: search_products
+  - action: action_search_products
+
+- story: contact information
+  steps:
+  - intent: ask_contact_info
+  - action: utter_contact_info
+  - intent: subscribe_newsletter
+  - action: action_subscribe_newsletter
+
+- story: bot challenge
+  steps:
+  - intent: bot_challenge
+  - action: utter_iamabot
+
+- story: say goodbye
+  steps:
+  - intent: goodbye
+  - action: utter_goodbye
+
+- story: fallback
+  steps:
+  - intent: nlu_fallback
+  - action: utter_default
+

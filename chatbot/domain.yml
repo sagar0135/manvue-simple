@@ -1,0 +1,137 @@
+# ManVue Fashion Chatbot Domain
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - affirm
+  - deny
+  - mood_great
+  - mood_unhappy
+  - bot_challenge
+  - ask_product_info
+  - search_products
+  - ask_size_guide
+  - ask_shipping_info
+  - ask_return_policy
+  - ask_price_range
+  - ask_categories
+  - ask_recommendations
+  - ask_deals
+  - ask_availability
+  - ask_material
+  - ask_color_options
+  - ask_care_instructions
+  - ask_payment_methods
+  - track_order
+  - cancel_order
+  - change_order
+  - ask_store_locations
+  - ask_contact_info
+  - subscribe_newsletter
+  - ask_loyalty_program
+
+entities:
+  - product_type
+  - size
+  - color
+  - material
+  - price_range
+  - category
+  - brand
+  - order_id
+  - email
+
+slots:
+  product_type:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: product_type
+  
+  size:
+    type: text
+    influence_conversation: false
+    mappings:
+    - type: from_entity
+      entity: size
+  
+  color:
+    type: text
+    influence_conversation: false
+    mappings:
+    - type: from_entity
+      entity: color
+  
+  price_range:
+    type: text
+    influence_conversation: false
+    mappings:
+    - type: from_entity
+      entity: price_range
+
+  user_email:
+    type: text
+    influence_conversation: false
+    mappings:
+    - type: from_entity
+      entity: email
+
+responses:
+  utter_greet:
+  - text: "Welcome to ManVue! 👋 I'm your personal fashion assistant. How can I help you find the perfect style today?"
+  - text: "Hello! Welcome to ManVue's premium men's fashion store. What can I help you discover today?"
+  - text: "Hi there! I'm here to help you navigate ManVue's collection. What are you looking for?"
+
+  utter_goodbye:
+  - text: "Thank you for shopping with ManVue! Have a stylish day! 👔✨"
+  - text: "Goodbye! Don't forget to check out our latest arrivals. See you soon!"
+  - text: "Take care! Your perfect style is just a visit away at ManVue."
+
+  utter_iamabot:
+  - text: "I'm the ManVue fashion assistant bot, powered by AI to help you find amazing men's clothing!"
+
+  utter_product_categories:
+  - text: "At ManVue, we offer:\n🎽 T-Shirts & Tops\n👔 Shirts\n🧥 Jackets & Outerwear\n👖 Bottoms & Pants\n🧢 Accessories\n❄️ Winter Collection\nWhich category interests you?"
+
+  utter_size_guide:
+  - text: "Our size guide:\n📏 XS: 32-34 chest\n📏 S: 34-36 chest\n📏 M: 36-38 chest\n📏 L: 38-40 chest\n📏 XL: 40-42 chest\n📏 XXL: 42-44 chest\nNeed help with specific measurements?"
+
+  utter_shipping_info:
+  - text: "🚚 Shipping Information:\n• Free shipping on orders over $75\n• Standard delivery: 3-5 business days\n• Express delivery: 1-2 business days\n• International shipping available\nWould you like tracking information?"
+
+  utter_return_policy:
+  - text: "🔄 Return Policy:\n• 30-day return window\n• Items must be unworn with tags\n• Free returns on defective items\n• Easy online return process\nNeed help with a return?"
+
+  utter_payment_methods:
+  - text: "💳 We accept:\n• Credit/Debit Cards (Visa, MC, Amex)\n• PayPal\n• Apple Pay\n• Google Pay\n• Buy now, pay later options\nAll payments are secure and encrypted!"
+
+  utter_contact_info:
+  - text: "📞 Contact ManVue:\n• Email: support@manvue.com\n• Phone: 1-800-MANVUE\n• Live Chat: Available 24/7\n• Social: @ManVueStyle\nHow else can I assist you?"
+
+  utter_deals:
+  - text: "🔥 Current Deals:\n• 20% off Winter Collection\n• Buy 2 Get 1 Free on T-Shirts\n• Free shipping on orders $75+\n• Student discount: 15% off\nWant to see specific deals?"
+
+  utter_default:
+  - text: "I'm not sure I understand. Could you rephrase that? I can help with products, sizes, shipping, returns, and more!"
+  - text: "Let me help you better. Try asking about our products, size guides, shipping info, or current deals."
+
+  utter_ask_rephrase:
+  - text: "I'm sorry, I didn't quite get that. Could you please rephrase your question?"
+
+actions:
+  - action_search_products
+  - action_get_product_recommendations
+  - action_get_size_recommendation
+  - action_track_order
+  - action_get_store_locations
+  - action_subscribe_newsletter
+  - action_check_availability
+  - action_get_care_instructions
+  - action_default_fallback
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
+

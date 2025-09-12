@@ -16,6 +16,15 @@ from datetime import datetime
 import sys
 import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '../../'))
+
+# Try enhanced ML service first, then fallback to backend ML model
+try:
+    from .enhanced_ml_service import EnhancedMLService
+    enhanced_ml_available = True
+except ImportError as e:
+    logging.warning(f"Enhanced ML service not available: {e}")
+    enhanced_ml_available = False
+
 try:
     from backend.ml_model import get_image_embedding, get_text_embedding, compute_similarity, is_model_loaded
     CLIP_AVAILABLE = True
@@ -39,6 +48,19 @@ class VisualSearchService:
     def __init__(self):
         self.product_service = ProductService()
         self.clip_available = CLIP_AVAILABLE
+        self.enhanced_ml_available = enhanced_ml_available
+        
+        # Initialize enhanced ML service if available
+        if self.enhanced_ml_available:
+            try:
+                self.enhanced_ml = EnhancedMLService()
+                logger.info("✅ Enhanced ML service initialized")
+            except Exception as e:
+                logger.error(f"Failed to initialize enhanced ML service: {e}")
+                self.enhanced_ml = None
+                self.enhanced_ml_available = False
+        else:
+            self.enhanced_ml = None
         
         # Outfit recommendation rules
         self.outfit_rules = {
@@ -201,6 +223,63 @@ class VisualSearchService:
             List of similar products with similarity scores
         """
         try:
+            # Try enhanced ML service first
+            if self.enhanced_ml_available and self.enhanced_ml and self.enhanced_ml.is_available():
+                logger.info("Using enhanced ML service for visual search")
+                return await self._find_similar_with_enhanced_ml(image_data, limit)
+            else:
+                logger.info("Using fallback ML service for visual search")
+                return await self._find_similar_with_fallback(image_data, limit, category_filter)
+                
+        except Exception as e:
+            logger.error(f"Error finding similar products: {e}")
+            return []
+    
+    async def _find_similar_with_enhanced_ml(
+        self, 
+        image_data: str, 
+        limit: int
+    ) -> List[Dict[str, Any]]:
+        """Find similar products using enhanced ML service"""
+        try:
+            # Preprocess image
+            image = self._preprocess_image(image_data)
+            if not image:
+                return []
+            
+            # Use enhanced ML service
+            search_results = self.enhanced_ml.find_similar_products(image, top_k=limit)
+            
+            # Format results to match expected structure
+            formatted_results = []
+            for result in search_results:
+                formatted_results.append({
+                    'product': {
+                        'id': result.get('product_id', 'unknown'),
+                        'name': result.get('name', 'Unknown Product'),
+                        'category': result.get('category', 'Unknown'),
+                        'price': 0,  # Would need to fetch from product service
+                        'image_url': f"/api/images/{result.get('filename', '')}"
+                    },
+                    'similarity_score': result.get('similarity_score', 0.0),
+                    'confidence': result.get('confidence', 0),
+                    'metadata': result
+                })
+            
+            return formatted_results
+            
+        except Exception as e:
+            logger.error(f"Error in enhanced ML search: {e}")
+            return []
+    
+    async def _find_similar_with_fallback(
+        self, 
+        image_data: str, 
+        limit: int,
+        category_filter: Optional[str] = None
+    ) -> List[Dict[str, Any]]:
+        """Fallback method using original ML service"""
+        try:
             # Get image embedding
             query_embedding = self._get_image_embedding_from_data(image_data)
             if not query_embedding:
@@ -242,7 +321,7 @@ class VisualSearchService:
             return results
             
         except Exception as e:
-            logger.error(f"Error finding similar products: {e}")
+            logger.error(f"Error in fallback search: {e}")
             return []
     
     def _get_compatible_categories(self, detected_category: str) -> Dict[str, List[str]]:

@@ -21,8 +21,8 @@ class Settings(BaseSettings):
     reload: bool = True
     
     # Database Configuration
-    mongo_uri: str = "mongodb+srv://19276146:19276146@manvue.ilich4r.mongodb.net/?retryWrites=true&w=majority&appName=MANVUE"
-    db_name: str = "MANVUE"
+    mongo_uri: str = "mongodb://localhost:27017"
+    db_name: str = "manvue_db"
     
     # Security Configuration
     secret_key: str = "your-secret-key-change-in-production"
