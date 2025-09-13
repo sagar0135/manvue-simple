@@ -34,6 +34,7 @@
                     <button class="search-btn" onclick="searchProducts()">🔍</button>
                 </div>
                 <button class="voice-btn" onclick="startVoiceSearch()">🎤</button>
+                <button class="vr-btn" onclick="toggle3DTryOn()">🎮</button>
                 
                 <div class="header-actions">
                     <div class="wishlist-icon" onclick="toggleWishlist()">♡</div>
@@ -1156,9 +1157,6 @@
 
     <!-- Voice Toggle Button -->
     <div class="voice-toggle" onclick="toggleVoiceInterface()">🎤</div>
-    
-    <!-- 3D Try-On Toggle Button -->
-    <div class="tryon-toggle" onclick="toggle3DTryOn()">🎮</div>
 
     <!-- Admin Section -->
     <section id="admin" class="section" style="display: none;">
@@ -1560,38 +1558,5 @@
         }
     </script>
 
-    <!-- ManVue Chatbot Integration -->
-    <div data-manvue-chatbot 
-         data-chatbot-server="http://localhost:5055"
-         data-chatbot-websocket="ws://localhost:5055/ws"
-         data-chatbot-position="bottom-right"
-         data-chatbot-theme="manvue"
-         data-chatbot-enable-voice="true"
-         data-chatbot-show-welcome="true">
-    </div>
-    
-    <!-- Load Chatbot Widget -->
-    <script>
-        // Load chatbot widget with error handling
-        (function() {
-            const script = document.createElement('script');
-            script.src = 'http://localhost:5055/static/chatbot_widget.js';
-            script.onerror = function() {
-                console.log('💬 Chatbot temporarily unavailable. Please try refreshing the page.');
-                // Optionally show a fallback chat button
-                const fallbackBtn = document.createElement('div');
-                fallbackBtn.innerHTML = '💬';
-                fallbackBtn.style.cssText = 'position:fixed;bottom:20px;right:20px;width:60px;height:60px;background:#3498db;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:24px;cursor:pointer;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,0.1);';
-                fallbackBtn.onclick = function() {
-                    window.open('http://localhost:5055', '_blank', 'width=400,height=600,scrollbars=yes,resizable=yes');
-                };
-                document.body.appendChild(fallbackBtn);
-            };
-            script.onload = function() {
-                console.log('✅ ManVue Chatbot loaded successfully!');
-            };
-            document.head.appendChild(script);
-        })();
-    </script>
 </body>
 </html>

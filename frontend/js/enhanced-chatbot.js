@@ -9,6 +9,8 @@ class EnhancedChatbot {
         this.isTyping = false;
         this.products = window.products || [];
         this.searchProgress = null;
+        this.isResizing = false;
+        this.resizeMode = false;
         this.init();
     }
 
@@ -44,6 +46,7 @@ class EnhancedChatbot {
                         </div>
                     </div>
                     <div class="chat-controls">
+                        <button class="chat-control-btn" onclick="enhancedChatbot.toggleResize()" title="Resize Chat">📏</button>
                         <button class="chat-control-btn" onclick="enhancedChatbot.clearChat()" title="Clear Chat">🗑️</button>
                         <button class="chat-control-btn" onclick="enhancedChatbot.toggleChat()" title="Close">✕</button>
                     </div>
@@ -73,6 +76,9 @@ class EnhancedChatbot {
                         </button>
                     </div>
                 </div>
+                
+                <!-- Resize Handle -->
+                <div class="resize-handle" id="resize-handle"></div>
             </div>
             
             <!-- Enhanced Chat Toggle Button -->
@@ -80,6 +86,7 @@ class EnhancedChatbot {
         `;
 
         document.body.insertAdjacentHTML('beforeend', chatbotHTML);
+        this.setupResizeFunctionality();
     }
 
     setupEventListeners() {
@@ -812,6 +819,83 @@ class EnhancedChatbot {
 
     delay(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    setupResizeFunctionality() {
+        const chatbot = document.getElementById('enhanced-chatbot');
+        const resizeHandle = document.getElementById('resize-handle');
+        
+        if (!resizeHandle) return;
+
+        // Mouse events for resizing
+        resizeHandle.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            this.isResizing = true;
+            this.startX = e.clientX;
+            this.startY = e.clientY;
+            this.startWidth = chatbot.offsetWidth;
+            this.startHeight = chatbot.offsetHeight;
+            
+            document.addEventListener('mousemove', this.handleResize.bind(this));
+            document.addEventListener('mouseup', this.stopResize.bind(this));
+        });
+
+        // Touch events for mobile
+        resizeHandle.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            this.isResizing = true;
+            this.startX = e.touches[0].clientX;
+            this.startY = e.touches[0].clientY;
+            this.startWidth = chatbot.offsetWidth;
+            this.startHeight = chatbot.offsetHeight;
+            
+            document.addEventListener('touchmove', this.handleResize.bind(this));
+            document.addEventListener('touchend', this.stopResize.bind(this));
+        });
+    }
+
+    handleResize(e) {
+        if (!this.isResizing) return;
+        
+        const chatbot = document.getElementById('enhanced-chatbot');
+        const clientX = e.type === 'touchmove' ? e.touches[0].clientX : e.clientX;
+        const clientY = e.type === 'touchmove' ? e.touches[0].clientY : e.clientY;
+        
+        const deltaX = clientX - this.startX;
+        const deltaY = clientY - this.startY;
+        
+        const newWidth = Math.max(300, Math.min(window.innerWidth * 0.9, this.startWidth + deltaX));
+        const newHeight = Math.max(400, Math.min(window.innerHeight * 0.9, this.startHeight + deltaY));
+        
+        chatbot.style.width = newWidth + 'px';
+        chatbot.style.height = newHeight + 'px';
+    }
+
+    stopResize() {
+        this.isResizing = false;
+        document.removeEventListener('mousemove', this.handleResize.bind(this));
+        document.removeEventListener('mouseup', this.stopResize.bind(this));
+        document.removeEventListener('touchmove', this.handleResize.bind(this));
+        document.removeEventListener('touchend', this.stopResize.bind(this));
+    }
+
+    toggleResize() {
+        const chatbot = document.getElementById('enhanced-chatbot');
+        const resizeHandle = document.getElementById('resize-handle');
+        
+        this.resizeMode = !this.resizeMode;
+        
+        if (this.resizeMode) {
+            chatbot.style.resize = 'both';
+            chatbot.style.overflow = 'auto';
+            resizeHandle.style.display = 'block';
+            resizeHandle.style.opacity = '1';
+        } else {
+            chatbot.style.resize = 'none';
+            chatbot.style.overflow = 'hidden';
+            resizeHandle.style.display = 'none';
+            resizeHandle.style.opacity = '0';
+        }
     }
 }
 
