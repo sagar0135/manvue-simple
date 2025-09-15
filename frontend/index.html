@@ -79,7 +79,7 @@
         <div class="container">
             <span>Track Order</span>
             <span>Store Locator</span>
-            <span>Contact Us</span>
+            <span onclick="showContactUs()" style="cursor: pointer;">Contact Us</span>
             <span onclick="toggleUserMenu()">Login</span>
         </div>
     </div>
@@ -95,10 +95,16 @@
                     </a>
                 </div>
                 
-                <!-- Search Bar -->
+                <!-- Enhanced Search Bar -->
                 <div class="main-search-bar">
-                    <input type="text" id="main-search-input" placeholder="Search products, brands, styles..." class="search-input">
-                    <button class="search-btn" onclick="searchProducts()">🔍</button>
+                    <input type="text" id="main-search-input" placeholder="Search products, brands, styles..." class="search-input" autocomplete="off">
+                    <button class="search-btn" onclick="performSearch()">🔍</button>
+                    <div id="search-suggestions" class="search-suggestions">
+                        <!-- Suggestions will be populated dynamically -->
+                    </div>
+                </div>
+                <div id="search-filter-chips" class="search-filter-chips" style="display: none;">
+                    <!-- Filter chips will be populated dynamically -->
                 </div>
                 <button class="voice-btn" onclick="startVoiceSearch()">🎤</button>
                 <button class="vr-btn" onclick="toggle3DTryOn()">🎮</button>
@@ -140,6 +146,82 @@
         </div>
     </div>
 
+    <!-- Contact Form Modal -->
+    <div id="contact-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>📞 Contact MANVUE</h3>
+                <button onclick="closeModal('contact-modal')">✕</button>
+            </div>
+            <form id="contact-form" onsubmit="handleContactForm(event)">
+                <div class="form-group">
+                    <label for="contact-name">Full Name</label>
+                    <input type="text" id="contact-name" required placeholder="Enter your full name">
+                </div>
+                <div class="form-group">
+                    <label for="contact-email">Email Address</label>
+                    <input type="email" id="contact-email" required placeholder="Enter your email address">
+                </div>
+                <div class="form-group">
+                    <label for="contact-subject">Subject</label>
+                    <select id="contact-subject" required>
+                        <option value="">Select a subject...</option>
+                        <option value="order-inquiry">Order Inquiry</option>
+                        <option value="product-question">Product Question</option>
+                        <option value="shipping">Shipping & Returns</option>
+                        <option value="size-guide">Size Guide Help</option>
+                        <option value="technical-support">Technical Support</option>
+                        <option value="partnership">Business Partnership</option>
+                        <option value="feedback">Feedback & Suggestions</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="contact-message">Message</label>
+                    <textarea id="contact-message" rows="6" required placeholder="Tell us how we can help you..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="contact-newsletter">
+                        <span>Subscribe to our newsletter for exclusive updates and offers</span>
+                    </label>
+                </div>
+                <button type="submit" class="btn-primary full-width">Send Message</button>
+                <div class="contact-alternatives">
+                    <div class="contact-info-grid">
+                        <div class="contact-method">
+                            <span class="contact-icon">📧</span>
+                            <div>
+                                <strong>Email</strong>
+                                <p>support@manvue.com</p>
+                            </div>
+                        </div>
+                        <div class="contact-method">
+                            <span class="contact-icon">📞</span>
+                            <div>
+                                <strong>Phone</strong>
+                                <p>+44 20 1234 5678</p>
+                            </div>
+                        </div>
+                        <div class="contact-method">
+                            <span class="contact-icon">💬</span>
+                            <div>
+                                <strong>Live Chat</strong>
+                                <p>Mon-Sat: 9AM-8PM GMT</p>
+                            </div>
+                        </div>
+                        <div class="contact-method">
+                            <span class="contact-icon">🕒</span>
+                            <div>
+                                <strong>Response Time</strong>
+                                <p>Within 24 hours</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <!-- Main Content -->
     <main>
@@ -152,6 +234,21 @@
             </div>
             <div class="hero-image">
                 <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=600&fit=crop&auto=format" alt="Men's Fashion">
+            </div>
+        </section>
+
+        <!-- Search Results Section -->
+        <section id="search-results-section" style="display: none;">
+            <div class="container">
+                <div class="search-stats">
+                    <div>
+                        <span id="search-results-count">0 results</span> for "<span id="search-query-text"></span>"
+                    </div>
+                    <div class="search-time">
+                        Search completed in <span id="search-time">0.0s</span>
+                    </div>
+                </div>
+                <button class="clear-search" onclick="clearSearch()">Clear search and show all products</button>
             </div>
         </section>
 
@@ -1785,7 +1882,43 @@
         }
         
         function showContactUs() {
-            alert('Contact Us: Email support@manvue.com or call +44 20 1234 5678. Live chat available Mon-Sat 9AM-8PM GMT.');
+            openModal('contact-modal');
+        }
+
+        function handleContactForm(event) {
+            event.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('contact-name').value,
+                email: document.getElementById('contact-email').value,
+                subject: document.getElementById('contact-subject').value,
+                message: document.getElementById('contact-message').value,
+                newsletter: document.getElementById('contact-newsletter').checked
+            };
+            
+            // Show loading state
+            const submitBtn = event.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+            
+            // Simulate API call (replace with actual API endpoint)
+            setTimeout(() => {
+                // Reset form
+                document.getElementById('contact-form').reset();
+                
+                // Show success message
+                showNotification('Message sent successfully! We\'ll get back to you within 24 hours.', 'success');
+                
+                // Close modal
+                closeModal('contact-modal');
+                
+                // Reset button
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+                
+                console.log('Contact form submitted:', formData);
+            }, 2000);
         }
         
         // Company Functions
@@ -1831,15 +1964,265 @@
             window.location.href = 'index.html';
         }
         
-        function searchProducts() {
+        // Enhanced Search System
+        let searchHistory = JSON.parse(localStorage.getItem('search-history')) || [];
+        let currentHighlightIndex = -1;
+        let searchStartTime = 0;
+
+        // Search suggestions data
+        const searchSuggestions = {
+            categories: ['T-Shirts', 'Shirts', 'Jeans', 'Jackets', 'Accessories', 'Winter Collection'],
+            brands: ['MANVUE Basics', 'MANVUE Premium', 'UrbanEdge', 'EleganceWear', 'WoolCraft'],
+            colors: ['Black', 'White', 'Navy', 'Grey', 'Blue', 'Brown', 'Green'],
+            occasions: ['Casual', 'Formal', 'Business', 'Date Night', 'Workout', 'Travel'],
+            styles: ['Minimalist', 'Classic', 'Modern', 'Vintage', 'Athletic', 'Professional']
+        };
+
+        function initializeEnhancedSearch() {
             const searchInput = document.getElementById('main-search-input');
-            const searchTerm = searchInput ? searchInput.value.trim() : '';
-            if (searchTerm) {
-                console.log('Searching for:', searchTerm);
-                // In a real implementation, this would navigate to search results
-                alert(`Searching for: "${searchTerm}"`);
+            const searchSuggestionsContainer = document.getElementById('search-suggestions');
+            
+            if (!searchInput || !searchSuggestionsContainer) return;
+
+            // Event listeners
+            searchInput.addEventListener('input', handleSearchInput);
+            searchInput.addEventListener('keydown', handleSearchKeydown);
+            searchInput.addEventListener('focus', showSearchSuggestions);
+            searchInput.addEventListener('blur', hideSearchSuggestions);
+            
+            // Hide suggestions when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!searchInput.contains(e.target) && !searchSuggestionsContainer.contains(e.target)) {
+                    hideSearchSuggestions();
+                }
+            });
+        }
+
+        function handleSearchInput(e) {
+            const query = e.target.value.trim();
+            if (query.length > 0) {
+                showSearchSuggestions(query);
+            } else {
+                hideSearchSuggestions();
             }
         }
+
+        function handleSearchKeydown(e) {
+            const suggestions = document.querySelectorAll('.suggestion-item');
+            
+            switch(e.key) {
+                case 'ArrowDown':
+                    e.preventDefault();
+                    currentHighlightIndex = Math.min(currentHighlightIndex + 1, suggestions.length - 1);
+                    updateHighlight(suggestions);
+                    break;
+                case 'ArrowUp':
+                    e.preventDefault();
+                    currentHighlightIndex = Math.max(currentHighlightIndex - 1, -1);
+                    updateHighlight(suggestions);
+                    break;
+                case 'Enter':
+                    e.preventDefault();
+                    if (currentHighlightIndex >= 0 && suggestions[currentHighlightIndex]) {
+                        selectSuggestion(suggestions[currentHighlightIndex].textContent);
+                    } else {
+                        performSearch();
+                    }
+                    break;
+                case 'Escape':
+                    hideSearchSuggestions();
+                    e.target.blur();
+                    break;
+            }
+        }
+
+        function updateHighlight(suggestions) {
+            suggestions.forEach((item, index) => {
+                item.classList.toggle('highlighted', index === currentHighlightIndex);
+            });
+        }
+
+        function showSearchSuggestions(query = '') {
+            const container = document.getElementById('search-suggestions');
+            const suggestions = generateSuggestions(query);
+            
+            if (suggestions.length === 0) {
+                hideSearchSuggestions();
+                return;
+            }
+            
+            container.innerHTML = suggestions.map(suggestion => `
+                <div class="suggestion-item" onclick="selectSuggestion('${suggestion.text}')">
+                    <span class="suggestion-icon">${suggestion.icon}</span>
+                    <span class="suggestion-text">${suggestion.text}</span>
+                    ${suggestion.category ? `<span class="suggestion-category">${suggestion.category}</span>` : ''}
+                    ${suggestion.isHistory ? `<span class="suggestion-history">Recent</span>` : ''}
+                </div>
+            `).join('');
+            
+            container.classList.add('active');
+            currentHighlightIndex = -1;
+        }
+
+        function hideSearchSuggestions() {
+            const container = document.getElementById('search-suggestions');
+            container.classList.remove('active');
+            currentHighlightIndex = -1;
+        }
+
+        function generateSuggestions(query) {
+            const suggestions = [];
+            const queryLower = query.toLowerCase();
+            
+            // Add search history matches
+            searchHistory.filter(item => 
+                item.toLowerCase().includes(queryLower)
+            ).slice(0, 3).forEach(item => {
+                suggestions.push({
+                    text: item,
+                    icon: '🕐',
+                    isHistory: true
+                });
+            });
+            
+            // Add category suggestions
+            searchSuggestions.categories.filter(cat => 
+                cat.toLowerCase().includes(queryLower)
+            ).slice(0, 3).forEach(cat => {
+                suggestions.push({
+                    text: cat,
+                    icon: '📂',
+                    category: 'Category'
+                });
+            });
+            
+            // Add brand suggestions
+            searchSuggestions.brands.filter(brand => 
+                brand.toLowerCase().includes(queryLower)
+            ).slice(0, 2).forEach(brand => {
+                suggestions.push({
+                    text: brand,
+                    icon: '🏷️',
+                    category: 'Brand'
+                });
+            });
+            
+            // Add color suggestions
+            searchSuggestions.colors.filter(color => 
+                color.toLowerCase().includes(queryLower)
+            ).slice(0, 2).forEach(color => {
+                suggestions.push({
+                    text: color,
+                    icon: '🎨',
+                    category: 'Color'
+                });
+            });
+            
+            // Add style suggestions
+            searchSuggestions.styles.filter(style => 
+                style.toLowerCase().includes(queryLower)
+            ).slice(0, 2).forEach(style => {
+                suggestions.push({
+                    text: style,
+                    icon: '✨',
+                    category: 'Style'
+                });
+            });
+            
+            return suggestions.slice(0, 8); // Limit to 8 suggestions
+        }
+
+        function selectSuggestion(text) {
+            const searchInput = document.getElementById('main-search-input');
+            searchInput.value = text;
+            hideSearchSuggestions();
+            performSearch();
+        }
+
+        function performSearch() {
+            const searchInput = document.getElementById('main-search-input');
+            const query = searchInput.value.trim();
+            
+            if (!query) {
+                clearSearch();
+                return;
+            }
+            
+            searchStartTime = performance.now();
+            addToSearchHistory(query);
+            
+            // Show search results section
+            document.getElementById('search-results-section').style.display = 'block';
+            document.getElementById('search-query-text').textContent = query;
+            
+            // Hide category collections and show products
+            const categorySection = document.querySelector('.category-collections');
+            if (categorySection) categorySection.style.display = 'none';
+            
+            // Perform the actual search using existing search function
+            if (typeof searchProducts === 'function') {
+                searchProducts(query);
+            } else {
+                // Fallback search
+                console.log('Searching for:', query);
+                showMessage(`Searching for "${query}"...`);
+            }
+            
+            // Update search stats
+            setTimeout(() => {
+                const searchTime = ((performance.now() - searchStartTime) / 1000).toFixed(2);
+                document.getElementById('search-time').textContent = searchTime + 's';
+                
+                // Update results count (this would be set by the actual search function)
+                const resultsCount = document.querySelectorAll('.product-card').length;
+                document.getElementById('search-results-count').textContent = 
+                    resultsCount === 1 ? '1 result' : `${resultsCount} results`;
+            }, 100);
+            
+            hideSearchSuggestions();
+        }
+
+        function clearSearch() {
+            const searchInput = document.getElementById('main-search-input');
+            searchInput.value = '';
+            
+            // Hide search results section
+            document.getElementById('search-results-section').style.display = 'none';
+            
+            // Show category collections
+            const categorySection = document.querySelector('.category-collections');
+            if (categorySection) categorySection.style.display = 'block';
+            
+            // Reset to show all products
+            if (typeof applyAllFilters === 'function') {
+                applyAllFilters();
+            } else if (typeof loadProducts === 'function') {
+                loadProducts();
+            }
+            
+            hideSearchSuggestions();
+        }
+
+        function addToSearchHistory(query) {
+            // Remove if already exists
+            searchHistory = searchHistory.filter(item => item !== query);
+            // Add to beginning
+            searchHistory.unshift(query);
+            // Keep only last 10 searches
+            searchHistory = searchHistory.slice(0, 10);
+            // Save to localStorage
+            localStorage.setItem('search-history', JSON.stringify(searchHistory));
+        }
+
+        // Legacy function for compatibility
+        function searchProducts() {
+            performSearch();
+        }
+
+        // Initialize enhanced search when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeEnhancedSearch();
+        });
         
         function showDeals() {
             alert('Super Deals: Check out our amazing discounts and special offers!');
