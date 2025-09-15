@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "name": "Classic White T-Shirt",
+    "price": 29.99,
+    "category": "tshirts",
+    "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=300&h=300&fit=crop&auto=format",
+    "rating": 4.5,
+    "description": "Premium cotton t-shirt with perfect fit"
+  },
+  {
+    "id": 2,
+    "name": "Denim Jacket",
+    "price": 89.99,
+    "category": "jackets",
+    "image": "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=300&h=300&fit=crop&auto=format",
+    "rating": 4.8,
+    "description": "Classic denim jacket for all seasons"
+  },
+  {
+    "id": 3,
+    "name": "Slim Fit Jeans",
+    "price": 79.99,
+    "category": "bottoms",
+    "image": "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=300&h=300&fit=crop&auto=format",
+    "rating": 4.6,
+    "description": "Comfortable slim fit jeans"
+  },
+  {
+    "id": 4,
+    "name": "Casual Shirt",
+    "price": 59.99,
+    "category": "shirts",
+    "image": "https://images.unsplash.com/photo-1603252109303-2751441dd157?w=300&h=300&fit=crop&auto=format",
+    "rating": 4.4,
+    "description": "Versatile casual shirt"
+  },
+  {
+    "id": 5,
+    "name": "Sneakers",
+    "price": 129.99,
+    "category": "footwear",
+    "image": "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=300&h=300&fit=crop&auto=format",
+    "rating": 4.7,
+    "description": "Comfortable everyday sneakers"
+  }
+]

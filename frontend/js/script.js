@@ -440,12 +440,16 @@ function showSection(sectionName) {
 // Mobile Menu Functions
 function toggleMobileMenu() {
     const navMobile = document.querySelector('.nav-mobile');
-    navMobile.classList.toggle('active');
+    if (navMobile) {
+        navMobile.classList.toggle('active');
+    }
 }
 
 function closeMobileMenu() {
     const navMobile = document.querySelector('.nav-mobile');
-    navMobile.classList.remove('active');
+    if (navMobile) {
+        navMobile.classList.remove('active');
+    }
 }
 
 // Search Functions
@@ -453,13 +457,16 @@ function toggleSearch() {
     const searchBar = document.querySelector('.search-bar');
     const overlay = document.getElementById('overlay');
     
-    searchBar.classList.toggle('active');
-    
-    if (searchBar.classList.contains('active')) {
-        overlay.classList.add('active');
-        document.getElementById('search-input').focus();
-    } else {
-        overlay.classList.remove('active');
+    if (searchBar) {
+        searchBar.classList.toggle('active');
+        
+        if (searchBar.classList.contains('active')) {
+            if (overlay) overlay.classList.add('active');
+            const searchInput = document.getElementById('search-input');
+            if (searchInput) searchInput.focus();
+        } else {
+            if (overlay) overlay.classList.remove('active');
+        }
     }
 }
 
@@ -1070,7 +1077,7 @@ function showSearchSuggestions(originalQuery) {
 }
 
 // Enhanced ML Search Functions
-const API_BASE_URL = "http://localhost:5001"; // Updated to use enhanced backend with MongoDB
+const API_BASE_URL = ""; // Use same origin to avoid CORS issues
 
 // AI-powered text search
 async function performMLTextSearch(query, category = 'all') {
@@ -1356,7 +1363,7 @@ document.addEventListener('DOMContentLoaded', function() {
 async function loadProducts() {
     console.log('🔄 Loading products...');
     try {
-        const response = await fetch(`${API_BASE_URL}/products`);
+        const response = await fetch(`${API_BASE_URL}/products.json`);
         if (!response.ok) {
             throw new Error('Failed to fetch products');
         }
@@ -1645,10 +1652,12 @@ function generateStars(rating) {
 
 function updateResultsCount(count) {
     const resultsCount = document.getElementById('results-count');
-    if (count === products.length) {
-        resultsCount.textContent = `Showing all ${count} products`;
-    } else {
-        resultsCount.textContent = `Showing ${count} of ${products.length} products`;
+    if (resultsCount) {
+        if (count === products.length) {
+            resultsCount.textContent = `Showing all ${count} products`;
+        } else {
+            resultsCount.textContent = `Showing ${count} of ${products.length} products`;
+        }
     }
 }
 
@@ -1685,11 +1694,13 @@ function toggleCart() {
     const cartSidebar = document.getElementById('cart-sidebar');
     const overlay = document.getElementById('overlay');
     
-    cartSidebar.classList.toggle('active');
-    overlay.classList.toggle('active');
-    
-    if (cartSidebar.classList.contains('active')) {
-        updateCartItems();
+    if (cartSidebar) {
+        cartSidebar.classList.toggle('active');
+        if (overlay) overlay.classList.toggle('active');
+        
+        if (cartSidebar.classList.contains('active')) {
+            updateCartItems();
+        }
     }
 }
 
@@ -1756,8 +1767,10 @@ function toggleUserMenu() {
     const userMenu = document.getElementById('user-menu');
     const overlay = document.getElementById('overlay');
     
-    userMenu.classList.toggle('active');
-    overlay.classList.toggle('active');
+    if (userMenu) {
+        userMenu.classList.toggle('active');
+        if (overlay) overlay.classList.toggle('active');
+    }
 }
 
 function showLogin() {
@@ -1783,7 +1796,9 @@ function showOrders() {
 // Chatbot Functions
 function toggleChatbot() {
     const chatbot = document.getElementById('chatbot');
-    chatbot.classList.toggle('active');
+    if (chatbot) {
+        chatbot.classList.toggle('active');
+    }
 }
 
 function sendChatMessage() {
@@ -1858,11 +1873,11 @@ function closeAllMenus() {
     const searchBar = document.querySelector('.search-bar');
     const navMobile = document.querySelector('.nav-mobile');
     
-    overlay.classList.remove('active');
-    cartSidebar.classList.remove('active');
-    userMenu.classList.remove('active');
-    searchBar.classList.remove('active');
-    navMobile.classList.remove('active');
+    if (overlay) overlay.classList.remove('active');
+    if (cartSidebar) cartSidebar.classList.remove('active');
+    if (userMenu) userMenu.classList.remove('active');
+    if (searchBar) searchBar.classList.remove('active');
+    if (navMobile) navMobile.classList.remove('active');
 }
 
 // Keyboard shortcuts
@@ -5876,16 +5891,16 @@ class MANVUEAIChatbot {
     initializeAIEngine() {
         return {
             nlp: {
-                intentClassification: this.classifyIntent.bind(this),
-                entityExtraction: this.extractEntities.bind(this),
-                sentimentAnalysis: this.analyzeSentiment.bind(this),
-                contextUnderstanding: this.understandContext.bind(this)
+                intentClassification: this.classifyIntent ? this.classifyIntent.bind(this) : () => {},
+                entityExtraction: this.extractEntities ? this.extractEntities.bind(this) : () => {},
+                sentimentAnalysis: this.analyzeSentiment ? this.analyzeSentiment.bind(this) : () => {},
+                contextUnderstanding: this.understandContext ? this.understandContext.bind(this) : () => {}
             },
             ml: {
-                styleRecommendation: this.generateStyleRecommendations.bind(this),
-                productMatching: this.findProductMatches.bind(this),
-                trendAnalysis: this.analyzeTrends.bind(this),
-                personalizedResponse: this.generatePersonalizedResponse.bind(this)
+                styleRecommendation: this.generateStyleRecommendations ? this.generateStyleRecommendations.bind(this) : () => {},
+                productMatching: this.findProductMatches ? this.findProductMatches.bind(this) : () => {},
+                trendAnalysis: this.analyzeTrends ? this.analyzeTrends.bind(this) : () => {},
+                personalizedResponse: this.generatePersonalizedResponse ? this.generatePersonalizedResponse.bind(this) : () => {}
             }
         };
     }

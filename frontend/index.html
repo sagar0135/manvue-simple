@@ -6,6 +6,22 @@
     <title>MANVUE - Men's Fashion Store</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/cart-checkout.css">
+    
+    <!-- Ensure visibility CSS -->
+    <style>
+        /* Force visibility of main content */
+        #main-content {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+        
+        .hero-banner, .category-collections, .quality-features {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+    </style>
     <style>
         /* Voice and VR Button Styles */
         .voice-btn, .vr-btn {
@@ -70,6 +86,59 @@
         .voice-text {
             font-size: 1.1rem;
             font-weight: 500;
+        }
+        
+        /* Ensure main content is visible by default */
+        #main-content {
+            display: block !important;
+            min-height: 100vh;
+        }
+        
+        /* Fix any layout issues */
+        .hero-banner, .category-collections, .quality-features {
+            display: block !important;
+        }
+        
+        /* Responsive improvements */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .hero-content h2 {
+                font-size: 2rem;
+            }
+            
+            .category-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .main-search-bar {
+                width: 100%;
+                margin: 1rem 0;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .voice-btn, .vr-btn {
+                padding: 8px 12px;
+                font-size: 1rem;
+            }
+        }
+        
+        /* Loading state */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+        
+        /* Smooth transitions */
+        * {
+            transition: opacity 0.3s ease, transform 0.3s ease;
         }
     </style>
 </head>
@@ -224,9 +293,9 @@
     </div>
 
     <!-- Main Content -->
-    <main>
+    <main id="main-content" style="display: block !important; visibility: visible !important; opacity: 1 !important;">
         <!-- Hero Banner -->
-        <section class="hero-banner">
+        <section class="hero-banner" style="display: block !important; visibility: visible !important; opacity: 1 !important;">
             <div class="hero-content">
                 <h2>Winter Collection</h2>
                 <p>Keep yourself warmed up</p>
@@ -238,7 +307,7 @@
         </section>
 
         <!-- Search Results Section -->
-        <section id="search-results-section" style="display: none;">
+        <section id="search-results-section" class="search-results-section" style="display: none;">
             <div class="container">
                 <div class="search-stats">
                     <div>
@@ -247,13 +316,45 @@
                     <div class="search-time">
                         Search completed in <span id="search-time">0.0s</span>
                     </div>
+                    <div>
+                        <span id="results-count">Showing 0 products</span>
+                    </div>
+                </div>
+                <div class="search-controls">
+                    <div class="search-filters">
+                        <select id="sort-select">
+                            <option value="name">Sort by Name</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="rating">Rating</option>
+                        </select>
+                        <select id="category-filter">
+                            <option value="">All Categories</option>
+                            <option value="tshirts">T-Shirts</option>
+                            <option value="shirts">Shirts</option>
+                            <option value="bottoms">Bottoms</option>
+                            <option value="jackets">Jackets</option>
+                        </select>
+                    </div>
+                    <div class="view-controls">
+                        <button class="view-btn active" onclick="changeView('grid')">Grid</button>
+                        <button class="view-btn" onclick="changeView('list')">List</button>
+                    </div>
+                </div>
+                <div id="product-grid" class="product-grid">
+                    <!-- Products will be loaded here -->
+                </div>
+                <div class="pagination">
+                    <button id="prev-page" onclick="changePage(-1)">Previous</button>
+                    <span id="page-info">Page 1 of 1</span>
+                    <button id="next-page" onclick="changePage(1)">Next</button>
                 </div>
                 <button class="clear-search" onclick="clearSearch()">Clear search and show all products</button>
             </div>
         </section>
 
         <!-- Category Collections -->
-        <section class="category-collections">
+        <section class="category-collections" style="display: block !important; visibility: visible !important; opacity: 1 !important;">
             <div class="container">
                 <h2>Category Collections</h2>
                 <div class="category-grid">
@@ -1633,13 +1734,9 @@
     
     <script src="data/products.js"></script>
     <script src="js/script.js"></script>
-    <script src="../backend/ML/utils/ml_integration.js"></script>
     
     <!-- Enhanced Cart System -->
     <script src="js/cart-system.js"></script>
-    
-    <!-- Enhanced Chatbot Integration -->
-    <script src="../chatbot/enhanced_chatbot_integration.js"></script>
     
     <!-- Enhanced AI Chatbot -->
     <script src="js/enhanced-chatbot.js"></script>
@@ -1823,8 +1920,7 @@
             setInterval(updateTimer, 1000);
         }
         
-        // Start timer when page loads
-        document.addEventListener('DOMContentLoaded', startCountdown);
+        // Timer function moved to main initialization above
         
         // Enhanced chatbot integration
         function toggleChatbot() {
@@ -1959,9 +2055,71 @@
             alert('Cookie Policy: Information about how we use cookies to enhance your experience.');
         }
         
-        // Missing functions that are referenced in the HTML
+        // Fixed home navigation function
         function goHome() {
-            window.location.href = 'index.html';
+            // Reset to home view without reloading page
+            if (typeof showSection === 'function') {
+                showSection('home');
+            } else {
+                // Fallback if showSection is not available
+                showHomePage();
+            }
+            clearAllFilters();
+            scrollToTop();
+            closeAllMenus();
+        }
+        
+        // Fallback home function
+        function showHomePage() {
+            console.log('🏠 showHomePage called');
+            
+            // Close all modals first
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                modal.style.display = 'none';
+                modal.classList.remove('active');
+            });
+            console.log('✅ All modals closed in showHomePage');
+            
+            // Hide admin section if visible
+            const adminSection = document.getElementById('admin');
+            if (adminSection) {
+                adminSection.style.display = 'none';
+            }
+            
+            // Show main content
+            const mainContent = document.querySelector('main');
+            if (mainContent) {
+                mainContent.style.display = 'block';
+                mainContent.style.visibility = 'visible';
+                mainContent.style.opacity = '1';
+                console.log('✅ Main content shown');
+            }
+            
+            // Hide search results section
+            const searchResults = document.getElementById('search-results-section');
+            if (searchResults) {
+                searchResults.style.display = 'none';
+                console.log('✅ Search results hidden');
+            }
+            
+            // Show category collections
+            const categorySection = document.querySelector('.category-collections');
+            if (categorySection) {
+                categorySection.style.display = 'block';
+                categorySection.style.visibility = 'visible';
+                categorySection.style.opacity = '1';
+                console.log('✅ Category collections shown');
+            }
+            
+            // Show hero banner
+            const heroBanner = document.querySelector('.hero-banner');
+            if (heroBanner) {
+                heroBanner.style.display = 'block';
+                heroBanner.style.visibility = 'visible';
+                heroBanner.style.opacity = '1';
+                console.log('✅ Hero banner shown');
+            }
         }
         
         // Enhanced Search System
@@ -2219,10 +2377,155 @@
             performSearch();
         }
 
-        // Initialize enhanced search when DOM is loaded
+        // Main page initialization - consolidated DOMContentLoaded
         document.addEventListener('DOMContentLoaded', function() {
-            initializeEnhancedSearch();
+            console.log('🚀 MANVUE page initializing...');
+            console.log('Current URL:', window.location.href);
+            console.log('Current hash:', window.location.hash);
+            
+            // Close any open modals first
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                modal.style.display = 'none';
+                modal.classList.remove('active');
+            });
+            console.log('✅ All modals closed');
+            
+            // Immediate visibility check
+            console.log('Main content element:', document.getElementById('main-content'));
+            console.log('Hero banner element:', document.querySelector('.hero-banner'));
+            console.log('Category collections element:', document.querySelector('.category-collections'));
+            
+            // Force visibility immediately
+            const mainContent = document.getElementById('main-content');
+            if (mainContent) {
+                mainContent.style.display = 'block';
+                mainContent.style.visibility = 'visible';
+                mainContent.style.opacity = '1';
+                console.log('✅ Main content forced visible');
+            }
+            
+            const heroBanner = document.querySelector('.hero-banner');
+            if (heroBanner) {
+                heroBanner.style.display = 'block';
+                heroBanner.style.visibility = 'visible';
+                heroBanner.style.opacity = '1';
+                console.log('✅ Hero banner forced visible');
+            }
+            
+            const categoryCollections = document.querySelector('.category-collections');
+            if (categoryCollections) {
+                categoryCollections.style.display = 'block';
+                categoryCollections.style.visibility = 'visible';
+                categoryCollections.style.opacity = '1';
+                console.log('✅ Category collections forced visible');
+            }
+            
+            try {
+                // Initialize enhanced search
+                if (typeof initializeEnhancedSearch === 'function') {
+                    initializeEnhancedSearch();
+                }
+                
+                // Initialize timer countdown
+                if (typeof startCountdown === 'function') {
+                    startCountdown();
+                }
+                
+                // Ensure homepage is displayed properly
+                showHomePage();
+                
+                // Additional safety checks
+                ensurePageVisibility();
+                
+                // Initialize responsive features
+                initializeResponsiveFeatures();
+                
+                console.log('✅ MANVUE page initialized successfully');
+            } catch (error) {
+                console.error('❌ Error initializing MANVUE page:', error);
+            }
         });
+        
+        // Initialize responsive features
+        function initializeResponsiveFeatures() {
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                // Close mobile menu on resize to desktop
+                if (window.innerWidth > 768) {
+                    const mobileMenu = document.querySelector('.nav-mobile');
+                    if (mobileMenu) {
+                        mobileMenu.classList.remove('active');
+                    }
+                }
+                
+                // Adjust modal sizes
+                adjustModalSizes();
+            });
+            
+            // Initialize touch gestures for mobile
+            initializeTouchGestures();
+            
+            // Set initial responsive states
+            adjustModalSizes();
+        }
+        
+        function adjustModalSizes() {
+            const modals = document.querySelectorAll('.modal-content');
+            modals.forEach(modal => {
+                if (window.innerWidth <= 768) {
+                    modal.style.maxHeight = '95vh';
+                    modal.style.margin = '2.5vh auto';
+                } else {
+                    modal.style.maxHeight = '90vh';
+                    modal.style.margin = '5vh auto';
+                }
+            });
+        }
+        
+        function initializeTouchGestures() {
+            // Add touch-friendly interactions
+            const buttons = document.querySelectorAll('button, .btn, .card');
+            buttons.forEach(button => {
+                button.addEventListener('touchstart', function() {
+                    this.style.transform = 'scale(0.95)';
+                });
+                
+                button.addEventListener('touchend', function() {
+                    this.style.transform = '';
+                });
+            });
+        }
+        
+        function ensurePageVisibility() {
+            // Final safety check to ensure page elements are visible
+            setTimeout(() => {
+                const mainContent = document.getElementById('main-content');
+                const heroSection = document.querySelector('.hero-banner');
+                const categorySection = document.querySelector('.category-collections');
+                
+                if (mainContent) {
+                    mainContent.style.display = 'block';
+                    mainContent.style.opacity = '1';
+                }
+                
+                if (heroSection) {
+                    heroSection.style.display = 'block';
+                }
+                
+                if (categorySection) {
+                    categorySection.style.display = 'block';
+                }
+                
+                // Hide any overlays that might be blocking content
+                const overlays = document.querySelectorAll('.overlay, .loading-overlay');
+                overlays.forEach(overlay => {
+                    overlay.style.display = 'none';
+                });
+                
+                console.log('✅ Page visibility ensured');
+            }, 100);
+        }
         
         function showDeals() {
             alert('Super Deals: Check out our amazing discounts and special offers!');
@@ -2249,6 +2552,33 @@
                     el.style.display = 'none';
                 }
             });
+        }
+        
+        function clearAllFilters() {
+            // Reset search inputs
+            const searchInputs = document.querySelectorAll('#main-search-input, #search-input');
+            searchInputs.forEach(input => {
+                if (input) input.value = '';
+            });
+            
+            // Hide search results section
+            const searchResults = document.getElementById('search-results-section');
+            if (searchResults) {
+                searchResults.style.display = 'none';
+            }
+            
+            // Show category collections
+            const categorySection = document.querySelector('.category-collections');
+            if (categorySection) {
+                categorySection.style.display = 'block';
+            }
+            
+            // Hide search suggestions
+            hideSearchSuggestions();
+        }
+        
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
         
         function closeModal(modalId) {
@@ -2315,6 +2645,50 @@
                  video.style.display = 'none';
              }
          }
+     </script>
+
+     <!-- Emergency visibility script -->
+     <script>
+         // Emergency script to ensure content is visible
+         (function() {
+             console.log('🚨 Emergency visibility script running...');
+             
+             // Close all modals first
+             const modals = document.querySelectorAll('.modal');
+             modals.forEach(modal => {
+                 modal.style.display = 'none';
+                 modal.classList.remove('active');
+             });
+             console.log('✅ All modals closed in emergency script');
+             
+             // Force all main content to be visible
+             const elements = [
+                 document.getElementById('main-content'),
+                 document.querySelector('.hero-banner'),
+                 document.querySelector('.category-collections'),
+                 document.querySelector('.quality-features')
+             ];
+             
+             elements.forEach((el, index) => {
+                 if (el) {
+                     el.style.display = 'block';
+                     el.style.visibility = 'visible';
+                     el.style.opacity = '1';
+                     console.log(`✅ Element ${index + 1} forced visible:`, el);
+                 } else {
+                     console.warn(`❌ Element ${index + 1} not found`);
+                 }
+             });
+             
+             // Remove any loading overlays
+             const overlays = document.querySelectorAll('.loading, .overlay, .loading-overlay');
+             overlays.forEach(overlay => {
+                 overlay.style.display = 'none';
+                 console.log('✅ Removed overlay:', overlay);
+             });
+             
+             console.log('✅ Emergency visibility script completed');
+         })();
      </script>
 
 </body>
