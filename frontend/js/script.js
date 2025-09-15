@@ -4977,24 +4977,37 @@ class MANVUE3DTryOn {
     }
 
     init3DEngine() {
-        // Initialize Three.js scene
-        this.scene = new THREE.Scene();
-        this.scene.background = new THREE.Color(0x222222);
+        try {
+            console.log('Initializing 3D engine...');
+            
+            // Check if Three.js is available
+            if (typeof THREE === 'undefined') {
+                throw new Error('Three.js library not loaded');
+            }
 
-        // Setup camera
-        this.camera = new THREE.PerspectiveCamera(
-            75,
-            window.innerWidth / window.innerHeight,
-            0.1,
-            1000
-        );
-        this.camera.position.set(0, 1.6, 3);
+            // Initialize Three.js scene
+            this.scene = new THREE.Scene();
+            this.scene.background = new THREE.Color(0x222222);
 
-        // Setup renderer
-        const container = document.getElementById('threejs-container');
-        if (container) {
+            // Setup camera
+            this.camera = new THREE.PerspectiveCamera(
+                75,
+                window.innerWidth / window.innerHeight,
+                0.1,
+                1000
+            );
+            this.camera.position.set(0, 1.6, 3);
+
+            // Setup renderer
+            const container = document.getElementById('threejs-container');
+            const canvas = document.getElementById('threejs-canvas');
+            
+            if (!container || !canvas) {
+                throw new Error('3D container or canvas not found');
+            }
+
             this.renderer = new THREE.WebGLRenderer({
-                canvas: document.getElementById('threejs-canvas'),
+                canvas: canvas,
                 antialias: true,
                 alpha: true
             });
@@ -5002,31 +5015,44 @@ class MANVUE3DTryOn {
             this.renderer.setPixelRatio(window.devicePixelRatio);
             this.renderer.shadowMap.enabled = true;
             this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-            this.renderer.outputEncoding = THREE.sRGBEncoding;
-            this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-            this.renderer.toneMappingExposure = 1.0;
-        }
+            
+            // Check for newer Three.js versions
+            if (this.renderer.outputEncoding !== undefined) {
+                this.renderer.outputEncoding = THREE.sRGBEncoding;
+            }
+            if (this.renderer.toneMapping !== undefined) {
+                this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+                this.renderer.toneMappingExposure = 1.0;
+            }
 
-        // Setup controls
-        if (this.renderer && typeof THREE.OrbitControls !== 'undefined') {
-            this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
-            this.controls.enableDamping = true;
-            this.controls.dampingFactor = 0.05;
-            this.controls.maxPolarAngle = Math.PI / 2;
-            this.controls.minDistance = 1;
-            this.controls.maxDistance = 10;
-        }
+            // Setup controls
+            if (typeof THREE.OrbitControls !== 'undefined') {
+                this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
+                this.controls.enableDamping = true;
+                this.controls.dampingFactor = 0.05;
+                this.controls.maxPolarAngle = Math.PI / 2;
+                this.controls.minDistance = 1;
+                this.controls.maxDistance = 10;
+            } else {
+                console.warn('OrbitControls not available, using basic controls');
+            }
 
-        // Setup lighting
-        this.setupLighting();
-        
-        // Create basic avatar
-        this.createAvatar();
-        
-        // Start render loop
-        this.animate();
-        
-        this.isInitialized = true;
+            // Setup lighting
+            this.setupLighting();
+            
+            // Create basic avatar
+            this.createAvatar();
+            
+            // Start render loop
+            this.animate();
+            
+            this.isInitialized = true;
+            console.log('3D engine initialized successfully');
+        } catch (error) {
+            console.error('Failed to initialize 3D engine:', error);
+            this.showError('Failed to initialize 3D engine: ' + error.message);
+            throw error;
+        }
         this.hideLoading();
     }
 
@@ -5541,18 +5567,34 @@ class MANVUE3DTryOn {
             this.renderer.setSize(width, height);
         }
     }
+
+    showError(message) {
+        console.error('3D System Error:', message);
+        // Show error in the loading indicator
+        const loadingIndicator = document.getElementById('3d-loading');
+        if (loadingIndicator) {
+            loadingIndicator.innerHTML = `
+                <div style="color: #ef4444; text-align: center;">
+                    <div style="font-size: 24px; margin-bottom: 8px;">⚠️</div>
+                    <div>Error: ${message}</div>
+                    <button onclick="location.reload()" style="margin-top: 12px; padding: 8px 16px; background: #ef4444; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                        Reload Page
+                    </button>
+                </div>
+            `;
+        }
+    }
 }
 
 // Initialize 3D Try-On System
 let manvue3D = null;
 
+
 // 3D Interface Functions
 function toggle3DTryOn() {
     showModal('tryon-3d-modal');
-    if (!manvue3D) {
-        manvue3D = new MANVUE3DTryOn();
-    }
 }
+
 
 function start3DCamera() {
     if (manvue3D) {
@@ -5729,63 +5771,10 @@ function show3DProduct(productId) {
 }
 
 function init3DProductViewer(product) {
-    const container = document.getElementById('product-threejs-viewer');
-    const canvas = document.getElementById('product-threejs-canvas');
-    
-    if (!container || !canvas) return;
-    
-    // Create simple 3D product representation
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xf0f0f0);
-    
-    const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
-    camera.position.z = 2;
-    
-    const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
-    renderer.setSize(container.clientWidth, container.clientHeight);
-    
-    // Create product geometry based on type
-    let geometry, material;
-    
-    switch (product.type) {
-        case 'tops':
-            geometry = new THREE.BoxGeometry(1, 1.2, 0.2);
-            material = new THREE.MeshLambertMaterial({ color: 0x4169E1 });
-            break;
-        case 'bottoms':
-            geometry = new THREE.CylinderGeometry(0.3, 0.5, 1.5, 8);
-            material = new THREE.MeshLambertMaterial({ color: 0x2F4F4F });
-            break;
-        case 'shoes':
-            geometry = new THREE.BoxGeometry(0.8, 0.3, 1.2);
-            material = new THREE.MeshLambertMaterial({ color: 0x8B4513 });
-            break;
-        default:
-            geometry = new THREE.BoxGeometry(1, 1, 1);
-            material = new THREE.MeshLambertMaterial({ color: 0x888888 });
-    }
-    
-    const productMesh = new THREE.Mesh(geometry, material);
-    scene.add(productMesh);
-    
-    // Add lighting
-    const ambientLight = new THREE.AmbientLight(0x404040);
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-    directionalLight.position.set(1, 1, 1);
-    scene.add(ambientLight);
-    scene.add(directionalLight);
-    
-    // Animation loop
-    function animate() {
-        requestAnimationFrame(animate);
-        productMesh.rotation.y += 0.01;
-        renderer.render(scene, camera);
-    }
-    animate();
-    
-    // Store references for controls
-    window.current3DProduct = { scene, camera, renderer, mesh: productMesh };
+    // Simple placeholder for 3D product viewer
+    console.log('3D Product Viewer - Product:', product);
 }
+
 
 function rotate3DProduct(direction) {
     if (window.current3DProduct) {

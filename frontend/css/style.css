@@ -47,7 +47,7 @@
 .chatbot {
     position: fixed;
     bottom: 20px;
-    left: 20px;
+    right: 20px;
     width: 420px;
     height: 650px;
     background: rgba(255, 255, 255, 0.95);
@@ -427,7 +427,7 @@
 .chat-toggle {
     position: fixed;
     bottom: 20px;
-    left: 20px;
+    right: 20px;
     width: 60px;
     height: 60px;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -438,7 +438,7 @@
     color: white;
     font-size: 24px;
     cursor: pointer;
-    z-index: 9999;
+    z-index: 10001;
     box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     animation: floatBounce 3s ease-in-out infinite;
@@ -451,6 +451,8 @@
 
 .chat-toggle.hidden {
     transform: scale(0);
+    opacity: 0;
+    pointer-events: none;
 }
 
 /* Search Progress Indicator */
@@ -3194,17 +3196,17 @@ h3 { font-size: var(--font-size-xl); }
 /* Voice Toggle Button */
 .voice-toggle {
     position: fixed;
-    bottom: 100px;
-    right: 30px;
-    width: 60px;
-    height: 60px;
+    bottom: 90px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
     background: var(--primary-color);
     color: var(--secondary-color);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     cursor: pointer;
     box-shadow: var(--shadow-lg);
     z-index: 1000;
@@ -3224,6 +3226,11 @@ h3 { font-size: var(--font-size-xl); }
 @keyframes voiceActive {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.1); }
+}
+
+@keyframes floatBounce {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
 }
 
 /* Voice Commands Modal */

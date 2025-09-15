@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Products - ManVue</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .products-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+        
+        .products-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+        
+        .product-info {
+            padding: 20px;
+        }
+        
+        .product-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #e74c3c;
+            margin-bottom: 10px;
+        }
+        
+        .product-category {
+            color: #666;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+    <div class="products-header">
+        <h1>All Products</h1>
+        <p>Discover our complete collection of premium fashion items</p>
+    </div>
+    
+    <div class="products-container">
+        <div class="products-grid">
+            
+            <div class="product-card" onclick="window.location.href='tshirt-001.html'">
+                <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=500&fit=crop" alt="Classic Cotton Crew Neck" class="product-image">
+                <div class="product-info">
+                    <div class="product-name">Classic Cotton Crew Neck</div>
+                    <div class="product-price">£24.99</div>
+                    <div class="product-category">Tshirts</div>
+                </div>
+            </div>
+            
+            <div class="product-card" onclick="window.location.href='shirt-001.html'">
+                <img src="https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400&h=500&fit=crop" alt="Premium Oxford Button-Down" class="product-image">
+                <div class="product-info">
+                    <div class="product-name">Premium Oxford Button-Down</div>
+                    <div class="product-price">£49.99</div>
+                    <div class="product-category">Shirts</div>
+                </div>
+            </div>
+            
+            <div class="product-card" onclick="window.location.href='jacket-001.html'">
+                <img src="https://images.unsplash.com/photo-1544022613-e87ca75a784a?w=400&h=500&fit=crop" alt="Classic Denim Jacket" class="product-image">
+                <div class="product-info">
+                    <div class="product-name">Classic Denim Jacket</div>
+                    <div class="product-price">£79.99</div>
+                    <div class="product-category">Jackets</div>
+                </div>
+            </div>
+            
+            <div class="product-card" onclick="window.location.href='pants-001.html'">
+                <img src="https://images.unsplash.com/photo-1506629905607-9a1b2b0b5b5b?w=400&h=500&fit=crop" alt="Slim Fit Chinos" class="product-image">
+                <div class="product-info">
+                    <div class="product-name">Slim Fit Chinos</div>
+                    <div class="product-price">£39.99</div>
+                    <div class="product-category">Bottoms</div>
+                </div>
+            </div>
+            
+            <div class="product-card" onclick="window.location.href='accessory-001.html'">
+                <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=500&fit=crop" alt="Leather Belt" class="product-image">
+                <div class="product-info">
+                    <div class="product-name">Leather Belt</div>
+                    <div class="product-price">£29.99</div>
+                    <div class="product-category">Accessories</div>
+                </div>
+            </div>
+            
+            <div class="product-card" onclick="window.location.href='winter-001.html'">
+                <img src="https://images.unsplash.com/photo-1544022613-e87ca75a784a?w=400&h=500&fit=crop" alt="Wool Blend Coat" class="product-image">
+                <div class="product-info">
+                    <div class="product-name">Wool Blend Coat</div>
+                    <div class="product-price">£129.99</div>
+                    <div class="product-category">Winter</div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    
+    <script>
+        // Add any necessary JavaScript here
+    </script>
+</body>
+</html>

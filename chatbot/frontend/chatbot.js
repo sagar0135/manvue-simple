@@ -117,6 +117,7 @@ class ManVueChatbot {
         }
     }
 
+
     connectWebSocket() {
         try {
             // Connect to Rasa action server via WebSocket

@@ -5,6 +5,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MANVUE - Men's Fashion Store</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/cart-checkout.css">
+    <style>
+        /* Voice and VR Button Styles */
+        .voice-btn, .vr-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            margin-left: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .voice-btn:hover, .vr-btn:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+        
+        .voice-btn.active {
+            background: #e74c3c;
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        /* Voice Recognition Display */
+        .voice-recognition-display {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            z-index: 10000;
+            text-align: center;
+            min-width: 300px;
+        }
+        
+        .voice-recognition-display.listening {
+            background: rgba(102, 126, 234, 0.9);
+        }
+        
+        .voice-recognition-display.success {
+            background: rgba(40, 167, 69, 0.9);
+        }
+        
+        .voice-recognition-display.error {
+            background: rgba(220, 53, 69, 0.9);
+        }
+        
+        .voice-recognition-display.stopped {
+            background: rgba(108, 117, 125, 0.9);
+        }
+        
+        .voice-text {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+    </style>
 </head>
 <body>
     <!-- Top Bar -->
@@ -98,7 +165,7 @@
                         <h3>T-Shirts</h3>
                     </div>
                     <div class="category-card" onclick="window.location.href='categories/shirts/index.html'">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop&auto=format" alt="Shirts">
+                        <img src="https://images.unsplash.com/photo-1603252109303-2751441dd157?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Shirts">
                         <h3>Shirts</h3>
                     </div>
                     <div class="category-card" onclick="window.location.href='categories/bottoms/index.html'">
@@ -946,10 +1013,15 @@
     </div>
 
     <!-- Chat Toggle Button -->
-    <div class="chat-toggle" onclick="toggleChatbot()">💬</div>
+    <div class="chat-toggle" onclick="toggleChatbot()" title="Open AI Assistant">💬</div>
+    
+    <!-- Voice Recognition Display -->
+    <div id="voice-recognition-display" class="voice-recognition-display" style="display: none;">
+        <div class="voice-text">Listening...</div>
+    </div>
     
     <!-- 3D Virtual Try-On Modal -->
-    <div id="tryon-3d-modal" class="modal">
+    <div id="tryon-3d-modal" class="modal" style="display: none;">
         <div class="modal-content fullscreen">
             <div class="modal-header">
                 <h3>📹 3D Virtual Try-On</h3>
@@ -960,7 +1032,7 @@
                     <!-- Camera View -->
                     <div class="camera-section">
                         <div class="camera-container">
-                            <video id="tryon-camera" autoplay muted playsinline></video>
+                            <video id="tryon-camera" muted playsinline style="display: none;"></video>
                             <canvas id="tryon-canvas" style="display: none;"></canvas>
                             <div class="camera-overlay">
                                 <div class="body-tracking-points" id="body-tracking"></div>
@@ -1244,16 +1316,7 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <!-- Shop Categories -->
-                <div class="footer-section">
-                    <h4>🛍️ Shop by Category</h4>
-                    <a href="categories/tshirts/index.html">T-Shirts & Tops</a>
-                    <a href="categories/shirts/index.html">Dress Shirts</a>
-                    <a href="categories/bottoms/index.html">Jeans & Bottoms</a>
-                    <a href="categories/jackets/index.html">Jackets & Outerwear</a>
-                    <a href="categories/accessories/index.html">Accessories</a>
-                    <a href="#" onclick="showDeals()">Sale & Clearance</a>
-                </div>
+                <
 
                 <!-- Customer Service -->
                 <div class="footer-section">
@@ -1409,27 +1472,220 @@
     <!-- Overlay -->
     <div id="overlay" class="overlay" onclick="closeAllMenus()"></div>
 
-    <!-- Three.js for 3D visualization -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <!-- Three.js will be loaded lazily when 3D Try-On is activated -->
+    
+     <!-- Three.js Lazy Loading (only when needed) -->
+     <script>
+         // Load Three.js only when 3D Try-On is activated
+         let threeJSLoaded = false;
+         
+         function loadThreeJSWhenNeeded() {
+             if (threeJSLoaded) return Promise.resolve();
+             
+             return new Promise((resolve, reject) => {
+                 console.log('🎮 Loading Three.js for 3D Try-On...');
+                 
+                 if (typeof THREE !== 'undefined') {
+                     threeJSLoaded = true;
+                     resolve();
+                     return;
+                 }
+                 
+                 const script = document.createElement('script');
+                 script.src = 'https://unpkg.com/three@0.128.0/build/three.min.js';
+                 script.onload = function() {
+                     console.log('✅ Three.js loaded successfully');
+                     threeJSLoaded = true;
+                     loadThreeModules().then(resolve);
+                 };
+                 script.onerror = function() {
+                     console.error('❌ Failed to load Three.js');
+                     reject(new Error('Failed to load Three.js'));
+                 };
+                 document.head.appendChild(script);
+             });
+         }
+         
+         function loadThreeModules() {
+             return new Promise((resolve) => {
+                 let modulesLoaded = 0;
+                 const totalModules = 2;
+                 
+                 function checkComplete() {
+                     modulesLoaded++;
+                     if (modulesLoaded >= totalModules) {
+                         console.log('✅ All Three.js modules loaded');
+                         resolve();
+                     }
+                 }
+                 
+                 // Load GLTFLoader
+                 const gltfScript = document.createElement('script');
+                 gltfScript.src = 'https://unpkg.com/three@0.128.0/examples/js/loaders/GLTFLoader.js';
+                 gltfScript.onload = checkComplete;
+                 document.head.appendChild(gltfScript);
+                 
+                 // Load OrbitControls
+                 const controlsScript = document.createElement('script');
+                 controlsScript.src = 'https://unpkg.com/three@0.128.0/examples/js/controls/OrbitControls.js';
+                 controlsScript.onload = checkComplete;
+                 document.head.appendChild(controlsScript);
+             });
+         }
+     </script>
     
     <script src="data/products.js"></script>
     <script src="js/script.js"></script>
     <script src="../backend/ML/utils/ml_integration.js"></script>
     
+    <!-- Enhanced Cart System -->
+    <script src="js/cart-system.js"></script>
+    
+    <!-- Enhanced Chatbot Integration -->
+    <script src="../chatbot/enhanced_chatbot_integration.js"></script>
+    
     <!-- Enhanced AI Chatbot -->
     <script src="js/enhanced-chatbot.js"></script>
     
-    <!-- Hands-Free Voice Commands -->
-    <script src="js/hands-free-voice.js"></script>
+    <!-- Cart Sidebar -->
+    <div id="cart-sidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h3>Shopping Cart</h3>
+            <button onclick="toggleCart()">✕</button>
+        </div>
+        <div id="cart-items" class="cart-items">
+            <!-- Cart items will be loaded here -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">Total: £<span id="cart-total">0.00</span></div>
+            <button class="btn-primary" onclick="proceedToCheckout()">Checkout</button>
+        </div>
+    </div>
+
+    <!-- Wishlist Sidebar -->
+    <div id="wishlist-sidebar" class="wishlist-sidebar">
+        <div class="wishlist-header">
+            <h3>Wishlist</h3>
+            <button onclick="toggleWishlist()">✕</button>
+        </div>
+        <div id="wishlist-items" class="wishlist-items">
+            <p>Your wishlist is empty</p>
+        </div>
+    </div>
     
+    <!-- Voice Commands System -->
     <script>
-        // Hands-free voice system - no button needed!
+        // Voice Commands System
+        let voiceRecognition = null;
+        let isListening = false;
+        
         function startVoiceSearch() {
-            console.log('🎤 Voice button clicked (but hands-free is already active)');
-            if (window.handsFreeVoice) {
-                window.handsFreeVoice.showStatus('Say "Hey MANVUE" to activate!', 'info');
+            console.log('🎤 Voice button clicked');
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                alert('Voice recognition is not supported in this browser. Please use Chrome or Edge.');
+                return;
+            }
+            
+            if (isListening) {
+                stopVoiceRecognition();
+            } else {
+                startVoiceRecognition();
+            }
+        }
+        
+        function startVoiceRecognition() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            voiceRecognition = new SpeechRecognition();
+            
+            voiceRecognition.continuous = false;
+            voiceRecognition.interimResults = false;
+            voiceRecognition.lang = 'en-US';
+            
+            voiceRecognition.onstart = function() {
+                isListening = true;
+                console.log('🎤 Voice recognition started');
+                updateVoiceButton(true);
+                showVoiceStatus('Listening...', 'listening');
+            };
+            
+            voiceRecognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript.toLowerCase();
+                console.log('🎤 Voice input:', transcript);
+                showVoiceStatus(`You said: "${transcript}"`, 'success');
+                
+                // Process voice commands
+                processVoiceCommand(transcript);
+            };
+            
+            voiceRecognition.onerror = function(event) {
+                console.error('🎤 Voice recognition error:', event.error);
+                showVoiceStatus('Voice recognition error', 'error');
+                isListening = false;
+                updateVoiceButton(false);
+            };
+            
+            voiceRecognition.onend = function() {
+                isListening = false;
+                updateVoiceButton(false);
+                setTimeout(() => hideVoiceStatus(), 2000);
+            };
+            
+            voiceRecognition.start();
+        }
+        
+        function stopVoiceRecognition() {
+            if (voiceRecognition && isListening) {
+                voiceRecognition.stop();
+                isListening = false;
+                updateVoiceButton(false);
+                showVoiceStatus('Voice recognition stopped', 'stopped');
+            }
+        }
+        
+        function updateVoiceButton(listening) {
+            const voiceBtn = document.querySelector('.voice-btn');
+            if (voiceBtn) {
+                voiceBtn.classList.toggle('active', listening);
+                voiceBtn.textContent = listening ? '🔴' : '🎤';
+            }
+        }
+        
+        function showVoiceStatus(message, type) {
+            const statusDiv = document.getElementById('voice-recognition-display');
+            if (statusDiv) {
+                const statusText = statusDiv.querySelector('.voice-text');
+                if (statusText) {
+                    statusText.textContent = message;
+                    statusDiv.style.display = 'block';
+                    statusDiv.className = `voice-recognition-display ${type}`;
+                }
+            }
+        }
+        
+        function hideVoiceStatus() {
+            const statusDiv = document.getElementById('voice-recognition-display');
+            if (statusDiv) {
+                statusDiv.style.display = 'none';
+            }
+        }
+        
+        function processVoiceCommand(transcript) {
+            // Process voice commands
+            if (transcript.includes('search') || transcript.includes('find')) {
+                const searchInput = document.getElementById('main-search-input');
+                if (searchInput) {
+                    const searchTerm = transcript.replace(/search for|find|show me/gi, '').trim();
+                    searchInput.value = searchTerm;
+                    searchProducts();
+                }
+            } else if (transcript.includes('cart')) {
+                toggleCart();
+            } else if (transcript.includes('home')) {
+                goHome();
+            } else if (transcript.includes('help')) {
+                if (window.enhancedChatbot) {
+                    window.enhancedChatbot.toggleChat();
+                }
             }
         }
         
@@ -1472,6 +1728,19 @@
         
         // Start timer when page loads
         document.addEventListener('DOMContentLoaded', startCountdown);
+        
+        // Enhanced chatbot integration
+        function toggleChatbot() {
+            if (window.enhancedChatbot) {
+                window.enhancedChatbot.toggleChat();
+            } else {
+                // Fallback to original chatbot if enhanced version isn't available
+                const chatbot = document.getElementById('chatbot');
+                if (chatbot) {
+                    chatbot.classList.toggle('active');
+                }
+            }
+        }
         
         // Footer interaction functions
         function subscribeNewsletter() {
@@ -1556,7 +1825,114 @@
         function showCookies() {
             alert('Cookie Policy: Information about how we use cookies to enhance your experience.');
         }
-    </script>
+        
+        // Missing functions that are referenced in the HTML
+        function goHome() {
+            window.location.href = 'index.html';
+        }
+        
+        function searchProducts() {
+            const searchInput = document.getElementById('main-search-input');
+            const searchTerm = searchInput ? searchInput.value.trim() : '';
+            if (searchTerm) {
+                console.log('Searching for:', searchTerm);
+                // In a real implementation, this would navigate to search results
+                alert(`Searching for: "${searchTerm}"`);
+            }
+        }
+        
+        function showDeals() {
+            alert('Super Deals: Check out our amazing discounts and special offers!');
+        }
+        
+        function loadMoreProducts() {
+            alert('Loading more products...');
+        }
+        
+        function checkout() {
+            alert('Proceeding to checkout...');
+        }
+        
+        function proceedToCheckout() {
+            alert('Proceeding to checkout...');
+        }
+        
+        function closeAllMenus() {
+            // Close all open menus and modals
+            const elements = document.querySelectorAll('.modal, .cart-sidebar, .wishlist-sidebar, .user-menu');
+            elements.forEach(el => {
+                if (el.classList.contains('active') || el.style.display === 'block') {
+                    el.classList.remove('active');
+                    el.style.display = 'none';
+                }
+            });
+        }
+        
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        }
+        
+         function showModal(modalId) {
+             const modal = document.getElementById(modalId);
+             if (modal) {
+                 modal.style.display = 'block';
+             }
+         }
+         
+         // 3D Try-On functionality
+         function toggle3DTryOn() {
+             const modal = document.getElementById('tryon-3d-modal');
+             if (modal) {
+                 if (modal.style.display === 'block') {
+                     modal.style.display = 'none';
+                     // Stop any running 3D processes
+                     stop3DTryOn();
+                 } else {
+                     modal.style.display = 'block';
+                     // Initialize 3D Try-On only when opened
+                     initialize3DTryOn();
+                 }
+             } else {
+                 alert("3D Try-On is not available yet.");
+             }
+         }
+         
+         async function initialize3DTryOn() {
+             console.log("🎮 Initializing 3D Try-On...");
+             
+             try {
+                 // Load Three.js only when needed
+                 await loadThreeJSWhenNeeded();
+                 
+                 // Show the video element only after user clicks
+                 const video = document.getElementById('tryon-camera');
+                 if (video) {
+                     video.style.display = 'block';
+                 }
+                 
+                 console.log("✅ 3D Try-On initialized successfully");
+             } catch (error) {
+                 console.error("❌ Failed to initialize 3D Try-On:", error);
+                 alert("3D Try-On is currently unavailable. Please try again later.");
+             }
+         }
+         
+         function stop3DTryOn() {
+             console.log("🛑 Stopping 3D Try-On...");
+             // Stop any running processes when modal is closed
+             const video = document.getElementById('tryon-camera');
+             if (video) {
+                 if (video.srcObject) {
+                     video.srcObject.getTracks().forEach(track => track.stop());
+                     video.srcObject = null;
+                 }
+                 video.style.display = 'none';
+             }
+         }
+     </script>
 
 </body>
 </html>

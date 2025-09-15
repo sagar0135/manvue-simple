@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Oxford Button-Down - ManVue</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/product-page.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .product-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+        
+        .product-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+        
+        .product-image-section {
+            position: relative;
+        }
+        
+        .main-image {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .product-info {
+            padding: 20px 0;
+        }
+        
+        .product-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .product-price {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #e74c3c;
+            margin-bottom: 20px;
+        }
+        
+        .product-rating {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .stars {
+            color: #ffc107;
+            margin-right: 10px;
+        }
+        
+        .rating-text {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .product-description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 30px;
+        }
+        
+        .product-options {
+            margin-bottom: 30px;
+        }
+        
+        .option-group {
+            margin-bottom: 20px;
+        }
+        
+        .option-label {
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: block;
+            color: #333;
+        }
+        
+        .size-options, .color-options {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .size-btn, .color-btn {
+            padding: 10px 20px;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .size-btn:hover, .size-btn.selected {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+        
+        .color-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            padding: 0;
+            position: relative;
+        }
+        
+        .color-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--color);
+        }
+        
+        .color-btn.selected {
+            border-color: #333;
+            box-shadow: 0 0 0 2px #667eea;
+        }
+        
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .quantity-btn {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .quantity-input {
+            width: 60px;
+            height: 40px;
+            text-align: center;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .btn-primary {
+            flex: 1;
+            padding: 15px 30px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            padding: 15px 30px;
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .product-features {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .feature-item {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+        }
+        
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .feature-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .feature-desc {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .related-products {
+            margin-top: 50px;
+        }
+        
+        .related-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #333;
+        }
+        
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .related-item {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .related-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .related-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .related-info {
+            padding: 20px;
+        }
+        
+        .related-name {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .related-price {
+            color: #e74c3c;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .product-title {
+                font-size: 2rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="../index.html" style="text-decoration: none; color: inherit;">
+                        <h1>MANVUE</h1>
+                        <span class="logo-subtitle">Premium Fashion</span>
+                    </a>
+                </div>
+                
+                <div class="header-actions">
+                    <div class="wishlist-icon" onclick="toggleWishlist()">♡</div>
+                    <div class="cart-icon" onclick="toggleCart()">
+                        🛒 <span id="cart-count">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Product Hero -->
+    <div class="product-hero">
+        <div class="product-container">
+            <h1>Premium Oxford Button-Down</h1>
+            <p>Premium Quality • MANVUE Professional • Shirts</p>
+        </div>
+    </div>
+
+    <!-- Product Details -->
+    <div class="product-container">
+        <div class="product-grid">
+            <div class="product-image-section">
+                <img src="https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400&h=500&fit=crop" alt="Premium Oxford Button-Down" class="main-image" id="main-image">
+            </div>
+            
+            <div class="product-info">
+                <h2 class="product-title">Premium Oxford Button-Down</h2>
+                <div class="product-price">£49.99</div>
+                
+                <div class="product-rating">
+                    <div class="stars">
+                        ★★★★☆
+                    </div>
+                    <span class="rating-text">(4.7/5) • 127 reviews</span>
+                </div>
+                
+                <div class="product-description">
+                    Classic Oxford button-down shirt in premium cotton. Perfect for business casual or smart casual occasions.
+                </div>
+                
+                <div class="product-options">
+                    <div class="option-group">
+                        <label class="option-label">Size</label>
+                        <div class="size-options" id="size-options">
+                            <button class="size-btn" data-size="S">S</button><button class="size-btn" data-size="M">M</button><button class="size-btn" data-size="L">L</button><button class="size-btn" data-size="XL">XL</button><button class="size-btn" data-size="XXL">XXL</button>
+                        </div>
+                    </div>
+                    
+                    <div class="option-group">
+                        <label class="option-label">Color</label>
+                        <div class="color-options" id="color-options">
+                            <button class="color-btn" data-color="White" style="--color: #ffffff"></button><button class="color-btn" data-color="Light Blue" style="--color: #000000"></button><button class="color-btn" data-color="Navy" style="--color: #001f3f"></button>
+                        </div>
+                    </div>
+                    
+                    <div class="quantity-selector">
+                        <label class="option-label">Quantity</label>
+                        <button class="quantity-btn" onclick="changeQuantity(-1)">-</button>
+                        <input type="number" class="quantity-input" id="quantity" value="1" min="1" max="10">
+                        <button class="quantity-btn" onclick="changeQuantity(1)">+</button>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn-primary" onclick="addToCart()">
+                        <i class="fas fa-shopping-cart"></i> Add to Cart
+                    </button>
+                    <button class="btn-secondary" onclick="addToWishlist()">
+                        <i class="fas fa-heart"></i> Wishlist
+                    </button>
+                </div>
+                
+                <div class="product-features">
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <div class="feature-icon">🚚</div>
+                            <div class="feature-title">Free Shipping</div>
+                            <div class="feature-desc">On orders over £50</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">🔄</div>
+                            <div class="feature-title">Easy Returns</div>
+                            <div class="feature-desc">30-day return policy</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">🔒</div>
+                            <div class="feature-title">Secure Payment</div>
+                            <div class="feature-desc">SSL encrypted checkout</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">📞</div>
+                            <div class="feature-title">24/7 Support</div>
+                            <div class="feature-desc">Customer service help</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Related Products -->
+        <div class="related-products">
+            <h3 class="related-title">You Might Also Like</h3>
+            <div class="related-grid" id="related-products">
+                
+            <div class="related-item" onclick="window.location.href='shirt-001.html'">
+                <img src="https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400&h=500&fit=crop" alt="Premium Oxford Button-Down" class="related-image">
+                <div class="related-info">
+                    <div class="related-name">Premium Oxford Button-Down</div>
+                    <div class="related-price">£49.99</div>
+                </div>
+            </div>
+            
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div id="cart-sidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h3>Shopping Cart</h3>
+            <button onclick="toggleCart()">✕</button>
+        </div>
+        <div id="cart-items" class="cart-items">
+            <!-- Cart items will be loaded here -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">Total: £<span id="cart-total">0.00</span></div>
+            <button class="btn-primary" onclick="proceedToCheckout()">Checkout</button>
+        </div>
+    </div>
+
+    <!-- Wishlist Sidebar -->
+    <div id="wishlist-sidebar" class="wishlist-sidebar">
+        <div class="wishlist-header">
+            <h3>Wishlist</h3>
+            <button onclick="toggleWishlist()">✕</button>
+        </div>
+        <div id="wishlist-items" class="wishlist-items">
+            <p>Your wishlist is empty</p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../data/products.js"></script>
+    <script src="../js/script.js"></script>
+    <script>
+        // Product-specific JavaScript
+        const product = {"id": "shirt-001", "name": "Premium Oxford Button-Down", "brand": "MANVUE Professional", "price": 49.99, "originalPrice": 59.99, "discount": 17, "category": "shirts", "type": "dress-shirt", "description": "Classic Oxford button-down shirt in premium cotton. Perfect for business casual or smart casual occasions.", "image": "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400&h=500&fit=crop", "colors": ["White", "Light Blue", "Navy"], "sizes": ["S", "M", "L", "XL", "XXL"], "rating": 4.7, "reviews": 128, "inStock": true, "tags": ["formal", "business", "oxford"]};
+        let selectedSize = null;
+        let selectedColor = null;
+        let quantity = 1;
+
+        // Initialize product page
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeProductPage();
+            loadRelatedProducts();
+        });
+
+        function initializeProductPage() {
+            // Set up size selection
+            document.querySelectorAll('.size-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
+                    this.classList.add('selected');
+                    selectedSize = this.textContent;
+                });
+            });
+
+            // Set up color selection
+            document.querySelectorAll('.color-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('selected'));
+                    this.classList.add('selected');
+                    selectedColor = this.dataset.color;
+                });
+            });
+
+            // Select first size and color by default
+            if (document.querySelector('.size-btn')) {
+                document.querySelector('.size-btn').click();
+            }
+            if (document.querySelector('.color-btn')) {
+                document.querySelector('.color-btn').click();
+            }
+        }
+
+        function changeQuantity(delta) {
+            const input = document.getElementById('quantity');
+            const newValue = parseInt(input.value) + delta;
+            if (newValue >= 1 && newValue <= 10) {
+                input.value = newValue;
+                quantity = newValue;
+            }
+        }
+
+        function addToCart() {
+            if (!selectedSize) {
+                alert('Please select a size');
+                return;
+            }
+            if (!selectedColor) {
+                alert('Please select a color');
+                return;
+            }
+
+            const cartItem = {
+                id: product.id,
+                name: product.name,
+                price: product.price,
+                image: product.image,
+                size: selectedSize,
+                color: selectedColor,
+                quantity: quantity
+            };
+
+            // Add to cart (using existing cart functionality)
+            if (typeof addToCart === 'function') {
+                addToCart(cartItem);
+            } else {
+                // Fallback cart functionality
+                let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+                cart.push(cartItem);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCartDisplay();
+            }
+
+            // Show success message
+            showNotification('Added to cart!', 'success');
+        }
+
+        function addToWishlist() {
+            const wishlistItem = {
+                id: product.id,
+                name: product.name,
+                price: product.price,
+                image: product.image
+            };
+
+            // Add to wishlist (using existing wishlist functionality)
+            if (typeof addToWishlist === 'function') {
+                addToWishlist(wishlistItem);
+            } else {
+                // Fallback wishlist functionality
+                let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+                wishlist.push(wishlistItem);
+                localStorage.setItem('wishlist', JSON.stringify(wishlist));
+                updateWishlistDisplay();
+            }
+
+            showNotification('Added to wishlist!', 'success');
+        }
+
+        function loadRelatedProducts() {
+            // Load related products from the same category
+            const relatedContainer = document.getElementById('related-products');
+            if (relatedContainer && window.products) {
+                const related = window.products
+                    .filter(p => p.category === product.category && p.id !== product.id)
+                    .slice(0, 4);
+                
+                relatedContainer.innerHTML = related.map(p => `
+                    <div class="related-item" onclick="window.location.href='${p.id}.html'">
+                        <img src="${p.image}" alt="${p.name}" class="related-image">
+                        <div class="related-info">
+                            <div class="related-name">${p.name}</div>
+                            <div class="related-price">£${p.price.toFixed(2)}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#28a745' : '#007bff'};
+                color: white;
+                padding: 15px 20px;
+                border-radius: 8px;
+                z-index: 10000;
+                font-weight: 500;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Update cart display
+        function updateCartDisplay() {
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const cartTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            document.getElementById('cart-count').textContent = cartCount;
+            document.getElementById('cart-total').textContent = cartTotal.toFixed(2);
+        }
+
+        // Update wishlist display
+        function updateWishlistDisplay() {
+            const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+            const wishlistCount = wishlist.length;
+            
+            // Update wishlist count if element exists
+            const wishlistIcon = document.querySelector('.wishlist-icon');
+            if (wishlistIcon && wishlistCount > 0) {
+                wishlistIcon.innerHTML = `♡ <span>${wishlistCount}</span>`;
+            }
+        }
+
+        // Initialize displays
+        updateCartDisplay();
+        updateWishlistDisplay();
+    </script>
+</body>
+</html>

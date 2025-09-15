@@ -301,6 +301,7 @@ async def get_products(query: str = None, category: str = None):
     """Proxy endpoint for ManVue products"""
     return await chatbot.get_manvue_products(query, category)
 
+
 if __name__ == "__main__":
     print("🚀 Starting ManVue Chatbot Server...")
     print(f"📱 Frontend: http://localhost:{CHATBOT_PORT}")
